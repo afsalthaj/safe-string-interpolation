@@ -15,7 +15,7 @@ Just use
 import SafeString._
 
 val stringg: SafeString = 
-  safeString"This is safer, guranteed and its all compile time, but pass $onyString, and $onlyCaseClass and nothing else"`
+  safeString"This is safer, guranteed and its all compile time, but pass $onlyString, and $onlyCaseClass and nothing else"`
   
 ```  
 
