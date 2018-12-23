@@ -26,10 +26,10 @@ object SafeString {
     def impl(c: blackbox.Context)(args: c.Expr[Any]*): c.Expr[SafeString] = {
       import c.universe.{ Name => _, _ }
 
-      object CaseField {
-        def unapply(trmSym: TermSymbol): Option[(TermName, Type)] = {
-          if (trmSym.isCaseAccessor && trmSym.isVal)
-            Some((newTermName(trmSym.name.toString.trim), trmSym.typeSignature))
+      object CaseClassFieldAndName {
+        def unapply(sym: TermSymbol): Option[(TermName, Type)] = {
+          if (sym.isCaseAccessor && sym.isVal)
+            Some((newTermName(sym.name.toString.trim), sym.typeSignature))
           else
             None
         }
@@ -51,7 +51,7 @@ object SafeString {
               if (tag.tpe != typeOf[String] && symbol.isClass && symbol.asClass.isCaseClass) {
                 val r: Set[c.universe.Tree] =
                   nextElement.tpe.members.collect {
-                  case CaseField(nme, typ) => {
+                  case CaseClassFieldAndName(nme, typ) => {
                     // Fix the toString here
                     q"""com.thaj.safe.string.interpolator.Field(${nme.toString}, $nextElement.$nme.toString)"""
                   }
