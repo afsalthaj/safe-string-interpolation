@@ -31,9 +31,11 @@ trait Loggers[F[_], E] {
 
 **Everything here is compile time. !**
 
-### Soon to be added
+### Soon to be added 
 
 Secret annotations for domain objects !!
+
+(obviously the most important, but it is easy now)
 
 ### Simple Example
 ```scala
