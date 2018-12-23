@@ -17,6 +17,9 @@ object SafeString {
     def safeStr(args: Any*): SafeString = macro Macro.impl
   }
 
+  implicit class AsString[T: Safe](s: => T) {
+    def asStr: String = Safe[T].value(s)
+  }
 
   object Macro {
     // Not public, just for macros
@@ -70,7 +73,7 @@ object SafeString {
                   case _ => q"""${acc}.s($nextElement)"""
                 }
               } else {
-                c.abort(t.tree.pos, "The provided type isn't a string nor it's a case class, or you might have tried a `toString` on case class!")
+                c.abort(t.tree.pos, "The provided type isn't a string nor it's a case class, or you might have tried a `toString` on non-strings !")
               }
             }
             })

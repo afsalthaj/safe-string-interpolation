@@ -50,7 +50,7 @@ c: Int = 1
 scala> // safeStr interpolation
 
 scala> safeStr"The scala string interpol can be a bit dangerous with your secrets. ${a}, ${b}, ${c}"
-<console>:24: error: The provided type isn't a string nor it's a case class, or you might have tried a `toString` on something while using `safeStr`
+<console>:24: error: The provided type isn't a string nor it's a case class, or you might have tried a `toString` on non-strings!
        safeStr"The scala string interpol can be a bit dangerous with your secrets. ${a}, ${b}, ${c}"
                                                                                                     ^
 scala> safeStr"The scala string interpol can be a bit dangerous with your secrets. ${a}, ${b}"
@@ -88,6 +88,30 @@ scala> safeStr"I am going to call a toString on a case class to satisfy compiler
 
 ```
 
+safe-string-interpolator hates it when you do `toString` on non-string types. Instead, you can use `yourType.asStr` 
+and safe-string-interpolator will ensure it is safe to convert it to String. 
+
+i.e,
+
+```scala
+
+val a: String = "afsal"
+val b: String = "john"
+val c: Int = 1
+
+scala> safeStr"The scala string interpol can be a bit dangerous with your secrets. ${a}, ${b}, ${c.toString}"
+<console>:24: error: The provided type isn't a string nor it's a case class, or you might have tried a `toString` on non-strings!
+       
+scala> safeStr"The scala string interpol can be a bit dangerous with your secrets. ${a}, ${b}, ${c.asStr}"  
+// Compiles sucess 
+
+
+```
+
+PS: An only issue with this tight approach to being safe is that sometimes you may need to end up doing `thisIsADynamicString.asStr`, and that's more of a failed
+fight with scala type inference.
+
+
 ## How about secrets ?
 
 ```scala
@@ -121,5 +145,3 @@ scala> safeStr"the db is $conn"
 res1: com.thaj.safe.string.interpolator.SafeString = SafeString(the db is { password: ****, name: posgr })
 
 ```
-
-
