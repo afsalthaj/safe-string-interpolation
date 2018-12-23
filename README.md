@@ -6,7 +6,7 @@
 
 * A few us also relied on `scalaz.Show/cats.Show` instances on companion objects of your case classes that contributes to making functional scala code non-ubiquitous in nature.
 
-* One simplification we did so far is to have automatic show instances (may be using shapeless) for your case classes and reduced the compile time speed, and guessing password-like fields and replacing it with "*****". Hmm... Not anymore !
+* One simplification we did so far is to have automatic show instances (may be using shapeless), and guessing password-like fields and replacing it with "*****". Hmmm... Not anymore !
 
 Just use 
 
