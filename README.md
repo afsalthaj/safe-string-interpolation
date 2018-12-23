@@ -4,7 +4,7 @@
 
 * We may also forget stringifying domain objects when using scala string interpolations, but we hate manually creating them.
 
-* A few us also relied on `scalaz.Show/cats.Show` instances on companion objects of your case classes that contributes to making functional scala code non-ubiquitous in nature.
+* Sometimes we rely on `scalaz.Show/cats.Show` instances on companion objects of your case classes that contributes to making functional scala code non-ubiquitous in nature.
 
 * One simplification we did so far is to have automatic show instances (may be using shapeless), and guessing password-like fields and replacing it with "*****". Hmmm... Not anymore !
 
@@ -33,9 +33,9 @@ trait Loggers[F[_], E] {
 
 ## Secrets
 
-Easy. Just wrap your secret with `Secret.apply`. More examples to follow
+Easy. Just wrap your any secret field anywhere with `Secret.apply`. More examples to follow
 
-## Simple Example
+## Simple Example (just to give an intro )
 ```scala
 
 scala> val a: String = "ghi"
@@ -94,7 +94,7 @@ scala> safeStr"I am going to call a toString on a case class to satisfy compiler
 
 ## What if there is a secret
 
-```
+```scala
 scala> import com.thaj.safe.string.interpolator.SafeString._
 import com.thaj.safe.string.interpolator.SafeString._
 
@@ -111,9 +111,9 @@ res0: com.thaj.safe.string.interpolator.SafeString = SafeString(the db conn is {
 
 ## What if you have your own Secret ?
 
-If you hate to use interpolation.Secret data type and need your own, then define `Safe` instance for it.
+If you don't want to use `interpolation.Secret` data type and need to use your own, then define `Safe` instance for it.
 
-```
+```scala
 case class MySecret(value: String) extends AnyVal
 
 implicit val safeMySec: Safe[MySecret] = _ => "****"
