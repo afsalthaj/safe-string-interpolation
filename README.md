@@ -53,11 +53,7 @@ scala> safeStr"The scala string interpol can be a bit dangerous with your secret
 <console>:24: error: The provided type isn't a string nor it's a case class, or you might have tried a `toString` on something while using `safeStr`
        safeStr"The scala string interpol can be a bit dangerous with your secrets. ${a}, ${b}, ${c}"
                                                                                                     ^
-
-scala> val cString: String = c.toString
-cString: String = 1
-
-scala> safeStr"The scala string interpol can be a bit dangerous with your secrets. ${a}, ${b}, ${cString}"
+scala> safeStr"The scala string interpol can be a bit dangerous with your secrets. ${a}, ${b}"
 res2: com.thaj.safe.string.interpolator.SafeString = SafeString(The scala string interpol can be a bit dangerous with your secrets. ghi, xyz, 1)
 
 ```
