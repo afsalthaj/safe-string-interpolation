@@ -110,7 +110,7 @@ scala> safeStr"The scala string interpol can be a bit dangerous with your secret
 
 PS: 
 
-An only issue with this tight approach to being safe is that sometimes you may need to end up doint `thisIsADynamicString.asStr`, and that's more of a failed fight with scala type inference.
+An only issue with this tight approach to being safe is that sometimes you may need to end up doing `thisIsADynamicString.asStr`, and that's more of a failed fight with scala type inference.
 
 
 ## How about secrets ?
