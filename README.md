@@ -17,8 +17,9 @@ import SafeString._
 val stringg: SafeString = 
   `safeString"This is safer, guranteed and its all compile time, but pass $onyString, and $onlyCaseClass and nothing else"` !
 
-And you know this, `safeString` returns a `SafeString` which your finally tagless logger interfaces (log.info(safeString)) can accept and let the whole application deals with something nicer for logging!.
+And you know this, `safeString` returns a `SafeString` which your finally tagless logger interfaces (log.info(safeString)) can accept and let the whole application deals with something nicer for logging!. 
 
+**Everything here is compile time. !**
 
 ### Soon to be added
 
