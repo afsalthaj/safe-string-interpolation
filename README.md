@@ -2,9 +2,9 @@
 
 * Being able to pass anything on to scala string interpolations might have messed up  your logs, exposed your secrets, and what not! I know you hate it.
 
-* We may also forget stringifying domain objects when using scala string interpolations, but we hate manually creating them.
+* We may also forget stringifying domain objects when using scala string interpolations, but we stringifying it manually is a tedious job.
 
-* Sometimes we rely on `scalaz.Show/cats.Show` instances on companion objects of your case classes that contributes to making functional scala code non-ubiquitous in nature.
+* Sometimes we rely on `scalaz.Show/cats.Show` instances on companion objects of your case classes and then do `s"my domain object is ${domainObject.show}"`, but the creation of `show` instances has never been proved practical in larger applications. 
 
 * One simplification we did so far is to have automatic show instances (may be using shapeless), and guessing password-like fields and replacing it with "*****". Hmmm... Not anymore !
 
