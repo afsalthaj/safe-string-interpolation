@@ -1,15 +1,12 @@
 # safe-string-interpolation
 
-Being able to pass anything on to scala string interpolations might have messed up 
-your logs, exposed your secrets, and what not! I know you hate it.
+* Being able to pass anything on to scala string interpolations might have messed up  your logs, exposed your secrets, and what not! I know you hate it.
 
-We may also forget stringifying domain objects when using scala string interpolations.
-But we also hate manually creating them !
+* We may also forget stringifying domain objects when using scala string interpolations, but we hate manually creating them.
 
-A few us also rely on `scalaz.Show/cats.Show` instances of companion objects of your case classes that contributes to making functional scala code non-ubiquitous in nature.
+* A few us also relied on `scalaz.Show/cats.Show` instances on companion objects of your case classes that contributes to making functional scala code non-ubiquitous in nature.
 
-One simplification we did so far is to have automatic show instances (may be using shapeless)  for your case classes. 
-Hmm ! Not anymore, needn't kill your compiler. This is one step ahead !
+* One simplification we did so far is to have automatic show instances (may be using shapeless)  for your case classes and reduced the compile time speed. Hmm... Not anymore !
 
 Just use 
 import SafeString._
