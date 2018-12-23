@@ -82,7 +82,7 @@ res3: com.thaj.safe.string.interpolator.SafeString = SafeString(This is safer ! 
 ```scala
 
 scala> safeStr"I am going to call a toString on a case class to satisfy compiler ! ${a} : ${dummy.toString}"
-<console>:23: error: The provided type isn't a string nor it's a case class, c
+<console>:23: error: The provided type isn't a string nor it's a case class, or you might have tried a `toString` on non-strings!
        safeStr"I am going to call a toString on a case class to satisfy compiler ! ${a} : ${dummy.toString}"
                                                  ^
 
