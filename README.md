@@ -15,9 +15,12 @@ Just use
 import SafeString._
 
 val stringg: SafeString = 
-  safeStr"This is safer, guranteed and its all compile time, but pass $onlyString, and $onlyCaseClass and nothing else"`
+  safeStr"This is safer, guranteed and its all compile time, but pass $onlyString, and $onlyCaseClass and nothing else"
   
 ```  
+
+* `safeStr""` is just like `s""`, but it is type safe and allows only strings and case classes (case classes will be converted to jsonlike string by inspecting all field names at compile time), and provides way to hide secrets.
+
 
 `safeStr` returns a `SafeString` which your logger interfaces (an example below) can then accept !
 
