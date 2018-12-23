@@ -14,7 +14,7 @@ final case class SafeString private(string: String) extends AnyVal {
 object SafeString {
 
   implicit class SafeStringContext(val sc: StringContext) {
-    def safeString(args: Any*): SafeString = macro Macro.impl
+    def safeStr(args: Any*): SafeString = macro Macro.impl
   }
 
 

@@ -15,11 +15,11 @@ Just use
 import SafeString._
 
 val stringg: SafeString = 
-  safeString"This is safer, guranteed and its all compile time, but pass $onlyString, and $onlyCaseClass and nothing else"`
+  safeStr"This is safer, guranteed and its all compile time, but pass $onlyString, and $onlyCaseClass and nothing else"`
   
 ```  
 
-`safeString` returns a `SafeString` which your logger interfaces (an example below) can then accept !
+`safeStr` returns a `SafeString` which your logger interfaces (an example below) can then accept !
 
 ```scala
 trait Loggers[F[_], E] {
@@ -47,17 +47,17 @@ b: String = xyz
 scala> val c: Int = 1
 c: Int = 1
 
-scala> // safeString interpolation
+scala> // safeStr interpolation
 
-scala> safeString"The scala string interpol can be a bit dangerous with your secrets. ${a}, ${b}, ${c}"
-<console>:24: error: The provided type isn't a string nor it's a case class, or you might have tried a `toString` on something while using `safeString`
-       safeString"The scala string interpol can be a bit dangerous with your secrets. ${a}, ${b}, ${c}"
+scala> safeStr"The scala string interpol can be a bit dangerous with your secrets. ${a}, ${b}, ${c}"
+<console>:24: error: The provided type isn't a string nor it's a case class, or you might have tried a `toString` on something while using `safeStr`
+       safeStr"The scala string interpol can be a bit dangerous with your secrets. ${a}, ${b}, ${c}"
                                                                                                     ^
 
 scala> val cString: String = c.toString
 cString: String = 1
 
-scala> safeString"The scala string interpol can be a bit dangerous with your secrets. ${a}, ${b}, ${cString}"
+scala> safeStr"The scala string interpol can be a bit dangerous with your secrets. ${a}, ${b}, ${cString}"
 res2: com.thaj.safe.string.interpolator.SafeString = SafeString(The scala string interpol can be a bit dangerous with your secrets. ghi, xyz, 1)
 
 ```
@@ -75,7 +75,7 @@ dummy: Dummy = Dummy(Afsal,1)
 scala> val a: String = "realstring"
 a: String = realstring
 
-scala> safeString"This is safer ! ${a} : ${dummy}"
+scala> safeStr"This is safer ! ${a} : ${dummy}"
 res3: com.thaj.safe.string.interpolator.SafeString = SafeString(This is safer ! realstring : { age: 1, name: Afsal })
 
 ```
@@ -85,9 +85,9 @@ res3: com.thaj.safe.string.interpolator.SafeString = SafeString(This is safer ! 
 
 ```scala
 
-scala> safeString"I am going to call a toString on a case class to satisfy compiler ! ${a} : ${dummy.toString}"
-<console>:23: error: The provided type isn't a string nor it's a case class, or you might have tried a `toString` on something while using `safeString`
-       safeString"I am going to call a toString on a case class to satisfy compiler ! ${a} : ${dummy.toString}"
+scala> safeStr"I am going to call a toString on a case class to satisfy compiler ! ${a} : ${dummy.toString}"
+<console>:23: error: The provided type isn't a string nor it's a case class, or you might have tried a `toString` on something while using `safeStr`
+       safeStr"I am going to call a toString on a case class to satisfy compiler ! ${a} : ${dummy.toString}"
                                                  ^
 
 ```
@@ -104,7 +104,7 @@ import com.thaj.safe.string.interpolator.Secret
 scala> val conn = DbConnection("posgr", Secret("this will be hidden"))
 conn: DbConnection = DbConnection(posgr,Secret(this will be hidden))
 
-scala> safeString"the db conn is $conn"
+scala> safeStr"the db conn is $conn"
 res0: com.thaj.safe.string.interpolator.SafeString = SafeString(the db conn is { password: *******************, name: posgr })
 
 ```
@@ -121,7 +121,7 @@ implicit val safeMySec: Safe[MySecret] = _ => "****"
 val conn = DbConnection("posgr", MySecret("this will be hidden"))
 
 
-scala> safeString"the db is $conn"
+scala> safeStr"the db is $conn"
 res1: com.thaj.safe.string.interpolator.SafeString = SafeString(the db is { password: ****, name: posgr })
 
 ```
