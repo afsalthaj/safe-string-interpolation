@@ -19,7 +19,15 @@ val stringg: SafeString =
   
 ```  
 
-`safeString` returns a `SafeString` which your logger interfaces (log.info(safeString)) can then accept !
+`safeString` returns a `SafeString` which your logger interfaces (an example below) can then accept !
+
+```scala
+trait Loggers[F[_], E] {
+  def info: SafeString => F[Unit]
+  def error: SafeString => F[Unit]
+  def debug: SafeString => F[Unit]
+
+```
 
 **Everything here is compile time. !**
 
