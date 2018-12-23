@@ -9,16 +9,17 @@
 * One simplification we did so far is to have automatic show instances (may be using shapeless)  for your case classes and reduced the compile time speed. Hmm... Not anymore !
 
 Just use 
-import SafeString._
 
 ```scala
+
+import SafeString._
 
 val stringg: SafeString = 
   safeString"This is safer, guranteed and its all compile time, but pass $onyString, and $onlyCaseClass and nothing else"`
   
 ```  
 
-And you know this, `safeString` returns a `SafeString` which your finally tagless logger interfaces (log.info(safeString)) can accept and let the whole application deals with something nicer for logging!. 
+`safeString` returns a `SafeString` which your logger interfaces (log.info(safeString)) can then accept !
 
 **Everything here is compile time. !**
 
