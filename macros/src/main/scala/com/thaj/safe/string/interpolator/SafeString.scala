@@ -38,8 +38,8 @@ object SafeString {
 
       c.prefix.tree match {
 
-        case Apply(_, List(Apply(_, rawParts))) =>
-          val parts: Seq[String] = rawParts map { case Literal(Constant(const: String)) => const }
+        case Apply(_, List(Apply(_, partz))) =>
+          val parts: Seq[String] = partz map { case Literal(Constant(const: String)) => const }
 
           val res: c.universe.Tree =
             args.toList.foldLeft(q"""StringContext.apply(..${parts})""")({ (acc, t) => {
