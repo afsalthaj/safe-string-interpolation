@@ -3,13 +3,8 @@ package com.thaj.safe.string.interpolator
 import scala.language.experimental.macros
 import scala.reflect.macros.blackbox
 
-final case class Field[T](name: String, value: T) {
-  override def toString: String = s"""$name: $value"""
-}
-
-object Field {
-  def asString[T](list: Set[Field[T]]): String =
-    s"{ ${list.map(t => t.toString).mkString(", ")} }"
+final case class Field[T : Safe](name: String, value: T) {
+  override def toString: String = s"""$name: ${Safe[T].value(value)}"""
 }
 
 final case class SafeString private(string: String) extends AnyVal {
@@ -24,6 +19,10 @@ object SafeString {
 
 
   object Macro {
+    // Not public, just for macros
+    def jsonLike(list: Set[String]) =
+      s"{ ${list.mkString(", ")} }"
+
     def impl(c: blackbox.Context)(args: c.Expr[Any]*): c.Expr[SafeString] = {
       import c.universe.{Name => _, _}
 
@@ -53,11 +52,11 @@ object SafeString {
                   nextElement.tpe.members.collect {
                     case CaseClassFieldAndName(nme, typ) => {
                       // Fix the toString here
-                      q"""com.thaj.safe.string.interpolator.Field(${nme.toString}, $nextElement.$nme.toString)"""
+                      q"""com.thaj.safe.string.interpolator.Field(${nme.toString}, $nextElement.$nme)"""
                     }
                   }.toSet
 
-                val field = q"""com.thaj.safe.string.interpolator.Field.asString($r)"""
+                val field = q"""com.thaj.safe.string.interpolator.SafeString.Macro.jsonLike($r.map(_.toString))"""
 
                 acc match {
                   case q"""StringContext.apply(..$raw).s(..$previousElements)""" => q"""StringContext.apply(..$raw).s(($previousElements :+ ..${field}) :_*)"""

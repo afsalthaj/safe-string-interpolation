@@ -31,11 +31,9 @@ trait Loggers[F[_], E] {
 
 **Everything here is compile time. !**
 
-## Soon to be added 
+## Secrets
 
-Secret annotations for domain objects !!
-
-(obviously the most important, but it is easy now)
+Easy. Just wrap your secret with `Secret.apply`. More examples to follow
 
 ## Simple Example
 ```scala
@@ -94,5 +92,38 @@ scala> safeString"I am going to call a toString on a case class to satisfy compi
 
 ```
 
+## What if there is a secret
+
+```
+scala> import com.thaj.safe.string.interpolator.SafeString._
+import com.thaj.safe.string.interpolator.SafeString._
+
+scala> import com.thaj.safe.string.interpolator.Secret
+import com.thaj.safe.string.interpolator.Secret
+
+scala> val conn = DbConnection("posgr", Secret("this will be hidden"))
+conn: DbConnection = DbConnection(posgr,Secret(this will be hidden))
+
+scala> safeString"the db conn is $conn"
+res0: com.thaj.safe.string.interpolator.SafeString = SafeString(the db conn is { password: *******************, name: posgr })
+
+```
+
+## What if you have your own Secret ?
+
+If you hate to use interpolation.Secret data type and need your own, then define `Safe` instance for it.
+
+```
+case class MySecret(value: String) extends AnyVal
+
+implicit val safeMySec: Safe[MySecret] = _ => "****"
+
+val conn = DbConnection("posgr", MySecret("this will be hidden"))
+
+
+scala> safeString"the db is $conn"
+res1: com.thaj.safe.string.interpolator.SafeString = SafeString(the db is { password: ****, name: posgr })
+
+```
 
 
