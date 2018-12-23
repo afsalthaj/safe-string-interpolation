@@ -56,7 +56,7 @@ object SafeString {
                     q"""com.thaj.safe.string.interpolator.Field(${nme.toString}, $nextElement.$nme.toString)"""
                   }
                 }.toSet
-                
+
                 val field = q"""com.thaj.safe.string.interpolator.Field.asString($r)"""
 
                 acc match {
