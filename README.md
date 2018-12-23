@@ -77,7 +77,7 @@ res3: com.thaj.safe.string.interpolator.SafeString = SafeString(This is safer ! 
 ```
 
 
-## Ah Dont be a bad Boy!
+## Can't Cheat!
 
 ```scala
 
