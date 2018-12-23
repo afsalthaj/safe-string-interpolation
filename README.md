@@ -88,7 +88,7 @@ scala> safeStr"I am going to call a toString on a case class to satisfy compiler
 
 ```
 
-## What if there is a secret ?
+## How about secrets ?
 
 ```scala
 scala> import com.thaj.safe.string.interpolator.SafeString._
@@ -105,7 +105,7 @@ res0: com.thaj.safe.string.interpolator.SafeString = SafeString(the db conn is {
 
 ```
 
-## What if you have your own Secret ?
+## Your own secret ?
 
 If you don't want to use `interpolation.Secret` data type and need to use your own, then define `Safe` instance for it.
 
