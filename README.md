@@ -111,7 +111,7 @@ res0: com.thaj.safe.string.interpolator.SafeString = SafeString(the db conn is {
 
 ## What if you have your own Secret ?
 
-If you hate to use interpolation.Secret data type and need your own, then define `Safe` instance for it.
+If you don't want to use `interpolation.Secret` data type and need to use your own, then define `Safe` instance for it.
 
 ```scala
 case class MySecret(value: String) extends AnyVal
