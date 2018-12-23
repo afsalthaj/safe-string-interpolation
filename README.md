@@ -94,7 +94,7 @@ scala> safeString"I am going to call a toString on a case class to satisfy compi
 
 ## What if there is a secret
 
-```
+```scala
 scala> import com.thaj.safe.string.interpolator.SafeString._
 import com.thaj.safe.string.interpolator.SafeString._
 
@@ -113,7 +113,7 @@ res0: com.thaj.safe.string.interpolator.SafeString = SafeString(the db conn is {
 
 If you hate to use interpolation.Secret data type and need your own, then define `Safe` instance for it.
 
-```
+```scala
 case class MySecret(value: String) extends AnyVal
 
 implicit val safeMySec: Safe[MySecret] = _ => "****"
