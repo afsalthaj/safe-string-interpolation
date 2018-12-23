@@ -35,7 +35,7 @@ trait Loggers[F[_], E] {
 
 Easy. Just wrap your any secret field anywhere with `Secret.apply`. More examples to follow
 
-## Simple Example
+## Simple Example (just to give an intro )
 ```scala
 
 scala> val a: String = "ghi"
