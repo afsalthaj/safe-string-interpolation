@@ -54,7 +54,7 @@ scala> safeStr"The scala string interpol can be a bit dangerous with your secret
        safeStr"The scala string interpol can be a bit dangerous with your secrets. ${a}, ${b}, ${c}"
                                                                                                     ^
 scala> safeStr"The scala string interpol can be a bit dangerous with your secrets. ${a}, ${b}"
-res2: com.thaj.safe.string.interpolator.SafeString = SafeString(The scala string interpol can be a bit dangerous with your secrets. ghi, xyz, 1)
+res2: com.thaj.safe.string.interpolator.SafeString = SafeString(The scala string interpol can be a bit dangerous with your secrets. ghi, xyz)
 
 ```
 
