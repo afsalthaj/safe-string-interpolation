@@ -88,7 +88,7 @@ scala> safeStr"I am going to call a toString on a case class to satisfy compiler
 
 ```
 
-## What if there is a secret
+## What if there is a secret ?
 
 ```scala
 scala> import com.thaj.safe.string.interpolator.SafeString._
