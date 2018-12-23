@@ -6,19 +6,18 @@ your logs, exposed your secrets, and what not! I know you hate it.
 We may also forget stringifying domain objects when using scala string interpolations.
 But we also hate manually creating them !
 
-A few us also rely `scalaz.Show/cats.Show` instances of companion objects of your case classes that contributes to making functional scala code non-ubiquitous in nature.
+A few us also rely on `scalaz.Show/cats.Show` instances of companion objects of your case classes that contributes to making functional scala code non-ubiquitous in nature.
 
-One simolification we did so far or to have automatic show instances (may be using shapeless)  for your case classes. 
-Ah, hmm ! Not anymore. This is one step ahead !
+One simplification we did so far is to have automatic show instances (may be using shapeless)  for your case classes. 
+Hmm ! Not anymore, needn't kill your compiler. This is one step ahead !
 
 Just use 
 import SafeString._
 
 val stringg: SafeString = 
-  `safeString"This is safer, guranteed and all compile time and pass $onyString, $onlyCaseClass and nothing else"` !
+  `safeString"This is safer, guranteed and its all compile time, but pass $onyString, and $onlyCaseClass and nothing else"` !
 
-And ofcourse, you guessed it right. 
-`safeString` returns a `SafeString` which your finally tagless logger interfaces (log.info(safeString)) can accept.
+And you know this, `safeString` returns a `SafeString` which your finally tagless logger interfaces (log.info(safeString)) can accept and let the whole application deals with something nicer for logging!.
 
 
 ### Soon to be added
