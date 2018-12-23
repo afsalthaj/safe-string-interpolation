@@ -12,11 +12,12 @@ object Field {
     s"{ ${list.map(t => t.toString).mkString(", ")} }"
 }
 
-final case class SafeString private (string: String) extends AnyVal {
+final case class SafeString private(string: String) extends AnyVal {
   def +(that: SafeString) = SafeString(this.string ++ that.string)
 }
 
 object SafeString {
+
   implicit class SafeStringContext(val sc: StringContext) {
     def safeString(args: Any*): SafeString = macro Macro.impl
   }
@@ -24,7 +25,7 @@ object SafeString {
 
   object Macro {
     def impl(c: blackbox.Context)(args: c.Expr[Any]*): c.Expr[SafeString] = {
-      import c.universe.{ Name => _, _ }
+      import c.universe.{Name => _, _}
 
       object CaseClassFieldAndName {
         def unapply(sym: TermSymbol): Option[(TermName, Type)] = {
@@ -41,8 +42,7 @@ object SafeString {
           val parts: Seq[String] = rawParts map { case Literal(Constant(const: String)) => const }
 
           val res: c.universe.Tree =
-            args.toList.foldLeft(q"""StringContext.apply(..${parts})""")({ (acc, t) =>
-            {
+            args.toList.foldLeft(q"""StringContext.apply(..${parts})""")({ (acc, t) => {
 
               val nextElement = t.tree
               val tag = c.WeakTypeTag(nextElement.tpe)
@@ -51,11 +51,11 @@ object SafeString {
               if (tag.tpe != typeOf[String] && symbol.isClass && symbol.asClass.isCaseClass) {
                 val r: Set[c.universe.Tree] =
                   nextElement.tpe.members.collect {
-                  case CaseClassFieldAndName(nme, typ) => {
-                    // Fix the toString here
-                    q"""com.thaj.safe.string.interpolator.Field(${nme.toString}, $nextElement.$nme.toString)"""
-                  }
-                }.toSet
+                    case CaseClassFieldAndName(nme, typ) => {
+                      // Fix the toString here
+                      q"""com.thaj.safe.string.interpolator.Field(${nme.toString}, $nextElement.$nme.toString)"""
+                    }
+                  }.toSet
 
                 val field = q"""com.thaj.safe.string.interpolator.Field.asString($r)"""
 
@@ -65,7 +65,7 @@ object SafeString {
                 }
               }
 
-              else if (tag.tpe == typeOf[String]){
+              else if (tag.tpe == typeOf[String]) {
                 acc match {
                   case q"""StringContext.apply(..$raw).s(..$previousElements)""" => q"""StringContext.apply(..$raw).s(($previousElements :+ $nextElement) :_*)"""
                   case _ => q"""${acc}.s($nextElement)"""
@@ -73,7 +73,8 @@ object SafeString {
               } else {
                 c.abort(t.tree.pos, "The provided type isn't a string nor it's a case class, or you might have tried a `toString` on something while using `safeString`")
               }
-            }})
+            }
+            })
 
           c.Expr(q"""com.thaj.safe.string.interpolator.SafeString($res)""")
 
@@ -83,4 +84,5 @@ object SafeString {
       }
     }
   }
+
 }
