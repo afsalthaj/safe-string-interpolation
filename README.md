@@ -115,6 +115,9 @@ An only issue with this tight approach to being safe is that sometimes you may n
 
 ## How about secrets ?
 
+As mentioned before, just wrap the secret with Secret.apply. 
+
+
 ```scala
 scala> import com.thaj.safe.string.interpolator.SafeString._
 import com.thaj.safe.string.interpolator.SafeString._
