@@ -33,7 +33,7 @@ trait Loggers[F[_], E] {
 
 ## Secrets
 
-Easy. Just wrap your secret with `Secret.apply`. More examples to follow
+Easy. Just wrap your any secret field anywhere with `Secret.apply`. More examples to follow
 
 ## Simple Example
 ```scala
