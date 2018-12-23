@@ -1,15 +1,15 @@
 # safe-string-interpolation
 
-The string interpolation and being able to pass anything on to it might have messed up 
+Being able to pass anything on to scala string interpolations might have messed up 
 your logs, exposed your secrets, and what not! I know you hate it.
 
-And I know you are done with forgetting stringifying domain objects when using scala string interpolations.
-At the same I know you hate manually creating its string/json representations.
+We may also forget stringifying domain objects when using scala string interpolations.
+But we also hate manually creating them !
 
-A few us also rely `scalaz.Show/cats.Show` instances of companion objects of your case classes that contributes to the code that kills the powerful functional scala code non-ubiquitous in nature..
-One simolification we did was or to make  shapeless way of creating show instances for your case classes. 
+A few us also rely `scalaz.Show/cats.Show` instances of companion objects of your case classes that contributes to making functional scala code non-ubiquitous in nature.
+
+One simolification we did so far or to have automatic show instances (may be using shapeless)  for your case classes. 
 Ah, hmm ! Not anymore. This is one step ahead !
-
 
 Just use 
 import SafeString._
@@ -18,7 +18,7 @@ val stringg: SafeString =
   `safeString"This is safer, guranteed and all compile time and pass $onyString, $onlyCaseClass and nothing else"` !
 
 And ofcourse, you guessed it right. 
-It `safeString` returns a `SafeString` which your finally tagless logger interfaces can accept, and take a deep breath. Compiler will take care of the rest.
+`safeString` returns a `SafeString` which your finally tagless logger interfaces (log.info(safeString)) can accept.
 
 
 ### Soon to be added
@@ -79,9 +79,6 @@ scala> safeString"I am going to call a toString on a case class to satisfy compi
 <console>:23: error: The provided type isn't a string nor it's a case class, or you might have tried a `toString` on something while using `safeString`
        safeString"I am going to call a toString on a case class to satisfy compiler ! ${a} : ${dummy.toString}"
                                                  ^
-
-scala>
-
 
 ```
 
