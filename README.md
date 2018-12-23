@@ -31,13 +31,13 @@ trait Loggers[F[_], E] {
 
 **Everything here is compile time. !**
 
-### Soon to be added 
+## Soon to be added 
 
 Secret annotations for domain objects !!
 
 (obviously the most important, but it is easy now)
 
-### Simple Example
+## Simple Example
 ```scala
 
 scala> val a: String = "ghi"
@@ -64,7 +64,7 @@ res2: com.thaj.safe.string.interpolator.SafeString = SafeString(The scala string
 
 ```
 
-### Case class Example
+## Case class Example
 
 ```scala
 
@@ -83,7 +83,7 @@ res3: com.thaj.safe.string.interpolator.SafeString = SafeString(This is safer ! 
 ```
 
 
-#### Ah Dont be a bad Boy!
+## Ah Dont be a bad Boy!
 
 ```scala
 
