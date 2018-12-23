@@ -71,7 +71,7 @@ object SafeString {
                   case _ => q"""${acc}.s($nextElement)"""
                 }
               } else {
-                c.abort(t.tree.pos, "The provided type isn't a string nor it's a case class, or you might have tried a `toString` on something while using `ss`")
+                c.abort(t.tree.pos, "The provided type isn't a string nor it's a case class, or you might have tried a `toString` on something while using `safeString`")
               }
             }})
 
