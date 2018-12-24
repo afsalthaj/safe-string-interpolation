@@ -44,8 +44,7 @@ object SafeSpec extends Specification with ScalaCheck {
   private def testSeq = {
     prop { value: List[Long] => {
       Safe[List[Long]].value(value) must_=== value.mkString(",")
-    }
-    }
+    }}
   }
 
   final case class Inductive(name: Secret)

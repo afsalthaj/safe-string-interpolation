@@ -32,7 +32,7 @@ object Safe {
       }
 
     val res =
-      q"""new Safe[$tpe] {
+      q"""new com.thaj.safe.string.interpolator.Safe[$tpe] {
          override def value(a: $tpe): String = "{" + ${str.map{case(x, y) => q""" ${x.toString} + " : " + $y.value(a.$x) """ }}.mkString(", ") + "}"
       }"""
 
