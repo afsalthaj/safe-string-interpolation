@@ -13,7 +13,7 @@ object SafeStringSpec extends Specification with ScalaCheck {
 
   final case class Dummy(name: String, age: Int)
 
-  final case class DummyWithSecret(name: String,  secret: Secret)
+  final case class DummyWithSecret[A](name: String,  secret: Secret[A])
 
   private def test = prop { (a: String, b: String, c: Int, d: Int) => {
     val res: String = (c + d).toString
@@ -25,6 +25,6 @@ object SafeStringSpec extends Specification with ScalaCheck {
   private def testSecrets = prop { (a: String, b: String) => {
     val dummy = DummyWithSecret(a, Secret(b))
     safeStr"the safe string with password, ${a}, $dummy".string must_===
-      s"the safe string with password, $a, { secret: ${List.fill(b.toString.length)("*").mkString}, name: ${dummy.name} }"
+      s"the safe string with password, $a, { secret: ${"*" * 10}, name: ${dummy.name} }"
   }}
 }
