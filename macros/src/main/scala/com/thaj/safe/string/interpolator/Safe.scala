@@ -13,7 +13,7 @@ trait Safe[A] {
 object Safe {
   def apply[T](implicit ev: Safe[T]): Safe[T] = ev
 
-  implicit def materializeMappable[T]: Safe[T] = macro materializeSafe[T]
+  implicit def materializeSafee[T]: Safe[T] = macro materializeSafe[T]
 
   def materializeSafe[T: c.WeakTypeTag](c: blackbox.Context): c.Expr[Safe[T]] = {
     import c.universe._
