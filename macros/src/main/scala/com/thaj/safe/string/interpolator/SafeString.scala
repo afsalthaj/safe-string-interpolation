@@ -32,7 +32,7 @@ object SafeString {
       object CaseClassFieldAndName {
         def unapply(sym: TermSymbol): Option[(TermName, Type)] = {
           if (sym.isCaseAccessor && sym.isVal)
-            Some((newTermName(sym.name.toString.trim), sym.typeSignature))
+            Some((TermName(sym.name.toString.trim), sym.typeSignature))
           else
             None
         }
