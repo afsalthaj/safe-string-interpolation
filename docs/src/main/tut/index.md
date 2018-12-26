@@ -24,23 +24,18 @@ Hmmm... Not anymore !
 
 # Solution
 
-
-```scala
-
-import com.thaj.safe.string.interpolator.SafeString._
-
-val stringg: SafeString = 
-  safeStr"This is safer, guranteed and its all compile time, but pass $onlyString, and $onlyCaseClass and nothing else"
-  
-``` 
-
 `safeStr""` is just like `s""` in scala, but it is type safe and _allows only_ 
 
 * **strings** 
 * **case classes** which will be converted to json-like string by inspecting all fields, be it deeply nested or not, at compile time, 
 * and provides consistent way to **hide secrets**.
  
+Checkout simple [examples](https://afsalthaj.github.io/safe-string-interpolation/examples.html), [type safe pretty print](https://afsalthaj.github.io/safe-string-interpolation/pretty_print.html) and [secret management]()https://afsalthaj.github.io/safe-string-interpolation/secrets.html) to get started [] !
+
+# Add this in your logs !
+
 `safeStr` returns a `SafeString` which your logger interfaces (an example below) can then accept !
+
 
 ```scala
 trait Loggers[F[_], E] {
@@ -51,8 +46,6 @@ trait Loggers[F[_], E] {
 ```
 
 **Everything here is compile time. !** 
-
-Check out more details in examples, pretty print and managing secrets.
 
 
 ----------------------------------------
