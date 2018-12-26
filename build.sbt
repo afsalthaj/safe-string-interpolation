@@ -17,7 +17,6 @@ lazy val docSettings = Seq(
   micrositeGithubOwner := "afsalthaj",
   micrositeGithubRepo := "safe-string-interpolation",
   micrositeGitterChannelUrl := "safe-string-interpolation/community",
-  micrositeDocumentationUrl := "/safe-string-interpolation/docs",
   micrositePushSiteWith := GHPagesPlugin,
     micrositePalette := Map(
     "brand-primary"   -> "#5B5988",
