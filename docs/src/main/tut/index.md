@@ -26,8 +26,8 @@ Hmmm... Not anymore !
 
 `safeStr""` is just like `s""` in scala, but it is type safe and _allows only_ 
 
-* **strings** 
-* **case classes** which will be converted to json-like string by inspecting all fields, be it deeply nested or not, at compile time, 
+* **strings**.
+* **case classes** which will be converted to json-like string by inspecting all fields, be it deeply nested or not, at compile time.
 * and provides consistent way to **hide secrets**.
  
 Checkout simple [examples](https://afsalthaj.github.io/safe-string-interpolation/examples.html), [type safe pretty print](https://afsalthaj.github.io/safe-string-interpolation/pretty_print.html) and [secret management]()https://afsalthaj.github.io/safe-string-interpolation/secrets.html) to get started [] !
