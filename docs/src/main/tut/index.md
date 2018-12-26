@@ -30,7 +30,11 @@ Hmmm... Not anymore !
 * **case classes** which will be converted to json-like string by inspecting all fields, be it deeply nested or not, at compile time.
 * and provides consistent way to **hide secrets**.
  
-Checkout simple [examples](https://afsalthaj.github.io/safe-string-interpolation/examples.html), [type safe pretty print](https://afsalthaj.github.io/safe-string-interpolation/pretty_print.html) and [secret management]()https://afsalthaj.github.io/safe-string-interpolation/secrets.html) to get started [] !
+Checkout the following:
+
+* [simple examples](https://afsalthaj.github.io/safe-string-interpolation/examples.html)
+* [type safe pretty print of case classes](https://afsalthaj.github.io/safe-string-interpolation/pretty_print.html) and 
+* [secret / password logging](https://afsalthaj.github.io/safe-string-interpolation/secrets.html) to get started !
 
 # Add this in your logs !
 
