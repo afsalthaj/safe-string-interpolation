@@ -11,12 +11,14 @@ lazy val docSettings = Seq(
   micrositeName := "Typesafe Interpolation",
   micrositeDescription := "Typesafe Interpolation",
   micrositeHighlightTheme := "atom-one-light",
+  micrositeGithubRepo := "safe-string-interpolation",
   micrositeHomepage := "https://afsalthaj.github.io/safe-string-interpolation",
   micrositeBaseUrl := "/safe-string-interpolation",
   micrositeGithubOwner := "afsalthaj",
   micrositeGithubRepo := "safe-string-interpolation",
   micrositeGitterChannelUrl := "safe-string-interpolation/community",
   micrositeDocumentationUrl := "/safe-string-interpolation/docs",
+  micrositePushSiteWith := GHPagesPlugin,
     micrositePalette := Map(
     "brand-primary"   -> "#5B5988",
     "brand-secondary" -> "#292E53",
@@ -29,7 +31,7 @@ lazy val docSettings = Seq(
   autoAPIMappings := true,
   ghpagesNoJekyll := false,
   fork in tut := true,
-  git.remoteRepo := "https://github.com/afsalthaj/safe-string-interpolation.git",
+  git.remoteRepo := "git@github.com:afsalthaj/safe-string-interpolation.git",
   includeFilter in makeSite := "*.html" | "*.css" | "*.png" | "*.jpg" | "*.gif" | "*.js" | "*.swf" | "*.yml" | "*.md"
 )
 
@@ -46,7 +48,7 @@ micrositeCDNDirectives := CdnDirectives(
 )
 
 
-micrositeGithubOwner := "Afsal Thaj"
+micrositeGithubOwner := "afsalthaj"
 
 lazy val macros = (project in file("macros"))
   .settings(
