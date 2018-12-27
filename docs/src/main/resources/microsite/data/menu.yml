@@ -1,0 +1,13 @@
+options:
+
+- title: Simple Example
+  url: examples.html
+  menu_type: main_menu
+
+- title: Type Safe Pretty Print
+  url: pretty_print.html
+  menu_type: main_menu
+
+- title: Secret / Passwords
+  url: secrets.html
+  menu_type: main_menu

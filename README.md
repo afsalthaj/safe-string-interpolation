@@ -1,3 +1,3 @@
-# safe-string-interpolation
+## Typesafe String Interpolation
 
-https://github.com/afsalthaj/safe-string-interpolation/wiki
+Checkout the project [website](https://afsalthaj.github.io/safe-string-interpolation/) for all information !
