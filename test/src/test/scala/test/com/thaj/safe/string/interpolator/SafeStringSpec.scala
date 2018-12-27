@@ -14,9 +14,9 @@ object SafeStringSpec extends Specification with ScalaCheck {
 
   final case class Dummy(name: String, age: Int)
 
-  final case class DummyWithSecret(name: String,  secret: Secret)
+  final case class DummyWithSecret[A](name: String,  secret: Secret[A])
 
-  final case class NestedDummy(name: String, secret: Secret, dummy: Dummy)
+  final case class NestedDummy[A](name: String, secret: Secret[A], dummy: Dummy)
 
   private def test = prop { (a: String, b: String, c: Int, d: Int) => {
     val res: String = (c + d).toString
@@ -28,13 +28,13 @@ object SafeStringSpec extends Specification with ScalaCheck {
   private def testSecrets = prop { (a: String, b: String) => {
     val dummy = DummyWithSecret(a, Secret(b))
     safeStr"the safe string with password, ${a}, $dummy".string must_===
-      s"the safe string with password, $a, { secret: ${List.fill(b.toString.length)("*").mkString}, name: ${dummy.name} }"
+      s"the safe string with password, $a, { secret: *****, name: ${dummy.name} }"
   }}
 
   private def tesNestedCaseclass = prop { (a: String, b: String, c: Int) => {
     val dummy = Dummy(a, c)
     val nestDummy = NestedDummy(a, Secret(b), dummy)
     safeStr"the safe string with password, ${a}, $nestDummy".string must_===
-      s"the safe string with password, $a, { dummy: {name : $a, age : $c}, secret: ${List.fill(b.toString.length)("*").mkString}, name: ${dummy.name} }"
+      s"the safe string with password, $a, { dummy: {name : $a, age : $c}, secret: *****, name: ${dummy.name} }"
   }}
 }
