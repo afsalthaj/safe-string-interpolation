@@ -4,6 +4,6 @@ package com.thaj.safe.string.interpolator
 final case class Secret[A](value: A) extends AnyVal
 
 object Secret {
-  implicit def secretString[A: Safe]: Safe[Secret[A]] =
+  implicit def secretString[A]: Safe[Secret[A]] =
     _ => "*****"
 }
