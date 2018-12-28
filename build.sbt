@@ -42,7 +42,7 @@ lazy val docSettings = Seq(
   autoAPIMappings := true,
   ghpagesNoJekyll := false,
   fork in tut := true,
-  git.remoteRepo := "git@github.com:afsalthaj/safe-string-interpolation.git",
+  git.remoteRepo := "https://github.com/afsalthaj/safe-string-interpolation.git",
   includeFilter in makeSite := "*.html" | "*.css" | "*.png" | "*.jpg" | "*.gif" | "*.js" | "*.swf" | "*.yml" | "*.md"
 )
 

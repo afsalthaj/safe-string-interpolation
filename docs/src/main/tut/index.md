@@ -54,6 +54,8 @@ safeStr"This is type safe logging works only if it is either a string or a case 
 * **case classes** which will be converted to json-like string by inspecting all fields, be it deeply nested or not, at compile time.
 * and provides consistent way to **hide secrets**.
 
+To understand more on the concepts and usages, please go through:
+
 * [A Simple Example](https://afsalthaj.github.io/safe-string-interpolation/examples.html)
 * [Typesafe Pretty prints](https://afsalthaj.github.io/safe-string-interpolation/pretty_print.html) and 
 * [Logging Secrets / Passwords](https://afsalthaj.github.io/safe-string-interpolation/secrets.html) to get started !
