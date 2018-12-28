@@ -25,20 +25,19 @@ We need more type driven logging, consistent secret management, catching erroneo
 Add this in your build.sbt
 
 ```scala
-resolvers +=
-  "Sonatype OSS releases" at "https://oss.sonatype.org/content/repositories/releases"
-
 libraryDependencies += "io.github.afsalthaj" %% "safe-string" % "1.1.4"
+```
 
+Or, in ammonite;
+
+```scala
+@ import $ivy.`io.github.afsalthaj::safe-string:1.1.4`
+import $ivy.$
 ```
 
 ```scala
 
-@ import $ivy.`io.github.afsalthaj::safe-string:1.1.4`
-import $ivy.$
-
-@ import com.thaj.safe.string.interpolator.SafeString._
-import com.thaj.safe.string.interpolator.SafeString._
+// Ammonite
 
 @ case class X(name: String)
 defined class X
