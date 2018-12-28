@@ -20,10 +20,13 @@ We may also forget stringifying domain objects when using scala string interpola
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"io.github.afsalthaj"</span> <span class="o">%%</span> <span class="s">"safe-string"</span> <span class="o">%</span> <span class="s">"1.1.4"</span>
 </code></pre></div></div>
 
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-<span class="k">@</span> <span class="k">import</span> <span class="nn">$ivy.</span><span class="n">`io.github.afsalthaj::safe-string:1.1.4`</span>
-<span class="k">import</span> <span class="nn">$ivy.$</span>
+<p>Or, in ammonite;</p>
 
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">@</span> <span class="k">import</span> <span class="nn">$ivy.</span><span class="n">`io.github.afsalthaj::safe-string:1.1.4`</span>
+<span class="k">import</span> <span class="nn">$ivy.$</span>
+</code></pre></div></div>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 <span class="k">@</span> <span class="k">import</span> <span class="nn">com.thaj.safe.string.interpolator.SafeString._</span>
 <span class="k">import</span> <span class="nn">com.thaj.safe.string.interpolator.SafeString._</span>
 
