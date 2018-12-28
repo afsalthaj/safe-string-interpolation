@@ -4,10 +4,12 @@ title:  "Home"
 section: "home"
 ---
 
-Being able to pass anything on to scala string interpolations might have messed up  your logs, exposed your secrets, and what not! I know you hate it.
-We may also forget stringifying domain objects when using scala string interpolations, but stringifying it manually is a tedious job. Instead we just do `toString` which sometimes can spew out useless string representations. 
+# Problem
 
-Bad logs:
+Being able to pass anything on to scala string interpolations might have messed up  your logs, exposed your secrets, and what not! I know you hate it.
+We may also forget stringifying domain objects when using scala string interpolations, but stringifying it manually is a tedious job. Instead we just do `toString` which sometimes can spew out object hash, your valuable secrets and in fact many useless messages.
+
+A few terrible logging examples :
 
   ``` 
    INFO: The student logged in: @4f9a2c08 // object.toString
@@ -15,26 +17,47 @@ Bad logs:
    INFO: The student logged in: scala.Map(...)
    INFO: The student logged in: Details("name", "libraryPassword!!")
   ```
-
-Sometimes we rely on `scalaz.Show/cats.Show` instances on companion objects of case classes and then do `s"my domain object is ${domainObject.show}"`, but the creation of `show` instances has never been proved practical in larger applications. 
-
-One simplification we did so far is to have automatic show instances (may be using shapeless), and guessing password-like fields and replacing it with "*****". 
-
-Hmmm... Not anymore !
-
+  
+We need more type driven logging, consistent secret management, catching erroneous `toStrings` at compile time, rather than getting shocked and surprised at runtime.  
+ 
 # Solution
+
+Add this in your build.sbt
+
+```scala
+resolvers +=
+  "Sonatype OSS releases" at "https://oss.sonatype.org/content/repositories/releases"
+
+libraryDependencies += "io.github.afsalthaj" %% "safe-string" % "1.1.4"
+
+```
+
+```scala
+
+import _root_.com.thaj.safe.string.interpolator.SafeString._
+
+case class X(name: String)
+
+val caseClassInstance = X("foo")
+
+val onlyString: String = "bar"
+
+safeStr"This is type safe logging works only if it is either a string or a case class instance $x or $y"
+
+```
+
+# Concept and example usages.
 
 `safeStr""` is just like `s""` in scala, but it is type safe and _allows only_ 
 
 * **strings**.
 * **case classes** which will be converted to json-like string by inspecting all fields, be it deeply nested or not, at compile time.
 * and provides consistent way to **hide secrets**.
- 
-Checkout the following:
 
-* [simple examples](https://afsalthaj.github.io/safe-string-interpolation/examples.html)
-* [type safe pretty print of case classes](https://afsalthaj.github.io/safe-string-interpolation/pretty_print.html) and 
-* [secret / password logging](https://afsalthaj.github.io/safe-string-interpolation/secrets.html) to get started !
+* [A Simple Example](https://afsalthaj.github.io/safe-string-interpolation/examples.html)
+* [Typesafe Pretty prints](https://afsalthaj.github.io/safe-string-interpolation/pretty_print.html) and 
+* [Logging Secrets / Passwords](https://afsalthaj.github.io/safe-string-interpolation/secrets.html) to get started !
+
 
 # Add this in your logs !
 
