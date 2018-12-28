@@ -9,6 +9,9 @@ position: 1
 ## Simple Example
 ```scala
 
+scala> import com.thaj.safe.string.interpolator.SafeString._
+import SafeString._
+
 scala> val a: String = "ghi"
 a: String = ghi
 
