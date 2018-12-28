@@ -34,15 +34,35 @@ libraryDependencies += "io.github.afsalthaj" %% "safe-string" % "1.1.4"
 
 ```scala
 
-import _root_.com.thaj.safe.string.interpolator.SafeString._
+@ import $ivy.`io.github.afsalthaj::safe-string:1.1.4`
+import $ivy.$
 
-case class X(name: String)
+@ import com.thaj.safe.string.interpolator.SafeString._
+import com.thaj.safe.string.interpolator.SafeString._
 
-val caseClassInstance = X("foo")
+@ case class X(name: String)
+defined class X
 
-val onlyString: String = "bar"
+@ val caseClassInstance = X("foo")
+caseClassInstance: X = X("foo")
 
-safeStr"This is type safe logging works only if it is either a string or a case class instance $x or $y"
+@ val onlyString: String = "bar"
+onlyString: String = "bar"
+
+@ safeStr"This is type safe logging works only if it is either a string or a case class instance $caseClassInstance or $onlyString"
+res8: com.thaj.safe.string.interpolator.SafeString = SafeString("This is type safe logging works only if it is either a string or a case class instance { name: foo } or bar")
+
+@ class C
+defined class C
+
+@ val nonCaseClass = new C
+nonCaseClass: C = ammonite.$sess.cmd9$C@4fd92289
+
+@ safeStr"This is type safe logging works only if it is either a string or a case class instance $nonCaseClass or $onlyString"
+cmd11.sc:1: The provided type isn't a string nor it's a case class, or you might have tried a `toString` on non-strings !
+val res11 = safeStr"This is type safe logging works only if it is either a string or a case class instance $nonCaseClass or $onlyString"
+                                                                                                            ^
+Compilation Failed
 
 ```
 
