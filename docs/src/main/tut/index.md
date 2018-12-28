@@ -39,6 +39,9 @@ import $ivy.$
 
 // Ammonite
 
+@ import com.thaj.safe.string.interpolator.SafeString._
+import com.thaj.safe.string.interpolator.SafeString._
+
 @ case class X(name: String)
 defined class X
 
