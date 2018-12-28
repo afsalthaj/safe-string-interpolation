@@ -1,0 +1,97 @@
+<html><head><title>Typesafe Interpolation: Home</title><meta charset="utf-8" /><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="docs" /><meta name="description" content="Typesafe Interpolation" /><meta name="og:image" content="/safe-string-interpolation/img/poster.png" /><meta name="image" property="og:image" content="/safe-string-interpolation/img/poster.png" /><meta name="og:title" content="Typesafe Interpolation: Home" /><meta name="title" property="og:title" content="Typesafe Interpolation: Home" /><meta name="og:site_name" content="Typesafe Interpolation" /><meta name="og:url" content="https://afsalthaj.github.io/safe-string-interpolation" /><meta name="og:type" content="website" /><meta name="og:description" content="Typesafe Interpolation" /><link rel="icon" type="image/png" href="/safe-string-interpolation/img/favicon.png" /><meta name="twitter:title" content="Typesafe Interpolation: Home" /><meta name="twitter:image" content="/safe-string-interpolation/img/poster.png" /><meta name="twitter:description" content="Typesafe Interpolation" /><meta name="twitter:card" content="summary_large_image" /><link rel="icon" type="image/png" sizes="16x16" href="/safe-string-interpolation/img/favicon16x16.png" /><link rel="icon" type="image/png" sizes="24x24" href="/safe-string-interpolation/img/favicon24x24.png" /><link rel="icon" type="image/png" sizes="32x32" href="/safe-string-interpolation/img/favicon32x32.png" /><link rel="icon" type="image/png" sizes="48x48" href="/safe-string-interpolation/img/favicon48x48.png" /><link rel="icon" type="image/png" sizes="57x57" href="/safe-string-interpolation/img/favicon57x57.png" /><link rel="icon" type="image/png" sizes="60x60" href="/safe-string-interpolation/img/favicon60x60.png" /><link rel="icon" type="image/png" sizes="64x64" href="/safe-string-interpolation/img/favicon64x64.png" /><link rel="icon" type="image/png" sizes="70x70" href="/safe-string-interpolation/img/favicon70x70.png" /><link rel="icon" type="image/png" sizes="72x72" href="/safe-string-interpolation/img/favicon72x72.png" /><link rel="icon" type="image/png" sizes="76x76" href="/safe-string-interpolation/img/favicon76x76.png" /><link rel="icon" type="image/png" sizes="96x96" href="/safe-string-interpolation/img/favicon96x96.png" /><link rel="icon" type="image/png" sizes="114x114" href="/safe-string-interpolation/img/favicon114x114.png" /><link rel="icon" type="image/png" sizes="120x120" href="/safe-string-interpolation/img/favicon120x120.png" /><link rel="icon" type="image/png" sizes="128x128" href="/safe-string-interpolation/img/favicon128x128.png" /><link rel="icon" type="image/png" sizes="144x144" href="/safe-string-interpolation/img/favicon144x144.png" /><link rel="icon" type="image/png" sizes="150x150" href="/safe-string-interpolation/img/favicon150x150.png" /><link rel="icon" type="image/png" sizes="152x152" href="/safe-string-interpolation/img/favicon152x152.png" /><link rel="icon" type="image/png" sizes="196x196" href="/safe-string-interpolation/img/favicon196x196.png" /><link rel="icon" type="image/png" sizes="310x310" href="/safe-string-interpolation/img/favicon310x310.png" /><link rel="icon" type="image/png" sizes="310x150" href="/safe-string-interpolation/img/favicon310x150.png" /><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" /><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" /><link rel="stylesheet" href="/safe-string-interpolation/highlight/styles/atom-one-light.css" /><link rel="stylesheet" href="/safe-string-interpolation/css/style.css" /><link rel="stylesheet" href="/safe-string-interpolation/css/palette.css" /><link rel="stylesheet" href="/safe-string-interpolation/css/codemirror.css" /></head><body><header id="site-header"><div class="navbar-wrapper"><div class="container"><div class="row"><div class="col-xs-6"><a href="/safe-string-interpolation/" class="brand"><div class="icon-wrapper"><span>Typesafe Interpolation</span></div></a></div><div class="col-xs-6"><nav class="text-right"><ul class=""><li><a href="https://github.com/afsalthaj/safe-string-interpolation"><i class="fa fa-github"></i><span class="hidden-xs">GitHub</span></a></li></ul></nav></div></div></div></div><div class="jumbotron"><div class="container"><h1 class="text-center">Typesafe Interpolation</h1><h2></h2><p class="text-center"><a href="https://github.com/afsalthaj/safe-string-interpolation" class="btn btn-outline-inverse">View on GitHub</a></p></div></div><div><ul class="horizontalNav">       <li><a class="" href="/safe-string-interpolation/examples.html">Simple Example</a></li>  <li><a class="" href="/safe-string-interpolation/pretty_print.html">Typesafe Pretty Print</a></li>  <li><a class="" href="/safe-string-interpolation/secrets.html">Logging Secrets</a></li> </ul></div></header><main id="site-main"><section class="use"><div class="container"><div id="content"><h1 id="problem">Problem</h1>
+
+<p>Being able to pass anything on to scala string interpolations might have messed up  your logs, exposed your secrets, and what not! I know you hate it.
+We may also forget stringifying domain objects when using scala string interpolations, but stringifying it manually is a tedious job. Instead we just do <code class="highlighter-rouge">toString</code> which sometimes can spew out object hash, your valuable secrets and in fact many useless messages.</p>
+
+<p>A few terrible logging examples :</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   INFO: The student logged in: @4f9a2c08 // object.toString
+   INFO: The student logged in: Details(NameParts("john", "stephen"), "efg", "whoknowswhatiswhat"...) 
+   INFO: The student logged in: scala.Map(...)
+   INFO: The student logged in: Details("name", "libraryPassword!!")
+</code></pre></div></div>
+
+<p>We need more type driven logging, consistent secret management, catching erroneous <code class="highlighter-rouge">toStrings</code> at compile time, rather than getting shocked and surprised at runtime.</p>
+
+<h1 id="solution">Solution</h1>
+
+<p>Add this in your build.sbt</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">resolvers</span> <span class="o">+=</span>
+  <span class="s">"Sonatype OSS releases"</span> <span class="n">at</span> <span class="s">"https://oss.sonatype.org/content/repositories/releases"</span>
+
+<span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"io.github.afsalthaj"</span> <span class="o">%%</span> <span class="s">"safe-string"</span> <span class="o">%</span> <span class="s">"1.1.4"</span>
+
+</code></pre></div></div>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="k">@</span> <span class="k">import</span> <span class="nn">$ivy.</span><span class="n">`io.github.afsalthaj::safe-string:1.1.4`</span>
+<span class="k">import</span> <span class="nn">$ivy.$</span>
+
+<span class="k">@</span> <span class="k">import</span> <span class="nn">com.thaj.safe.string.interpolator.SafeString._</span>
+<span class="k">import</span> <span class="nn">com.thaj.safe.string.interpolator.SafeString._</span>
+
+<span class="k">@</span> <span class="k">case</span> <span class="k">class</span> <span class="nc">X</span><span class="o">(</span><span class="n">name</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span>
+<span class="n">defined</span> <span class="k">class</span> <span class="nc">X</span>
+
+<span class="k">@</span> <span class="k">val</span> <span class="n">caseClassInstance</span> <span class="k">=</span> <span class="n">X</span><span class="o">(</span><span class="s">"foo"</span><span class="o">)</span>
+<span class="n">caseClassInstance</span><span class="k">:</span> <span class="kt">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">(</span><span class="s">"foo"</span><span class="o">)</span>
+
+<span class="k">@</span> <span class="k">val</span> <span class="n">onlyString</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">"bar"</span>
+<span class="n">onlyString</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">"bar"</span>
+
+<span class="k">@</span> <span class="n">safeStr</span><span class="s">"This is type safe logging works only if it is either a string or a case class instance $caseClassInstance or $onlyString"</span>
+<span class="n">res8</span><span class="k">:</span> <span class="kt">com.thaj.safe.string.interpolator.SafeString</span> <span class="o">=</span> <span class="nc">SafeString</span><span class="o">(</span><span class="s">"This is type safe logging works only if it is either a string or a case class instance { name: foo } or bar"</span><span class="o">)</span>
+
+<span class="k">@</span> <span class="k">class</span> <span class="nc">C</span>
+<span class="n">defined</span> <span class="k">class</span> <span class="nc">C</span>
+
+<span class="k">@</span> <span class="k">val</span> <span class="n">nonCaseClass</span> <span class="k">=</span> <span class="k">new</span> <span class="n">C</span>
+<span class="n">nonCaseClass</span><span class="k">:</span> <span class="kt">C</span> <span class="o">=</span> <span class="n">ammonite</span><span class="o">.</span><span class="nc">$sess</span><span class="o">.</span><span class="n">cmd9$C</span><span class="k">@</span><span class="mf">4f</span><span class="n">d92289</span>
+
+<span class="k">@</span> <span class="n">safeStr</span><span class="s">"This is type safe logging works only if it is either a string or a case class instance $nonCaseClass or $onlyString"</span>
+<span class="n">cmd11</span><span class="o">.</span><span class="n">sc</span><span class="k">:</span><span class="err">1</span><span class="kt">:</span> <span class="kt">The</span> <span class="kt">provided</span> <span class="k">type</span> <span class="kt">isn't</span> <span class="kt">a</span> <span class="kt">string</span> <span class="kt">nor</span> <span class="kt">it's</span> <span class="kt">a</span> <span class="kt">case</span> <span class="kt">class</span><span class="o">,</span> <span class="n">or</span> <span class="n">you</span> <span class="n">might</span> <span class="n">have</span> <span class="n">tried</span> <span class="n">a</span> <span class="n">`toString`</span> <span class="n">on</span> <span class="n">non</span><span class="o">-</span><span class="n">strings</span> <span class="o">!</span>
+<span class="k">val</span> <span class="n">res11</span> <span class="k">=</span> <span class="n">safeStr</span><span class="s">"This is type safe logging works only if it is either a string or a case class instance $nonCaseClass or $onlyString"</span>
+                                                                                                            <span class="o">^</span>
+<span class="nc">Compilation</span> <span class="nc">Failed</span>
+
+</code></pre></div></div>
+
+<h1 id="concept-and-example-usages">Concept and example usages.</h1>
+
+<p><code class="highlighter-rouge">safeStr""</code> is just like <code class="highlighter-rouge">s""</code> in scala, but it is type safe and <em>allows only</em></p>
+
+<ul>
+  <li><strong>strings</strong>.</li>
+  <li><strong>case classes</strong> which will be converted to json-like string by inspecting all fields, be it deeply nested or not, at compile time.</li>
+  <li>and provides consistent way to <strong>hide secrets</strong>.</li>
+</ul>
+
+<p>To understand more on the concepts and usages, please go through:</p>
+
+<ul>
+  <li><a href="https://afsalthaj.github.io/safe-string-interpolation/examples.html">A Simple Example</a></li>
+  <li><a href="https://afsalthaj.github.io/safe-string-interpolation/pretty_print.html">Typesafe Pretty prints</a> and</li>
+  <li><a href="https://afsalthaj.github.io/safe-string-interpolation/secrets.html">Logging Secrets / Passwords</a> to get started !</li>
+</ul>
+
+<h1 id="add-this-in-your-logs-">Add this in your logs !</h1>
+
+<p><code class="highlighter-rouge">safeStr</code> returns a <code class="highlighter-rouge">SafeString</code> which your logger interfaces (an example below) can then accept !</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">Loggers</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span>, <span class="kt">E</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">info</span><span class="k">:</span> <span class="kt">SafeString</span> <span class="o">=&gt;</span> <span class="n">F</span><span class="o">[</span><span class="kt">Unit</span><span class="o">]</span>
+  <span class="k">def</span> <span class="n">error</span><span class="k">:</span> <span class="kt">SafeString</span> <span class="o">=&gt;</span> <span class="n">F</span><span class="o">[</span><span class="kt">Unit</span><span class="o">]</span>
+  <span class="k">def</span> <span class="n">debug</span><span class="k">:</span> <span class="kt">SafeString</span> <span class="o">=&gt;</span> <span class="n">F</span><span class="o">[</span><span class="kt">Unit</span><span class="o">]</span>
+
+</code></pre></div></div>
+
+<p><strong>Everything here is compile time. !</strong></p>
+
+<hr />
+
+<p>Our application isn’t resilient if it lacks human-readable logs and doesn’t manage secret variables consistently. Moreover, it said to be maintainable only when it is type driven and possess more compile time behaviour, in this context, be able to fail a build/compile when someone does a <code class="highlighter-rouge">toString</code> in places where you shouldn’t. Hope it helps !</p>
+</div></div></section><section class="technologies"><div class="container"><div class="row"></div></div></section></main><footer id="site-footer"><div class="container"><div class="row"><div class="col-xs-6"><p>Typesafe Interpolation is designed and developed by <a href="" target="_blank">docs</a></p></div><div class="col-xs-6"><p class="text-right"><a href="https://github.com/afsalthaj/safe-string-interpolation"><span class="fa fa-github"></span>View on GitHub</a></p></div></div><div class="row"><div class="col-xs-6"><p>Website built with <a href="https://47deg.github.io/sbt-microsites/" target="_blank">Sbt-microsites</a> - © 2016 <a href="https://www.47deg.com/" target="_blank">47 Degrees</a></p></div></div></div></footer><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script><script src="/safe-string-interpolation/highlight/highlight.pack.js"></script><script>hljs.configure({languages:['scala','java','bash']});
+hljs.initHighlighting();
+              </script><script>((window.gitter = {}).chat = {}).options = {
+room: 'safe-string-interpolation/community'};</script><script src="https://sidecar.gitter.im/dist/sidecar.v1.js"></script></body></html>
