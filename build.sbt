@@ -97,7 +97,13 @@ lazy val rootBuildSettings = Seq(
   pgpSecretRing := file("./travis/local.secring.asc"),
   pgpPublicRing := file("./travis/local.pubring.asc"),
   pgpPassphrase := sys.env.get("PGP_PASS").map(_.toArray),
-    organization := "io.github.afsalthaj",
+  credentials += Credentials(
+    "Sonatype Nexus Repository Manager",
+    "oss.sonatype.org",
+    sys.env.getOrElse("SONATYPE_USER", ""),
+    sys.env.getOrElse("SONATYPE_PASS", "")
+  ),
+  organization := "io.github.afsalthaj",
   organizationName := "safe-string-interpolation",
   organizationHomepage := Some(url("https://afsalthaj.github.io/safe-string-interpolation/")),
   scmInfo := Some(
