@@ -15,14 +15,16 @@ We may also forget stringifying domain objects when using scala string interpola
 
 <h1 id="solution">Solution</h1>
 
+<p>Easy ! Use <code class="highlighter-rouge">safeStr"your log"</code> instead of <code class="highlighter-rouge">s"your log"</code> !</p>
+
 <p>Add this in your build.sbt</p>
 
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"io.github.afsalthaj"</span> <span class="o">%%</span> <span class="s">"safe-string"</span> <span class="o">%</span> <span class="s">"1.1.4"</span>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"io.github.afsalthaj"</span> <span class="o">%%</span> <span class="s">"safe-string"</span> <span class="o">%</span> <span class="s">"1.2.0"</span>
 </code></pre></div></div>
 
 <p>Or, in ammonite;</p>
 
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">@</span> <span class="k">import</span> <span class="nn">$ivy.</span><span class="n">`io.github.afsalthaj::safe-string:1.1.4`</span>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">@</span> <span class="k">import</span> <span class="nn">$ivy.</span><span class="n">`io.github.afsalthaj::safe-string:1.2.0`</span>
 <span class="k">import</span> <span class="nn">$ivy.$</span>
 </code></pre></div></div>
 
@@ -70,11 +72,11 @@ We may also forget stringifying domain objects when using scala string interpola
 
 <p>To understand more on the concepts and usages, please go through:</p>
 
-<ul>
-  <li><a href="https://afsalthaj.github.io/safe-string-interpolation/examples.html">A Simple Example</a></li>
-  <li><a href="https://afsalthaj.github.io/safe-string-interpolation/pretty_print.html">Typesafe Pretty prints</a> and</li>
-  <li><a href="https://afsalthaj.github.io/safe-string-interpolation/secrets.html">Logging Secrets / Passwords</a> to get started !</li>
-</ul>
+<p>1)  <a href="https://afsalthaj.github.io/safe-string-interpolation/examples.html">A Simple Example</a>
+2) <a href="https://afsalthaj.github.io/safe-string-interpolation/pretty_print.html">Typesafe Pretty prints</a> and 
+3) <a href="https://afsalthaj.github.io/safe-string-interpolation/secrets.html">Logging Secrets / Passwords</a></p>
+
+<p>to get started !</p>
 
 <h1 id="add-this-in-your-logs-">Add this in your logs !</h1>
 
