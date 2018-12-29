@@ -9,7 +9,9 @@ lazy val root = (project in file("."))
       val nexus = "https://oss.sonatype.org/"
       if (isSnapshot.value) Some("snapshots" at nexus + "content/repositories/snapshots")
       else Some("releases" at nexus + "service/local/staging/deploy/maven2")
-    }
+    },
+    pgpSecretRing := file("./travis/local.pubring.kbx"),
+    pgpPublicRing := file("./travis/local.pubring.kbx")
 )
 
 lazy val docs = project
@@ -73,7 +75,9 @@ lazy val macros = (project in file("macros"))
       val nexus = "https://oss.sonatype.org/"
       if (isSnapshot.value) Some("snapshots" at nexus + "content/repositories/snapshots")
       else Some("releases" at nexus + "service/local/staging/deploy/maven2")
-    }
+    },
+    pgpSecretRing := file("./travis/local.pubring.kbx"),
+    pgpPublicRing := file("./travis/local.pubring.kbx")
   )
 
 lazy val test = (project in file("test"))
@@ -88,7 +92,9 @@ lazy val test = (project in file("test"))
       val nexus = "https://oss.sonatype.org/"
       if (isSnapshot.value) Some("snapshots" at nexus + "content/repositories/snapshots")
       else Some("releases" at nexus + "service/local/staging/deploy/maven2")
-    }
+    },
+    pgpSecretRing := file("./travis/local.pubring.kbx"),
+    pgpPublicRing := file("./travis/local.pubring.kbx")
   ).dependsOn(macros)
 
 enablePlugins(MicrositesPlugin)
