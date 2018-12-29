@@ -22,7 +22,7 @@ We need more type driven logging, consistent secret management, catching erroneo
  
 # Solution
 
-Easy ! Use `safeStr"your log"` instead of `s"your log"` !
+Easy ! Use `safeStr"your log $a $b, $c"` instead of `s"your log $a $b, $c"` !
 
 Add this in your build.sbt
 
