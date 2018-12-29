@@ -25,13 +25,13 @@ We need more type driven logging, consistent secret management, catching erroneo
 Add this in your build.sbt
 
 ```scala
-libraryDependencies += "io.github.afsalthaj" %% "safe-string" % "1.1.4"
+libraryDependencies += "io.github.afsalthaj" %% "safe-string" % "1.2.0"
 ```
 
 Or, in ammonite;
 
 ```scala
-@ import $ivy.`io.github.afsalthaj::safe-string:1.1.4`
+@ import $ivy.`io.github.afsalthaj::safe-string:1.2.0`
 import $ivy.$
 ```
 
