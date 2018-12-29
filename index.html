@@ -15,7 +15,7 @@ We may also forget stringifying domain objects when using scala string interpola
 
 <h1 id="solution">Solution</h1>
 
-<p>Easy ! Use <code class="highlighter-rouge">safeStr"your log"</code> instead of <code class="highlighter-rouge">s"your log"</code> !</p>
+<p>Easy ! Use <code class="highlighter-rouge">safeStr"your log $a $b, $c"</code> instead of <code class="highlighter-rouge">s"your log $a $b, $c"</code> !</p>
 
 <p>Add this in your build.sbt</p>
 
