@@ -10,8 +10,8 @@ lazy val root = (project in file("."))
       if (isSnapshot.value) Some("snapshots" at nexus + "content/repositories/snapshots")
       else Some("releases" at nexus + "service/local/staging/deploy/maven2")
     },
-    pgpSecretRing := file("./travis/local.pubring.kbx"),
-    pgpPublicRing := file("./travis/local.pubring.kbx")
+    pgpSecretRing := file("./travis/local.secring.asc"),
+    pgpPublicRing := file("./travis/local.pubring.asc")
 )
 
 lazy val docs = project
@@ -76,8 +76,8 @@ lazy val macros = (project in file("macros"))
       if (isSnapshot.value) Some("snapshots" at nexus + "content/repositories/snapshots")
       else Some("releases" at nexus + "service/local/staging/deploy/maven2")
     },
-    pgpSecretRing := file("./travis/local.pubring.kbx"),
-    pgpPublicRing := file("./travis/local.pubring.kbx")
+    pgpSecretRing := file("./travis/local.secring.asc"),
+    pgpPublicRing := file("./travis/local.pubring.asc")
   )
 
 lazy val test = (project in file("test"))
@@ -93,8 +93,8 @@ lazy val test = (project in file("test"))
       if (isSnapshot.value) Some("snapshots" at nexus + "content/repositories/snapshots")
       else Some("releases" at nexus + "service/local/staging/deploy/maven2")
     },
-    pgpSecretRing := file("./travis/local.pubring.kbx"),
-    pgpPublicRing := file("./travis/local.pubring.kbx")
+    pgpSecretRing := file("./travis/local.secring.asc"),
+    pgpPublicRing := file("./travis/local.pubring.asc")
   ).dependsOn(macros)
 
 enablePlugins(MicrositesPlugin)
