@@ -24,7 +24,7 @@ object SafeSpec extends Specification with ScalaCheck {
       val r = implicitly[Safe[Dummy]]
 
       r.value(Dummy(name, Hello(Another(x1)), Hello(Another(x2)), Hello(Another(x3)))) must_===
-        s"{name : ${name}, age : {hellov : {another : $x1}}, age2 : {hellov : {another : $x2}}, age3 : {hellov : {another : $x3}}}"
+        s"{ name : ${name}, age : { hellov : { another : $x1 } }, age2 : { hellov : { another : $x2 } }, age3 : { hellov : { another : $x3 } } }"
 
     }
   }
@@ -47,11 +47,11 @@ object SafeSpec extends Specification with ScalaCheck {
     }}
   }
 
-  final case class Inductive[A](name: Secret[A])
+  final case class Inductive(name: Secret)
 
   private def testInductive = {
     prop { a: String =>
-      Safe[Inductive[String]].value(Inductive(Secret(a))) must_=== "{ name : ***** }"
+      Safe[Inductive].value(Inductive(Secret(a))) must_=== "{ name : ***** }"
     }
   }
 }

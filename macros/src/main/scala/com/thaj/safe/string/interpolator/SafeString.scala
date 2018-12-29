@@ -78,7 +78,10 @@ object SafeString {
             }
             })
 
-          c.Expr(q"""com.thaj.safe.string.interpolator.SafeString($res)""")
+          res match {
+            case q"""StringContext.apply(..$raw).s(..$previousElements)""" => c.Expr(q"""com.thaj.safe.string.interpolator.SafeString($res)""")
+            case q"""StringContext.apply($raw)"""                          => c.Expr(q"""com.thaj.safe.string.interpolator.SafeString($raw)""")
+          }
 
         case _ =>
           c.abort(c.prefix.tree.pos, "bla")
