@@ -97,6 +97,7 @@ lazy val rootBuildSettings = Seq(
   useGpg := true,
   pgpSecretRing := file("./travis/local.secring.asc"),
   pgpPublicRing := file("./travis/local.pubring.asc"),
+  PgpKeys.gpgCommand in Global := "gpg2",
   organization := "io.github.afsalthaj",
   organizationName := "safe-string-interpolation",
   organizationHomepage := Some(url("https://afsalthaj.github.io/safe-string-interpolation/")),
