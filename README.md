@@ -1,4 +1,4 @@
-## Typesafe String Interpolation
+## Typesafe Interpolation
 
 
 ![alt text](https://travis-ci.org/afsalthaj/safe-string-interpolation.svg?branch=master)
