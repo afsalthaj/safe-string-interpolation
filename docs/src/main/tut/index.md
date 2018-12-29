@@ -22,6 +22,8 @@ We need more type driven logging, consistent secret management, catching erroneo
  
 # Solution
 
+Easy ! Use `safeStr"your log"` instead of `s"your log"` !
+
 Add this in your build.sbt
 
 ```scala
@@ -78,9 +80,11 @@ Compilation Failed
 
 To understand more on the concepts and usages, please go through:
 
-* [A Simple Example](https://afsalthaj.github.io/safe-string-interpolation/examples.html)
-* [Typesafe Pretty prints](https://afsalthaj.github.io/safe-string-interpolation/pretty_print.html) and 
-* [Logging Secrets / Passwords](https://afsalthaj.github.io/safe-string-interpolation/secrets.html) to get started !
+1)  [A Simple Example](https://afsalthaj.github.io/safe-string-interpolation/examples.html)
+2) [Typesafe Pretty prints](https://afsalthaj.github.io/safe-string-interpolation/pretty_print.html) and 
+3) [Logging Secrets / Passwords](https://afsalthaj.github.io/safe-string-interpolation/secrets.html) 
+
+to get started !
 
 
 # Add this in your logs !
