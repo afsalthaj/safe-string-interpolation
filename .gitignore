@@ -3,3 +3,5 @@ project/project/*
 .idea/
 *.iml
 target/
+local.*
+travis/local.*
