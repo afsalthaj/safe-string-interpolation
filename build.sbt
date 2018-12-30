@@ -6,10 +6,9 @@ lazy val root = (project in file("."))
     name := "safe-string",
     publishArtifact := false,
 )
-
 rootBuildSettings
 
-publishTo := {
+publishTo in ThisBuild := {
   val nexus = "https://oss.sonatype.org/"
   if (isSnapshot.value) Some("snapshots" at nexus + "content/repositories/snapshots")
   else Some("releases" at nexus + "service/local/staging/deploy/maven2")
