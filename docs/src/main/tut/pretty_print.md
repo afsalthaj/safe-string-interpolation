@@ -5,7 +5,7 @@ section: "main_menu"
 position: 3
 ---
 
-## Case class Example
+## Typesafe pretty-print of case-class.
 
 ```scala
 
@@ -32,19 +32,18 @@ This works for any level of **deep nested structure of case class**. This is don
 The main idea here is, if any field in any part of the nested case class isn't safe to be converted to string, it will throw a compile time.
 Also, if any part of case classes has `Secret`s in it, the value will be hidden. More on this in `Secret / Password` section
 
-## Type-safety
+## Why case-classes ?
 
-As mentioned in the simple example, `safeStr` can take **_ONLY_** **strings** and **case class instances**. 
-Infact, the purpose of `safe-string-interpolation` is to make sure you are passing only Strings to `safeStr`.
-Do remember that, if it isn't a case class passed to `safeStr`, there will not be any automatic conversion of non-string types to string types through any automatic `Safe` instances in scope. 
-This is intentional. You have to explicitly convert your non-case-class types to string using `nonString.asStr`.
- 
-#### Case class isn't a string ! So why should it work with safeStr ? 
-Delegating the job of stringifying a case class to the user has always been troublesome and it kills the user's time. In fact, it is a popular problem that we solved here.
+While the purpose of `safe-string-interpolation` is to make sure you are passing only Strings to `safeStr`, it works for case-class instances as well.
+There is a reason for this.
+
+Delegating the job of stringifying a case class to the user has always been an infamous problem and it kills the user's time. 
 The `safe-string-interpolation` takes up this tedious job, and macros under the hood converts it to a readable string, while hiding `Secret` types.
-As mentioned earlier, anything else other than strings and (automatically stringifiable) case classes will be rejected by compiler.
 
 ```scala
+
+@ import com.thaj.safe.string.interpolator.SafeString._
+import com.thaj.safe.string.interpolator.SafeString._
 
 @ case class Test(list: List[String])
 defined class Test
@@ -53,18 +52,24 @@ defined class Test
 test: Test = Test(List("foo", "bar"))
 
 @ safeStr"test will work $test"
-res14: com.thaj.safe.string.interpolator.SafeString = SafeString("test will work { list: foo,bar }")
+res4: com.thaj.safe.string.interpolator.SafeString = SafeString("test will work { list: foo,bar }")
 
 @ val test = List("foo", "bar")
 test: List[String] = List("foo", "bar")
 
 @ safeStr"test will not work $test"
-cmd16.sc:1: The provided type isn't a string nor it's a case class, or you might have tried a `toString` on non-strings !
-val res16 = safeStr"test will not work $test"
-                                        ^
+cmd6.sc:1: The provided type isn't a string nor it's a case class, or you might have tried a `toString` on non-strings !
+val res6 = safeStr"test will not work $test"
+                                       ^
+Compilation Failed
+
+@ safeStr"test will work by telling the compiler, yes, it is a string ${test.toString}"
+cmd6.sc:1: Identified `toString` being called on the types. Either remove it or use <yourType>.asStr if it has an instance of Safe.
+val res6 = safeStr"test will work by telling the compiler, yes, it is a string ${test.toString}"
+                                                                                      ^
 Compilation Failed
 
 @ safeStr"test will work by telling the compiler, yes, it is a string ${test.asStr}"
-res16: com.thaj.safe.string.interpolator.SafeString = SafeString("test will work by telling the compiler, yes, it is a string foo,bar") 
+res6: com.thaj.safe.string.interpolator.SafeString = SafeString("test will work by telling the compiler, yes, it is a string foo,bar")
 
 ```
