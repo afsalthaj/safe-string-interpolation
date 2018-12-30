@@ -34,40 +34,37 @@ Also, if any part of case classes has `Secret`s in it, the value will be hidden.
 
 ## Type-safety
 
-As mentioned in the simple example, `safeStr` can take **_ONLY_** **strings** and **case class instances** with each field in the case class having a `Safe` instance.
-
-Don't worry, this doesn't mean you need to keep creating `Safe` instances. Macros machinaries under the hood takes care of it. 
-
-If something goes wrong, it will be most probably, macros was unable to find an instance for `Safe` for some field in your (may be deeply nested) case class.
-So just create an instance for Safe. However, we should try and avoid manual creation of `Safe` instance.
-
-`Safe` instances are already provided for collections, primitives and scalaz.Tag types.
-
-```scala
-
-scala> safeStr"I am going to call a toString on a case class to satisfy compiler ! ${a} : ${dummy.toString}"
-<console>:23: error: The provided type isn't a string nor it's a case class, or you might have tried a `toString` on non-strings!
-       safeStr"I am going to call a toString on a case class to satisfy compiler ! ${a} : ${dummy.toString}"
-                                                 ^
-
-```
-
-safe-string-interpolator hates it when you do `toString` on non-string types. Instead, you can use `yourType.asStr` 
-and safe-string-interpolator will ensure it is safe to convert it to String.
-
-i.e,
+As mentioned in the simple example, `safeStr` can take **_ONLY_** **strings** and **case class instances**. 
+Infact, the purpose of `safe-string-interpolation` is to make sure you are passing only Strings to `safeStr`.
+Do remember that, if it isn't a case class passed to `safeStr`, there will not be any automatic conversion of non-string types to string types through any automatic `Safe` instances in scope. 
+This is intentional. You have to explicitly convert your non-case-class types to string using `nonString.asStr`.
+ 
+#### Case class isn't a string ! So why should it work with safeStr ? 
+Delegating the job of stringifying a case class to the user has always been troublesome and it kills the user's time. In fact, it is a popular problem that we solved here.
+The `safe-string-interpolation` takes up this tedious job, and macros under the hood converts it to a readable string, while hiding `Secret` types.
+As mentioned earlier, anything else other than strings and (automatically stringifiable) case classes will be rejected by compiler.
 
 ```scala
 
-val a: String = "afsal"
-val b: String = "john"
-val c: Int = 1
+@ case class Test(list: List[String])
+defined class Test
 
-scala> safeStr"The scala string interpol can be a bit dangerous with your secrets. ${a}, ${b}, ${c.toString}"
-<console>:24: error: The provided type isn't a string nor it's a case class, or you might have tried a `toString` on non-strings!
-       
-scala> safeStr"The scala string interpol can be a bit dangerous with your secrets. ${a}, ${b}, ${c.asStr}"  
-// Compiles sucess 
+@ val test = Test(List("foo", "bar"))
+test: Test = Test(List("foo", "bar"))
 
+@ safeStr"test will work $test"
+res14: com.thaj.safe.string.interpolator.SafeString = SafeString("test will work { list: foo,bar }")
+
+@ val test = List("foo", "bar")
+test: List[String] = List("foo", "bar")
+
+@ safeStr"test will not work $test"
+cmd16.sc:1: The provided type isn't a string nor it's a case class, or you might have tried a `toString` on non-strings !
+val res16 = safeStr"test will not work $test"
+                                        ^
+Compilation Failed
+
+@ safeStr"test will work by telling the compiler, yes, it is a string ${test.asStr}"
+res16: com.thaj.safe.string.interpolator.SafeString = SafeString("test will work by telling the compiler, yes, it is a string foo,bar") 
 
 ```

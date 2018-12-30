@@ -47,8 +47,12 @@ object SafeString {
             args.toList.foldLeft(q"""StringContext.apply(..${parts})""")({ (acc, t) => {
 
               val nextElement = t.tree
+
               val tag = c.WeakTypeTag(nextElement.tpe)
               val symbol = tag.tpe.typeSymbol
+
+              if(nextElement.toString().contains(".toString"))
+                c.abort(t.tree.pos, s"Identified `toString` being called on the types. Either remove it or use <yourType>.asStr if it has an instance of Safe.")
 
               if (!(tag.tpe =:= typeOf[String]) && symbol.isClass && symbol.asClass.isCaseClass) {
                 val r: Set[c.universe.Tree] =

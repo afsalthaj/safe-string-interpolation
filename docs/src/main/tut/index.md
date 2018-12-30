@@ -39,34 +39,37 @@ import $ivy.$
 
 ```scala
 
-// Ammonite
 
-@ import com.thaj.safe.string.interpolator.SafeString._
+scala> import com.thaj.safe.string.interpolator.SafeString._
 import com.thaj.safe.string.interpolator.SafeString._
 
-@ case class X(name: String)
+scala> case class X(name: String)
 defined class X
 
-@ val caseClassInstance = X("foo")
-caseClassInstance: X = X("foo")
+scala> val caseClassInstance = X("foo")
+caseClassInstance: X = X(foo)
 
-@ val onlyString: String = "bar"
-onlyString: String = "bar"
+scala> val onlyString: String = "bar"
+onlyString: String = bar
 
-@ safeStr"Works only if its either a string or a case class instance $caseClassInstance or $onlyString"
-res8: com.thaj.safe.string.interpolator.SafeString = SafeString("Works only if its either a string or a case class instance { name: foo } or bar")
+scala> safeStr"Works only if its either a string or a case class instance $caseClassInstance or $onlyString"
+res0: com.thaj.safe.string.interpolator.SafeString = SafeString(Works only if its either a string or a case class instance { name: foo } or bar)
 
-@ class C
+scala> class C
 defined class C
 
-@ val nonCaseClass = new C
-nonCaseClass: C = ammonite.$sess.cmd9$C@4fd92289
+scala> val nonCaseClass = new C
+nonCaseClass: C = C@7e3131c8
 
-@ safeStr"Doesn't work if there is a non-case class $nonCaseClass or $onlyString"
-cmd11.sc:1: The provided type isn't a string nor it's a case class, or you might have tried a `toString` on non-strings !
-val res11 = safeStr"Doesn't work if there is a non-case class $nonCaseClass or $onlyString"
-                                                                                                            ^
-Compilation Failed
+scala> safeStr"Doesn't work if there is a non-case class $nonCaseClass or $onlyString"
+<console>:17: error: The provided type isn't a string nor it's a case class, or you might have tried a `toString` on non-strings !
+       safeStr"Doesn't work if there is a non-case class $nonCaseClass or $onlyString"
+                                                          ^
+// And don't cheat by `toString`
+scala> safeStr"Doesn't work if there is a non-case class ${nonCaseClass.toString} or $onlyString"
+<console>:17: error: Identified `toString` being called on the types. Either remove it or use <yourType>.asStr if it has an instance of Safe.
+       safeStr"Doesn't work if there is a non-case class ${nonCaseClass.toString} or $onlyString"
+                                                                        ^
 
 ```
 
