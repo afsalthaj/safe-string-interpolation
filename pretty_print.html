@@ -25,39 +25,37 @@ Also, if any part of case classes has <code class="highlighter-rouge">Secret</co
 
 <h2 id="type-safety">Type-safety</h2>
 
-<p>As mentioned in the simple example, <code class="highlighter-rouge">safeStr</code> can take <strong><em>ONLY</em></strong> <strong>strings</strong> and <strong>case class instances</strong> with each field in the case class having a <code class="highlighter-rouge">Safe</code> instance.</p>
+<p>As mentioned in the simple example, <code class="highlighter-rouge">safeStr</code> can take <strong><em>ONLY</em></strong> <strong>strings</strong> and <strong>case class instances</strong>. 
+Infact, the purpose of <code class="highlighter-rouge">safe-string-interpolation</code> is to make sure you are passing only Strings to <code class="highlighter-rouge">safeStr</code>.
+Do remember that, if it isn’t a case class passed to <code class="highlighter-rouge">safeStr</code>, there will not be any automatic conversion of non-string types to string types through any automatic <code class="highlighter-rouge">Safe</code> instances in scope. 
+This is intentional. You have to explicitly convert your non-case-class types to string using <code class="highlighter-rouge">nonString.asStr</code>.</p>
 
-<p>Don’t worry, this doesn’t mean you need to keep creating <code class="highlighter-rouge">Safe</code> instances. Macros machinaries under the hood takes care of it.</p>
-
-<p>If something goes wrong, it will be most probably, macros was unable to find an instance for <code class="highlighter-rouge">Safe</code> for some field in your (may be deeply nested) case class.
-So just create an instance for Safe. However, we should try and avoid manual creation of <code class="highlighter-rouge">Safe</code> instance.</p>
-
-<p><code class="highlighter-rouge">Safe</code> instances are already provided for collections, primitives and scalaz.Tag types.</p>
-
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-<span class="n">scala</span><span class="o">&gt;</span> <span class="n">safeStr</span><span class="s">"I am going to call a toString on a case class to satisfy compiler ! ${a} : ${dummy.toString}"</span>
-<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">23</span><span class="k">:</span> <span class="kt">error:</span> <span class="kt">The</span> <span class="kt">provided</span> <span class="k">type</span> <span class="kt">isn't</span> <span class="kt">a</span> <span class="kt">string</span> <span class="kt">nor</span> <span class="kt">it's</span> <span class="kt">a</span> <span class="kt">case</span> <span class="kt">class</span><span class="o">,</span> <span class="n">or</span> <span class="n">you</span> <span class="n">might</span> <span class="n">have</span> <span class="n">tried</span> <span class="n">a</span> <span class="n">`toString`</span> <span class="n">on</span> <span class="n">non</span><span class="o">-</span><span class="n">strings</span><span class="o">!</span>
-       <span class="n">safeStr</span><span class="s">"I am going to call a toString on a case class to satisfy compiler ! ${a} : ${dummy.toString}"</span>
-                                                 <span class="o">^</span>
-
-</code></pre></div></div>
-
-<p>safe-string-interpolator hates it when you do <code class="highlighter-rouge">toString</code> on non-string types. Instead, you can use <code class="highlighter-rouge">yourType.asStr</code> 
-and safe-string-interpolator will ensure it is safe to convert it to String.</p>
-
-<p>i.e,</p>
+<h4 id="case-class-isnt-a-string--so-why-should-it-work-with-safestr-">Case class isn’t a string ! So why should it work with safeStr ?</h4>
+<p>Delegating the job of stringifying a case class to the user has always been troublesome and it kills the user’s time. In fact, it is a popular problem that we solved here.
+The <code class="highlighter-rouge">safe-string-interpolation</code> takes up this tedious job, and macros under the hood converts it to a readable string, while hiding <code class="highlighter-rouge">Secret</code> types.
+As mentioned earlier, anything else other than strings and (automatically stringifiable) case classes will be rejected by compiler.</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-<span class="k">val</span> <span class="n">a</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">"afsal"</span>
-<span class="k">val</span> <span class="n">b</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">"john"</span>
-<span class="k">val</span> <span class="n">c</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">@</span> <span class="k">case</span> <span class="k">class</span> <span class="nc">Test</span><span class="o">(</span><span class="n">list</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span>
+<span class="n">defined</span> <span class="k">class</span> <span class="nc">Test</span>
 
-<span class="n">scala</span><span class="o">&gt;</span> <span class="n">safeStr</span><span class="s">"The scala string interpol can be a bit dangerous with your secrets. ${a}, ${b}, ${c.toString}"</span>
-<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">24</span><span class="k">:</span> <span class="kt">error:</span> <span class="kt">The</span> <span class="kt">provided</span> <span class="k">type</span> <span class="kt">isn't</span> <span class="kt">a</span> <span class="kt">string</span> <span class="kt">nor</span> <span class="kt">it's</span> <span class="kt">a</span> <span class="kt">case</span> <span class="kt">class</span><span class="o">,</span> <span class="n">or</span> <span class="n">you</span> <span class="n">might</span> <span class="n">have</span> <span class="n">tried</span> <span class="n">a</span> <span class="n">`toString`</span> <span class="n">on</span> <span class="n">non</span><span class="o">-</span><span class="n">strings</span><span class="o">!</span>
-       
-<span class="n">scala</span><span class="o">&gt;</span> <span class="n">safeStr</span><span class="s">"The scala string interpol can be a bit dangerous with your secrets. ${a}, ${b}, ${c.asStr}"</span>  
-<span class="c1">// Compiles sucess 
-</span>
+<span class="k">@</span> <span class="k">val</span> <span class="n">test</span> <span class="k">=</span> <span class="nc">Test</span><span class="o">(</span><span class="nc">List</span><span class="o">(</span><span class="s">"foo"</span><span class="o">,</span> <span class="s">"bar"</span><span class="o">))</span>
+<span class="n">test</span><span class="k">:</span> <span class="kt">Test</span> <span class="o">=</span> <span class="nc">Test</span><span class="o">(</span><span class="nc">List</span><span class="o">(</span><span class="s">"foo"</span><span class="o">,</span> <span class="s">"bar"</span><span class="o">))</span>
+
+<span class="k">@</span> <span class="n">safeStr</span><span class="s">"test will work $test"</span>
+<span class="n">res14</span><span class="k">:</span> <span class="kt">com.thaj.safe.string.interpolator.SafeString</span> <span class="o">=</span> <span class="nc">SafeString</span><span class="o">(</span><span class="s">"test will work { list: foo,bar }"</span><span class="o">)</span>
+
+<span class="k">@</span> <span class="k">val</span> <span class="n">test</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span><span class="s">"foo"</span><span class="o">,</span> <span class="s">"bar"</span><span class="o">)</span>
+<span class="n">test</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span><span class="s">"foo"</span><span class="o">,</span> <span class="s">"bar"</span><span class="o">)</span>
+
+<span class="k">@</span> <span class="n">safeStr</span><span class="s">"test will not work $test"</span>
+<span class="n">cmd16</span><span class="o">.</span><span class="n">sc</span><span class="k">:</span><span class="err">1</span><span class="kt">:</span> <span class="kt">The</span> <span class="kt">provided</span> <span class="k">type</span> <span class="kt">isn't</span> <span class="kt">a</span> <span class="kt">string</span> <span class="kt">nor</span> <span class="kt">it's</span> <span class="kt">a</span> <span class="kt">case</span> <span class="kt">class</span><span class="o">,</span> <span class="n">or</span> <span class="n">you</span> <span class="n">might</span> <span class="n">have</span> <span class="n">tried</span> <span class="n">a</span> <span class="n">`toString`</span> <span class="n">on</span> <span class="n">non</span><span class="o">-</span><span class="n">strings</span> <span class="o">!</span>
+<span class="k">val</span> <span class="n">res16</span> <span class="k">=</span> <span class="n">safeStr</span><span class="s">"test will not work $test"</span>
+                                        <span class="o">^</span>
+<span class="nc">Compilation</span> <span class="nc">Failed</span>
+
+<span class="k">@</span> <span class="n">safeStr</span><span class="s">"test will work by telling the compiler, yes, it is a string ${test.asStr}"</span>
+<span class="n">res16</span><span class="k">:</span> <span class="kt">com.thaj.safe.string.interpolator.SafeString</span> <span class="o">=</span> <span class="nc">SafeString</span><span class="o">(</span><span class="s">"test will work by telling the compiler, yes, it is a string foo,bar"</span><span class="o">)</span> 
 
 </code></pre></div></div>
 </section></div></div></div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script><script src="/safe-string-interpolation/highlight/highlight.pack.js"></script><script>hljs.configure({languages:['scala','java','bash']});
