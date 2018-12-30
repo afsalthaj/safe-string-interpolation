@@ -53,8 +53,8 @@ caseClassInstance: X = X("foo")
 @ val onlyString: String = "bar"
 onlyString: String = "bar"
 
-@ safeStr"This is type safe logging works only if it is either a string or a case class instance $caseClassInstance or $onlyString"
-res8: com.thaj.safe.string.interpolator.SafeString = SafeString("This is type safe logging works only if it is either a string or a case class instance { name: foo } or bar")
+@ safeStr"Works only if its either a string or a case class instance $caseClassInstance or $onlyString"
+res8: com.thaj.safe.string.interpolator.SafeString = SafeString("Works only if its either a string or a case class instance { name: foo } or bar")
 
 @ class C
 defined class C
@@ -62,9 +62,9 @@ defined class C
 @ val nonCaseClass = new C
 nonCaseClass: C = ammonite.$sess.cmd9$C@4fd92289
 
-@ safeStr"This is type safe logging works only if it is either a string or a case class instance $nonCaseClass or $onlyString"
+@ safeStr"Doesn't work if there is a non-case class $nonCaseClass or $onlyString"
 cmd11.sc:1: The provided type isn't a string nor it's a case class, or you might have tried a `toString` on non-strings !
-val res11 = safeStr"This is type safe logging works only if it is either a string or a case class instance $nonCaseClass or $onlyString"
+val res11 = safeStr"Doesn't work if there is a non-case class $nonCaseClass or $onlyString"
                                                                                                             ^
 Compilation Failed
 
