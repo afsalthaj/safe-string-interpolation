@@ -1,4 +1,7 @@
+import com.sun.xml.internal.messaging.saaj.util.ByteInputStream
 import microsites.CdnDirectives
+
+import scala.tools.nsc.interpreter.InputStream
 
 lazy val root = (project in file("."))
   .dependsOn(macros)
@@ -16,36 +19,15 @@ lazy val docs = project
   .enablePlugins(MicrositesPlugin)
   .settings(name := "afsalthaj")
   .settings(moduleName := "safe-string-interpolation-docs")
-  .settings(docSettings)
+  .settings(DocSupport.settings)
+  .settings(Seq(
+    fork in tut := true,
+    git.remoteRepo := "https://github.com/afsalthaj/safe-string-interpolation.git",
+    includeFilter in makeSite := "*.html" | "*.css" | "*.png" | "*.jpg" | "*.gif" | "*.js" | "*.swf" | "*.yml" | "*.md"
+  ))
   .settings(scalacOptions in Tut ~= (_.filterNot(Set("-Ywarn-unused-import", "-Ywarn-dead-code"))))
   .enablePlugins(GhpagesPlugin)
 
-lazy val docSettings = Seq(
-  micrositeName := "Typesafe Interpolation",
-  micrositeDescription := "Typesafe Interpolation",
-  micrositeHighlightTheme := "atom-one-light",
-  micrositeGithubRepo := "safe-string-interpolation",
-  micrositeHomepage := "https://afsalthaj.github.io/safe-string-interpolation",
-  micrositeBaseUrl := "/safe-string-interpolation",
-  micrositeGithubOwner := "afsalthaj",
-  micrositeGithubRepo := "safe-string-interpolation",
-  micrositeGitterChannelUrl := "safe-string-interpolation/community",
-  micrositePushSiteWith := GHPagesPlugin,
-  micrositePalette := Map(
-    "brand-primary" -> "#5B5988",
-    "brand-secondary" -> "#292E53",
-    "brand-tertiary" -> "#222749",
-    "gray-dark" -> "#49494B",
-    "gray" -> "#7B7B7E",
-    "gray-light" -> "#E5E5E6",
-    "gray-lighter" -> "#F4F3F4",
-    "white-color" -> "#FFFFFF"),
-  autoAPIMappings := true,
-  ghpagesNoJekyll := false,
-  fork in tut := true,
-  git.remoteRepo := "https://github.com/afsalthaj/safe-string-interpolation.git",
-  includeFilter in makeSite := "*.html" | "*.css" | "*.png" | "*.jpg" | "*.gif" | "*.js" | "*.swf" | "*.yml" | "*.md"
-)
 
 micrositeCDNDirectives := CdnDirectives(
   jsList = List(
@@ -58,7 +40,6 @@ micrositeCDNDirectives := CdnDirectives(
     "https://cdnjs.cloudflare.com/ajax/libs/cssgram/0.1.12/brooklyn.css"
   )
 )
-
 
 micrositeGithubOwner := "afsalthaj"
 
@@ -129,3 +110,4 @@ lazy val rootBuildSettings = Seq(
   pomIncludeRepository := { _ => false },
   publishMavenStyle := true
 )
+

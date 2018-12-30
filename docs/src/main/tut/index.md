@@ -27,7 +27,7 @@ Easy ! Use `safeStr"your log $a $b, $c"` instead of `s"your log $a $b, $c"` !
 Add this in your build.sbt
 
 ```scala
-libraryDependencies += "io.github.afsalthaj" %% "safe-string" % "1.2.8"
+libraryDependencies += "io.github.afsalthaj" %% "safe-string" % "1.2.8" 
 ```
 
 Or, in ammonite;
