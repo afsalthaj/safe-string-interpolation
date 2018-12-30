@@ -58,7 +58,7 @@ object SafeString {
                 val r: Set[c.universe.Tree] =
                   nextElement.tpe.members.collect {
                     case CaseClassFieldAndName(nme, typ) =>
-                      q"""com.thaj.safe.string.interpolator.Field(${nme.toString}, $nextElement.$nme)"""
+                      q"""com.thaj.safe.string.interpolator.Field(${nme.toString}, $nextElement.$nme.asStr)"""
                   }.toSet
 
                 val field = q"""com.thaj.safe.string.interpolator.SafeString.Macro.jsonLike($r.map(_.toString))"""

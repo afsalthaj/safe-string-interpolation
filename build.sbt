@@ -1,7 +1,4 @@
-import com.sun.xml.internal.messaging.saaj.util.ByteInputStream
 import microsites.CdnDirectives
-
-import scala.tools.nsc.interpreter.InputStream
 
 lazy val root = (project in file("."))
   .dependsOn(macros)
@@ -110,4 +107,3 @@ lazy val rootBuildSettings = Seq(
   pomIncludeRepository := { _ => false },
   publishMavenStyle := true
 )
-
