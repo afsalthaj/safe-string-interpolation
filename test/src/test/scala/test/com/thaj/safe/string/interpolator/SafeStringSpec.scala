@@ -3,6 +3,7 @@ package test.com.thaj.safe.string.interpolator
 import com.thaj.safe.string.interpolator.SafeString._
 import com.thaj.safe.string.interpolator.Secret
 import org.specs2.{ScalaCheck, Specification}
+import scalaz.NonEmptyList
 
 object SafeStringSpec extends Specification with ScalaCheck {
   def is =
@@ -14,6 +15,9 @@ object SafeStringSpec extends Specification with ScalaCheck {
        SafeString works for hardcoded string $testWithOnlyHardCodedString
        SafeString works for nested case classes $tesNestedCaseclass
        SafeString append works nicely without any explicit type specification for strings that are created dynamically $testSafeStringAppend
+       SafeString works for GADTs $testGADT
+       SafeString works for maps in case class $testMap
+       SafeString works for case class with map and nonemptylist $testMapWithNonEmptyList
       """
 
   final case class Dummy(name: String, age: Int)
@@ -66,4 +70,26 @@ object SafeStringSpec extends Specification with ScalaCheck {
 
     result must beSome(safeStr"foobar")
   }
+
+  // NonEmptyList is case class NonEmptyList[A](...)
+  final case class TestGadt(list: NonEmptyList[String])
+
+  private def testGADT =
+    prop { a: String =>
+      safeStr"works for gadt ${TestGadt(NonEmptyList(a, a))}".string must_=== s"works for gadt { list: ${a},${a} }"
+    }
+
+  final case class TestMap(map: Map[String, String])
+
+  private def testMap =
+    prop { a: String =>
+      safeStr"works for gadt ${TestMap(Map(a -> a))}".string must_=== s"works for gadt { map: ${a} -> ${a} }"
+    }
+
+  final case class TestMapWithNonEmptyList(mapN: Map[String, NonEmptyList[String]])
+
+  private def testMapWithNonEmptyList =
+    prop { a: String =>
+      safeStr"works for gadt ${TestMapWithNonEmptyList(Map(a -> NonEmptyList(a, a)))}".string must_=== s"works for gadt { mapN: ${a} -> ${a},${a} }"
+    }
 }

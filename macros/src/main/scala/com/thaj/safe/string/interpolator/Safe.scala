@@ -14,31 +14,6 @@ object Safe {
 
   implicit def materializeSafee[T]: Safe[T] = macro materializeSafe[T]
 
-  def materializeSafe[T: c.WeakTypeTag](c: blackbox.Context): c.Expr[Safe[T]] = {
-    import c.universe._
-    val tpe = weakTypeOf[T]
-    val fields = tpe.decls.collectFirst {
-      case m: MethodSymbol if m.isPrimaryConstructor ⇒ m
-    }.getOrElse(c.abort(NoPosition, s"Unable to find a safe instance for $tpe. Consider creating one manually."))
-      .paramLists.headOption.getOrElse(c.abort(NoPosition, s"Unable to find a safe instance for $tpe. Consider creating one manually."))
-
-    val str =
-      fields.foldLeft(Set[(TermName, c.universe.Tree)]()) { (str, field) ⇒
-        val tag = c.WeakTypeTag(field.typeSignature)
-        val symbol = tag.tpe.typeSymbol
-
-        val fieldName = field.name.toTermName
-        str ++ Set((fieldName, q""" com.thaj.safe.string.interpolator.Safe[$symbol]"""))
-      }
-
-    val res =
-      q"""new com.thaj.safe.string.interpolator.Safe[$tpe] {
-         override def value(a: $tpe): String = "{ " + ${str.map{case(x, y) => q""" ${x.toString} + " : " + $y.value(a.$x) """ }}.mkString(", ") + " }"
-      }"""
-
-    c.Expr[Safe[T]] { res }
-  }
-
   implicit val safeString: Safe[String] =
     identity[String]
 
@@ -86,4 +61,30 @@ object Safe {
 
   implicit def safeMap[A: Safe, B: Safe]: Safe[Map[A, B]] =
     a => a.map { case (aa, bb) => (Safe[A].value(aa), Safe[B].value(bb)) }.mkString(",")
+
+  def materializeSafe[T: c.WeakTypeTag](c: blackbox.Context): c.Expr[Safe[T]] = {
+    import c.universe._
+    val tpe = weakTypeOf[T]
+    val fields = tpe.decls.collectFirst {
+      case m: MethodSymbol if m.isPrimaryConstructor ⇒ m
+    }.getOrElse(c.abort(NoPosition, s"Unable to find a safe instance for $tpe. Consider creating one manually."))
+      .paramLists.headOption.getOrElse(c.abort(NoPosition, s"Unable to find a safe instance for $tpe. Consider creating one manually."))
+
+    val str =
+      fields.foldLeft(Set[(TermName, c.universe.Tree)]()) { (str, field) ⇒
+        val tag = c.WeakTypeTag(field.typeSignature)
+
+        val fieldName = field.name.toTermName
+        str ++ Set((fieldName, q""" com.thaj.safe.string.interpolator.Safe[$tag]"""))
+      }
+
+    println(str)
+
+    val res =
+      q"""new com.thaj.safe.string.interpolator.Safe[$tpe] {
+         override def value(a: $tpe): String = "{ " + ${str.map{case(x, y) => q""" ${x.toString} + " : " + $y.value(a.$x) """ }}.mkString(", ") + " }"
+      }"""
+
+    c.Expr[Safe[T]] { res }
+  }
 }

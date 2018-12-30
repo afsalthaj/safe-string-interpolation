@@ -2,6 +2,7 @@ package test.com.thaj.safe.string.interpolator
 
 import com.thaj.safe.string.interpolator.{Safe, Secret}
 import org.specs2.{ScalaCheck, Specification}
+import scalaz.NonEmptyList
 
 object SafeSpec extends Specification with ScalaCheck {
   def is =
