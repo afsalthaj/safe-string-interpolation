@@ -14,6 +14,7 @@ lazy val root = (project in file("."))
 
 lazy val docs = project
   .enablePlugins(MicrositesPlugin)
+  .settings(name := "afsalthaj")
   .settings(moduleName := "safe-string-interpolation-docs")
   .settings(docSettings)
   .settings(scalacOptions in Tut ~= (_.filterNot(Set("-Ywarn-unused-import", "-Ywarn-dead-code"))))
