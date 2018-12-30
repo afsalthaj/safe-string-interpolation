@@ -28,8 +28,10 @@ Also, if any part of case classes has <code class="highlighter-rouge">Secret</co
 <p>While the purpose of <code class="highlighter-rouge">safe-string-interpolation</code> is to make sure you are passing only Strings to <code class="highlighter-rouge">safeStr</code>, it works for case-class instances as well.
 There is a reason for this.</p>
 
-<p>Delegating the job of stringifying a case class to the user has always been an infamous problem and it kills the user’s time. 
+<p>Delegating the job of stringifying a case class to the user has always been an infamous problem and it kills the user’s time.
 The <code class="highlighter-rouge">safe-string-interpolation</code> takes up this tedious job, and macros under the hood converts it to a readable string, while hiding <code class="highlighter-rouge">Secret</code> types.</p>
+
+<p>PS: In the next release, we may ask the user to do <code class="highlighter-rouge">.asStr</code> explicitly on case classes as well. This will bring in more consistency.</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 <span class="k">@</span> <span class="k">import</span> <span class="nn">com.thaj.safe.string.interpolator.SafeString._</span>
