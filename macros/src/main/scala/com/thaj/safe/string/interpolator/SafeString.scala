@@ -11,6 +11,11 @@ final case class SafeString private(string: String) extends AnyVal {
   def +(that: SafeString) = SafeString(this.string ++ that.string)
 }
 
+sealed trait ElementType
+object StringType extends ElementType
+object CaseClassType extends ElementType
+object UnknownType extends ElementType
+
 object SafeString {
 
   implicit class SafeStringContext(val sc: StringContext) {
@@ -38,6 +43,24 @@ object SafeString {
         }
       }
 
+      def quasiquote(acc: c.universe.Tree, field: c.universe.Tree) = {
+        acc match {
+          case q"""StringContext.apply(..$raw).s(..$previousElements)""" => q"""StringContext.apply(..$raw).s(($previousElements :+ ..${field}) :_*)"""
+          case _ => q"""${acc}.s(..$field)"""
+        }
+      }
+
+      def typeOfElement(tree: Tree): ElementType = {
+        val tagType: Type = c.WeakTypeTag(tree.tpe).tpe
+
+        if(tagType =:= typeOf[String])
+          StringType
+        else if (!(tagType =:= typeOf[String]) && tagType.typeSymbol.isClass && tagType.typeSymbol.asClass.isCaseClass)
+          CaseClassType
+        else
+          UnknownType
+      }
+
       c.prefix.tree match {
 
         case Apply(_, List(Apply(_, partz))) =>
@@ -47,31 +70,22 @@ object SafeString {
             args.toList.foldLeft(q"""StringContext.apply(..${parts})""")({ (acc, t) => {
 
               val nextElement = t.tree
-              val tag = c.WeakTypeTag(nextElement.tpe)
-              val symbol = tag.tpe.typeSymbol
 
-              if (!(tag.tpe =:= typeOf[String]) && symbol.isClass && symbol.asClass.isCaseClass) {
-                val r: Set[c.universe.Tree] =
-                  nextElement.tpe.members.collect {
+              typeOfElement(nextElement) match {
+                case StringType    => quasiquote(acc, nextElement)
+                case CaseClassType => {
+                  val r: Set[c.universe.Tree] =
+                    nextElement.tpe.members.collect {
                     case CaseClassFieldAndName(nme, typ) =>
-                      q"""com.thaj.safe.string.interpolator.Field(${nme.toString}, $nextElement.$nme)"""
-                  }.toSet
+                        q"""com.thaj.safe.string.interpolator.Field(${nme.toString}, $nextElement.$nme)"""
+                    }.toSet
 
-                val field = q"""com.thaj.safe.string.interpolator.SafeString.Macro.jsonLike($r.map(_.toString))"""
+                  val field = q"""com.thaj.safe.string.interpolator.SafeString.Macro.jsonLike($r.map(_.toString))"""
 
-                acc match {
-                  case q"""StringContext.apply(..$raw).s(..$previousElements)""" => q"""StringContext.apply(..$raw).s(($previousElements :+ ..${field}) :_*)"""
-                  case _ => q"""${acc}.s(..$field)"""
+                  quasiquote(acc, field)
                 }
-              }
-
-              else if (tag.tpe =:= typeOf[String]) {
-                acc match {
-                  case q"""StringContext.apply(..$raw).s(..$previousElements)""" => q"""StringContext.apply(..$raw).s(($previousElements :+ $nextElement) :_*)"""
-                  case _ => q"""${acc}.s($nextElement)"""
-                }
-              } else {
-                c.abort(t.tree.pos, "The provided type isn't a string nor it's a case class, or you might have tried a `toString` on non-strings !")
+                case UnknownType   =>
+                  c.abort(t.tree.pos, "The provided type isn't a string nor it's a case class, or you might have tried a `toString` on non-strings !")
               }
             }
             })
