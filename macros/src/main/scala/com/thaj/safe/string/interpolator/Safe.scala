@@ -5,7 +5,6 @@ import scalaz.{@@, NonEmptyList}
 import scala.language.experimental.macros
 import scala.reflect.macros.blackbox
 
-
 trait Safe[A] {
   def value(a: A): String
 }
@@ -20,7 +19,8 @@ object Safe {
     val tpe = weakTypeOf[T]
     val fields = tpe.decls.collectFirst {
       case m: MethodSymbol if m.isPrimaryConstructor ⇒ m
-    }.get.paramLists.head
+    }.getOrElse(c.abort(NoPosition, s"Unable to find a safe instance for $tpe. Consider creating one manually."))
+      .paramLists.headOption.getOrElse(c.abort(NoPosition, s"Unable to find a safe instance for $tpe. Consider creating one manually."))
 
     val str =
       fields.foldLeft(Set[(TermName, c.universe.Tree)]()) { (str, field) ⇒

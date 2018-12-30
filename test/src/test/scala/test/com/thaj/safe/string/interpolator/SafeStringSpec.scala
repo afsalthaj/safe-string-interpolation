@@ -13,38 +13,57 @@ object SafeStringSpec extends Specification with ScalaCheck {
        SafeString works even if no arguments are passed $testSafeStrWithNoHardCodedStrings
        SafeString works for hardcoded string $testWithOnlyHardCodedString
        SafeString works for nested case classes $tesNestedCaseclass
+       SafeString append works nicely without any explicit type specification for strings that are created dynamically $testSafeStringAppend
       """
 
   final case class Dummy(name: String, age: Int)
 
-  final case class DummyWithSecret[A](name: String,  secret: Secret)
+  final case class DummyWithSecret[A](name: String, secret: Secret)
 
   final case class NestedDummy[A](name: String, secret: Secret, dummy: Dummy)
 
-  private def test = prop { (a: String, b: String, c: Int, d: Int) => {
-    val res: String = (c + d).toString
-    val dummy = Dummy(a, d)
-    safeStr"the safe string is, ${a}, ${b}, ${res}, $dummy".string must_===
-      s"the safe string is, $a, ${b.toString}, $res, { age: ${dummy.age.toString}, name: ${dummy.name} }"
-  }}
+  private def test =
+    prop { (a: String, b: String, c: Int, d: Int) =>
+      val res: String = (c + d).toString
+      val dummy = Dummy(a, d)
 
-  private def testSecrets = prop { (a: String, b: String) => {
-    val dummy = DummyWithSecret(a, Secret(b))
-    safeStr"the safe string with password, ${a}, $dummy".string must_===
-      s"the safe string with password, $a, { secret: *****, name: ${a} }"
-  }}
+      safeStr"the safe string is, ${a}, ${b}, ${res}, $dummy".string must_===
+        s"the safe string is, $a, ${b.toString}, $res, { age: ${dummy.age.toString}, name: ${dummy.name} }"
+    }
 
-  private def tesNestedCaseclass = prop { (a: String, b: String, c: Int) => {
-    val dummy = Dummy(a, c)
-    val nestDummy = NestedDummy(a, Secret(b), dummy)
-    safeStr"the safe string with password, ${a}, $nestDummy".string must_===
-      s"the safe string with password, $a, { dummy: { name : $a, age : $c }, secret: *****, name: ${dummy.name} }"
-  }}
+  private def testSecrets =
+    prop { (a: String, b: String) =>
+      val dummy = DummyWithSecret(a, Secret(b))
 
-  private def testSafeStrWithNoHardCodedStrings = prop { (a: String) => {
-    safeStr"$a".string must_=== a
-  }}
+      safeStr"the safe string with password, ${a}, $dummy".string must_===
+        s"the safe string with password, $a, { secret: *****, name: ${a} }"
+    }
+
+  private def tesNestedCaseclass =
+    prop { (a: String, b: String, c: Int) =>
+      val dummy = Dummy(a, c)
+      val nestDummy = NestedDummy(a, Secret(b), dummy)
+
+      safeStr"the safe string with password, ${a}, $nestDummy".string must_===
+        s"the safe string with password, $a, { dummy: { name : $a, age : $c }, secret: *****, name: ${dummy.name} }"
+    }
+
+  private def testSafeStrWithNoHardCodedStrings =
+    prop { a: String =>
+      safeStr"$a".string must_=== a
+    }
 
   private def testWithOnlyHardCodedString =
     (safeStr"somevalue".string must_=== "somevalue") and (safeStr"".string must_=== "")
+
+  private def testSafeStringAppend = {
+    val result =
+      for {
+        a <- Some("foo")
+        b <- Some("bar")
+        safe = safeStr"${a}" + safeStr"${b}"
+      } yield safe
+
+    result must beSome(safeStr"foobar")
+  }
 }
