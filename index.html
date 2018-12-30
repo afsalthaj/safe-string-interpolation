@@ -19,12 +19,12 @@ We may also forget stringifying domain objects when using scala string interpola
 
 <p>Add this in your build.sbt</p>
 
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"io.github.afsalthaj"</span> <span class="o">%%</span> <span class="s">"safe-string"</span> <span class="o">%</span> <span class="s">"1.2.1"</span>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"io.github.afsalthaj"</span> <span class="o">%%</span> <span class="s">"safe-string"</span> <span class="o">%</span> <span class="s">"1.2.2"</span>
 </code></pre></div></div>
 
 <p>Or, in ammonite;</p>
 
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">@</span> <span class="k">import</span> <span class="nn">$ivy.</span><span class="n">`io.github.afsalthaj::safe-string:1.2.1`</span>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">@</span> <span class="k">import</span> <span class="nn">$ivy.</span><span class="n">`io.github.afsalthaj::safe-string:1.2.2`</span>
 <span class="k">import</span> <span class="nn">$ivy.$</span>
 </code></pre></div></div>
 
@@ -43,8 +43,8 @@ We may also forget stringifying domain objects when using scala string interpola
 <span class="k">@</span> <span class="k">val</span> <span class="n">onlyString</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">"bar"</span>
 <span class="n">onlyString</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">"bar"</span>
 
-<span class="k">@</span> <span class="n">safeStr</span><span class="s">"This is type safe logging works only if it is either a string or a case class instance $caseClassInstance or $onlyString"</span>
-<span class="n">res8</span><span class="k">:</span> <span class="kt">com.thaj.safe.string.interpolator.SafeString</span> <span class="o">=</span> <span class="nc">SafeString</span><span class="o">(</span><span class="s">"This is type safe logging works only if it is either a string or a case class instance { name: foo } or bar"</span><span class="o">)</span>
+<span class="k">@</span> <span class="n">safeStr</span><span class="s">"Works only if its either a string or a case class instance $caseClassInstance or $onlyString"</span>
+<span class="n">res8</span><span class="k">:</span> <span class="kt">com.thaj.safe.string.interpolator.SafeString</span> <span class="o">=</span> <span class="nc">SafeString</span><span class="o">(</span><span class="s">"Works only if its either a string or a case class instance { name: foo } or bar"</span><span class="o">)</span>
 
 <span class="k">@</span> <span class="k">class</span> <span class="nc">C</span>
 <span class="n">defined</span> <span class="k">class</span> <span class="nc">C</span>
@@ -52,9 +52,9 @@ We may also forget stringifying domain objects when using scala string interpola
 <span class="k">@</span> <span class="k">val</span> <span class="n">nonCaseClass</span> <span class="k">=</span> <span class="k">new</span> <span class="n">C</span>
 <span class="n">nonCaseClass</span><span class="k">:</span> <span class="kt">C</span> <span class="o">=</span> <span class="n">ammonite</span><span class="o">.</span><span class="nc">$sess</span><span class="o">.</span><span class="n">cmd9$C</span><span class="k">@</span><span class="mf">4f</span><span class="n">d92289</span>
 
-<span class="k">@</span> <span class="n">safeStr</span><span class="s">"This is type safe logging works only if it is either a string or a case class instance $nonCaseClass or $onlyString"</span>
+<span class="k">@</span> <span class="n">safeStr</span><span class="s">"Doesn't work if there is a non-case class $nonCaseClass or $onlyString"</span>
 <span class="n">cmd11</span><span class="o">.</span><span class="n">sc</span><span class="k">:</span><span class="err">1</span><span class="kt">:</span> <span class="kt">The</span> <span class="kt">provided</span> <span class="k">type</span> <span class="kt">isn't</span> <span class="kt">a</span> <span class="kt">string</span> <span class="kt">nor</span> <span class="kt">it's</span> <span class="kt">a</span> <span class="kt">case</span> <span class="kt">class</span><span class="o">,</span> <span class="n">or</span> <span class="n">you</span> <span class="n">might</span> <span class="n">have</span> <span class="n">tried</span> <span class="n">a</span> <span class="n">`toString`</span> <span class="n">on</span> <span class="n">non</span><span class="o">-</span><span class="n">strings</span> <span class="o">!</span>
-<span class="k">val</span> <span class="n">res11</span> <span class="k">=</span> <span class="n">safeStr</span><span class="s">"This is type safe logging works only if it is either a string or a case class instance $nonCaseClass or $onlyString"</span>
+<span class="k">val</span> <span class="n">res11</span> <span class="k">=</span> <span class="n">safeStr</span><span class="s">"Doesn't work if there is a non-case class $nonCaseClass or $onlyString"</span>
                                                                                                             <span class="o">^</span>
 <span class="nc">Compilation</span> <span class="nc">Failed</span>
 
