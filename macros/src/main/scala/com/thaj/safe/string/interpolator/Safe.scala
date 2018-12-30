@@ -77,9 +77,7 @@ object Safe {
         val fieldName = field.name.toTermName
         str ++ Set((fieldName, q""" com.thaj.safe.string.interpolator.Safe[$tag]"""))
       }
-
-    println(str)
-
+    
     val res =
       q"""new com.thaj.safe.string.interpolator.Safe[$tpe] {
          override def value(a: $tpe): String = "{ " + ${str.map{case(x, y) => q""" ${x.toString} + " : " + $y.value(a.$x) """ }}.mkString(", ") + " }"
