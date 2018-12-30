@@ -2,9 +2,6 @@ import microsites.CdnDirectives
 
 lazy val root = (project in file("."))
   .dependsOn(macros)
-  .settings(
-    name := "safe-string"
-)
 
 lazy val docs = project
   .enablePlugins(MicrositesPlugin)
