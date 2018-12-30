@@ -27,13 +27,13 @@ Easy ! Use `safeStr"your log $a $b, $c"` instead of `s"your log $a $b, $c"` !
 Add this in your build.sbt
 
 ```scala
-libraryDependencies += "io.github.afsalthaj" %% "safe-string" % "1.2.6"
+libraryDependencies += "io.github.afsalthaj" %% "safe-string" % "1.2.7"
 ```
 
 Or, in ammonite;
 
 ```scala
-@ import $ivy.`io.github.afsalthaj::safe-string:1.2.6`
+@ import $ivy.`io.github.afsalthaj::safe-string:1.2.7`
 import $ivy.$
 ```
 
