@@ -1,9 +1,8 @@
 import microsites.CdnDirectives
 
 lazy val root = (project in file("."))
-  .aggregate(macros, test)
+  .aggregate(macros)
   .settings(
-    name := "safe-string",
     publishArtifact := false,
 )
 rootBuildSettings
@@ -65,7 +64,7 @@ micrositeGithubOwner := "afsalthaj"
 
 lazy val macros = (project in file("macros"))
   .settings(
-    name := "macros",
+    name := "safe-string",
     libraryDependencies ++= Seq(
       "org.scala-lang" % "scala-reflect" % "2.12.6",
       "org.specs2" %% "specs2-scalaz" % "4.2.0"
