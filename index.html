@@ -29,34 +29,37 @@ We may also forget stringifying domain objects when using scala string interpola
 </code></pre></div></div>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-<span class="c1">// Ammonite
-</span>
-<span class="k">@</span> <span class="k">import</span> <span class="nn">com.thaj.safe.string.interpolator.SafeString._</span>
+
+<span class="n">scala</span><span class="o">&gt;</span> <span class="k">import</span> <span class="nn">com.thaj.safe.string.interpolator.SafeString._</span>
 <span class="k">import</span> <span class="nn">com.thaj.safe.string.interpolator.SafeString._</span>
 
-<span class="k">@</span> <span class="k">case</span> <span class="k">class</span> <span class="nc">X</span><span class="o">(</span><span class="n">name</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span>
+<span class="n">scala</span><span class="o">&gt;</span> <span class="k">case</span> <span class="k">class</span> <span class="nc">X</span><span class="o">(</span><span class="n">name</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span>
 <span class="n">defined</span> <span class="k">class</span> <span class="nc">X</span>
 
-<span class="k">@</span> <span class="k">val</span> <span class="n">caseClassInstance</span> <span class="k">=</span> <span class="n">X</span><span class="o">(</span><span class="s">"foo"</span><span class="o">)</span>
-<span class="n">caseClassInstance</span><span class="k">:</span> <span class="kt">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">(</span><span class="s">"foo"</span><span class="o">)</span>
+<span class="n">scala</span><span class="o">&gt;</span> <span class="k">val</span> <span class="n">caseClassInstance</span> <span class="k">=</span> <span class="n">X</span><span class="o">(</span><span class="s">"foo"</span><span class="o">)</span>
+<span class="n">caseClassInstance</span><span class="k">:</span> <span class="kt">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">(</span><span class="n">foo</span><span class="o">)</span>
 
-<span class="k">@</span> <span class="k">val</span> <span class="n">onlyString</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">"bar"</span>
-<span class="n">onlyString</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">"bar"</span>
+<span class="n">scala</span><span class="o">&gt;</span> <span class="k">val</span> <span class="n">onlyString</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">"bar"</span>
+<span class="n">onlyString</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="n">bar</span>
 
-<span class="k">@</span> <span class="n">safeStr</span><span class="s">"Works only if its either a string or a case class instance $caseClassInstance or $onlyString"</span>
-<span class="n">res8</span><span class="k">:</span> <span class="kt">com.thaj.safe.string.interpolator.SafeString</span> <span class="o">=</span> <span class="nc">SafeString</span><span class="o">(</span><span class="s">"Works only if its either a string or a case class instance { name: foo } or bar"</span><span class="o">)</span>
+<span class="n">scala</span><span class="o">&gt;</span> <span class="n">safeStr</span><span class="s">"Works only if its either a string or a case class instance $caseClassInstance or $onlyString"</span>
+<span class="n">res0</span><span class="k">:</span> <span class="kt">com.thaj.safe.string.interpolator.SafeString</span> <span class="o">=</span> <span class="nc">SafeString</span><span class="o">(</span><span class="nc">Works</span> <span class="n">only</span> <span class="k">if</span> <span class="n">its</span> <span class="n">either</span> <span class="n">a</span> <span class="n">string</span> <span class="n">or</span> <span class="n">a</span> <span class="k">case</span> <span class="k">class</span> <span class="nc">instance</span> <span class="o">{</span> <span class="n">name</span><span class="k">:</span> <span class="kt">foo</span> <span class="o">}</span> <span class="n">or</span> <span class="n">bar</span><span class="o">)</span>
 
-<span class="k">@</span> <span class="k">class</span> <span class="nc">C</span>
+<span class="n">scala</span><span class="o">&gt;</span> <span class="k">class</span> <span class="nc">C</span>
 <span class="n">defined</span> <span class="k">class</span> <span class="nc">C</span>
 
-<span class="k">@</span> <span class="k">val</span> <span class="n">nonCaseClass</span> <span class="k">=</span> <span class="k">new</span> <span class="n">C</span>
-<span class="n">nonCaseClass</span><span class="k">:</span> <span class="kt">C</span> <span class="o">=</span> <span class="n">ammonite</span><span class="o">.</span><span class="nc">$sess</span><span class="o">.</span><span class="n">cmd9$C</span><span class="k">@</span><span class="mf">4f</span><span class="n">d92289</span>
+<span class="n">scala</span><span class="o">&gt;</span> <span class="k">val</span> <span class="n">nonCaseClass</span> <span class="k">=</span> <span class="k">new</span> <span class="n">C</span>
+<span class="n">nonCaseClass</span><span class="k">:</span> <span class="kt">C</span> <span class="o">=</span> <span class="n">C</span><span class="k">@</span><span class="mi">7</span><span class="n">e3131c8</span>
 
-<span class="k">@</span> <span class="n">safeStr</span><span class="s">"Doesn't work if there is a non-case class $nonCaseClass or $onlyString"</span>
-<span class="n">cmd11</span><span class="o">.</span><span class="n">sc</span><span class="k">:</span><span class="err">1</span><span class="kt">:</span> <span class="kt">The</span> <span class="kt">provided</span> <span class="k">type</span> <span class="kt">isn't</span> <span class="kt">a</span> <span class="kt">string</span> <span class="kt">nor</span> <span class="kt">it's</span> <span class="kt">a</span> <span class="kt">case</span> <span class="kt">class</span><span class="o">,</span> <span class="n">or</span> <span class="n">you</span> <span class="n">might</span> <span class="n">have</span> <span class="n">tried</span> <span class="n">a</span> <span class="n">`toString`</span> <span class="n">on</span> <span class="n">non</span><span class="o">-</span><span class="n">strings</span> <span class="o">!</span>
-<span class="k">val</span> <span class="n">res11</span> <span class="k">=</span> <span class="n">safeStr</span><span class="s">"Doesn't work if there is a non-case class $nonCaseClass or $onlyString"</span>
-                                                                                                            <span class="o">^</span>
-<span class="nc">Compilation</span> <span class="nc">Failed</span>
+<span class="n">scala</span><span class="o">&gt;</span> <span class="n">safeStr</span><span class="s">"Doesn't work if there is a non-case class $nonCaseClass or $onlyString"</span>
+<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">17</span><span class="k">:</span> <span class="kt">error:</span> <span class="kt">The</span> <span class="kt">provided</span> <span class="k">type</span> <span class="kt">isn't</span> <span class="kt">a</span> <span class="kt">string</span> <span class="kt">nor</span> <span class="kt">it's</span> <span class="kt">a</span> <span class="kt">case</span> <span class="kt">class</span><span class="o">,</span> <span class="n">or</span> <span class="n">you</span> <span class="n">might</span> <span class="n">have</span> <span class="n">tried</span> <span class="n">a</span> <span class="n">`toString`</span> <span class="n">on</span> <span class="n">non</span><span class="o">-</span><span class="n">strings</span> <span class="o">!</span>
+       <span class="n">safeStr</span><span class="s">"Doesn't work if there is a non-case class $nonCaseClass or $onlyString"</span>
+                                                          <span class="o">^</span>
+<span class="c1">// And don't cheat by `toString`
+</span><span class="n">scala</span><span class="o">&gt;</span> <span class="n">safeStr</span><span class="s">"Doesn't work if there is a non-case class ${nonCaseClass.toString} or $onlyString"</span>
+<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">17</span><span class="k">:</span> <span class="kt">error:</span> <span class="kt">Identified</span> <span class="kt">`toString`</span> <span class="kt">being</span> <span class="kt">called</span> <span class="kt">on</span> <span class="kt">the</span> <span class="k">type</span><span class="kt">s.</span> <span class="kt">Either</span> <span class="kt">remove</span> <span class="kt">it</span> <span class="kt">or</span> <span class="kt">use</span> <span class="kt">&lt;yourType&gt;.asStr</span> <span class="kt">if</span> <span class="kt">it</span> <span class="kt">has</span> <span class="kt">an</span> <span class="kt">instance</span> <span class="kt">of</span> <span class="kt">Safe.</span>
+       <span class="kt">safeStr</span><span class="err">"</span><span class="kt">Doesn't</span> <span class="kt">work</span> <span class="kt">if</span> <span class="kt">there</span> <span class="kt">is</span> <span class="kt">a</span> <span class="kt">non-case</span> <span class="kt">class</span> <span class="kt">$</span><span class="o">{</span><span class="kt">nonCaseClass.toString</span><span class="o">}</span> <span class="kt">or</span> <span class="kt">$onlyString</span><span class="err">"</span>
+                                                                        <span class="kt">^</span>
 
 </code></pre></div></div>
 
