@@ -3,13 +3,7 @@ import microsites.CdnDirectives
 lazy val root = (project in file("."))
   .dependsOn(macros)
   .settings(
-    name := "safe-string",
-    rootBuildSettings,
-    publishTo := {
-      val nexus = "https://oss.sonatype.org/"
-      if (isSnapshot.value) Some("snapshots" at nexus + "content/repositories/snapshots")
-      else Some("releases" at nexus + "service/local/staging/deploy/maven2")
-    }
+    name := "safe-string"
 )
 
 lazy val docs = project
@@ -58,12 +52,11 @@ micrositeCDNDirectives := CdnDirectives(
   )
 )
 
-
 micrositeGithubOwner := "afsalthaj"
 
 lazy val macros = (project in file("macros"))
   .settings(
-    name := "macros",
+    name := "safe-string",
     libraryDependencies ++= Seq(
       "org.scala-lang" % "scala-reflect" % "2.12.6",
       "org.specs2" %% "specs2-scalaz" % "4.2.0"

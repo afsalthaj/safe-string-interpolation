@@ -50,13 +50,11 @@ object SafeString {
               val tag = c.WeakTypeTag(nextElement.tpe)
               val symbol = tag.tpe.typeSymbol
 
-              if (tag.tpe != typeOf[String] && symbol.isClass && symbol.asClass.isCaseClass) {
+              if (!(tag.tpe =:= typeOf[String]) && symbol.isClass && symbol.asClass.isCaseClass) {
                 val r: Set[c.universe.Tree] =
                   nextElement.tpe.members.collect {
-                    case CaseClassFieldAndName(nme, typ) => {
-                      // Fix the toString here
+                    case CaseClassFieldAndName(nme, typ) =>
                       q"""com.thaj.safe.string.interpolator.Field(${nme.toString}, $nextElement.$nme)"""
-                    }
                   }.toSet
 
                 val field = q"""com.thaj.safe.string.interpolator.SafeString.Macro.jsonLike($r.map(_.toString))"""
@@ -67,7 +65,7 @@ object SafeString {
                 }
               }
 
-              else if (tag.tpe == typeOf[String]) {
+              else if (tag.tpe =:= typeOf[String]) {
                 acc match {
                   case q"""StringContext.apply(..$raw).s(..$previousElements)""" => q"""StringContext.apply(..$raw).s(($previousElements :+ $nextElement) :_*)"""
                   case _ => q"""${acc}.s($nextElement)"""
@@ -84,7 +82,7 @@ object SafeString {
           }
 
         case _ =>
-          c.abort(c.prefix.tree.pos, "bla")
+          c.abort(c.prefix.tree.pos, "The pattern can't be used with the safeStr interpolation.")
 
       }
     }
