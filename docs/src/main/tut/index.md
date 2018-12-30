@@ -62,7 +62,7 @@ scala> val nonCaseClass = new C
 nonCaseClass: C = C@7e3131c8
 
 scala> safeStr"Doesn't work if there is a non-case class $nonCaseClass or $onlyString"
-<console>:17: error: The provided type isn't a string nor it's a case class, or you might have tried a `toString` on non-strings !
+<console>:17: error: The provided type is neither a string nor a case-class. Consider converting it to strings using <value>.asStr.
        safeStr"Doesn't work if there is a non-case class $nonCaseClass or $onlyString"
                                                           ^
 // And don't cheat by `toString`

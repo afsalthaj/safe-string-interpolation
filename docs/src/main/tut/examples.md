@@ -31,7 +31,7 @@ res2: String = The a, b and c are: ghi, xyz, C@3aaeb14
 
 // safeStr interpolation
 scala> safeStr"The a, b and c are: ${a}, ${b}, ${c}"
-<console>:24: error: The provided type isn't a string nor it's a case class, or you might have tried a `toString` on non-strings!
+<console>:24: error: The provided type is neither a string nor a case-class. Consider converting it to strings using <value>.asStr.
        safeStr"The a, b and c are: ${a}, ${b}, ${c}"
                                                                                                     ^
 scala> safeStr"a and b: ${a}, ${b}"
