@@ -37,8 +37,10 @@ Also, if any part of case classes has `Secret`s in it, the value will be hidden.
 While the purpose of `safe-string-interpolation` is to make sure you are passing only Strings to `safeStr`, it works for case-class instances as well.
 There is a reason for this.
 
-Delegating the job of stringifying a case class to the user has always been an infamous problem and it kills the user's time. 
+Delegating the job of stringifying a case class to the user has always been an infamous problem and it kills the user's time.
 The `safe-string-interpolation` takes up this tedious job, and macros under the hood converts it to a readable string, while hiding `Secret` types.
+
+PS: In the next release, we may ask the user to do `.asStr` explicitly on case classes as well. This will bring in more consistency.
 
 ```scala
 

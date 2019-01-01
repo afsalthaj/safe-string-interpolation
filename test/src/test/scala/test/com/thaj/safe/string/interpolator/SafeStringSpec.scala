@@ -3,7 +3,8 @@ package test.com.thaj.safe.string.interpolator
 import com.thaj.safe.string.interpolator.SafeString._
 import com.thaj.safe.string.interpolator.Secret
 import org.specs2.{ScalaCheck, Specification}
-import scalaz.NonEmptyList
+import scalaz.{@@, NonEmptyList, Tag}
+import test.com.thaj.safe.string.interpolator.SafeStringSpec.Xxx.{NewTaggedType, StringTT, StringTTT, TaggedType}
 
 object SafeStringSpec extends Specification with ScalaCheck {
   def is =
@@ -18,6 +19,7 @@ object SafeStringSpec extends Specification with ScalaCheck {
        SafeString works for GADTs $testGADT
        SafeString works for maps in case class $testMap
        SafeString works for case class with map and nonemptylist $testMapWithNonEmptyList
+       SafeString works for case class with tagged type in it $testMultipleTaggedType
       """
 
   final case class Dummy(name: String, age: Int)
@@ -91,5 +93,21 @@ object SafeStringSpec extends Specification with ScalaCheck {
   private def testMapWithNonEmptyList =
     prop { a: String =>
       safeStr"works for gadt ${TestMapWithNonEmptyList(Map(a -> NonEmptyList(a, a)))}".string must_=== s"works for gadt { mapN: ${a} -> ${a},${a} }"
+    }
+
+  final case class CaseTag(d: StringTTT, f: StringTT)
+
+  object Xxx {
+
+    sealed trait TaggedType
+    type StringTT = String @@ TaggedType
+
+    sealed trait NewTaggedType
+    type StringTTT = String @@ NewTaggedType
+  }
+
+  private def testMultipleTaggedType =
+    prop { a: String =>
+      safeStr"works for taggedtypes ${CaseTag(Tag[String, NewTaggedType](a), Tag[String, TaggedType](a))}".string must_=== s"works for taggedtypes { f: ${a}, d: ${a} }"
     }
 }

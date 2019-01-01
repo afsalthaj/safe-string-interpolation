@@ -17,8 +17,8 @@ A few terrible logging examples :
    INFO: The student logged in: scala.Map(...)
    INFO: The student logged in: Details("name", "libraryPassword!!")
   ```
-  
-We need more type driven logging, consistent secret management, catching erroneous `toStrings` at compile time, rather than getting shocked and surprised at runtime.  
+Apart from logging, we have bumped into situations where we tried to concatenate / append "Any"thing using string interpolations, often resulting in logical errors as well.  
+You know this, we need more type driven logging and string interpolation operations, consistent secret management, catching erroneous `toStrings` at compile time, rather than getting shocked and surprised at runtime.  
  
 # Solution
 
@@ -27,13 +27,13 @@ Easy ! Use `safeStr"your log $a $b, $c"` instead of `s"your log $a $b, $c"` !
 Add this in your build.sbt
 
 ```scala
-libraryDependencies += "io.github.afsalthaj" %% "safe-string" % "1.2.8" 
+libraryDependencies += "io.github.afsalthaj" %% "safe-string" % "1.2.9" 
 ```
 
 Or, in ammonite;
 
 ```scala
-@ import $ivy.`io.github.afsalthaj::safe-string:1.2.8`
+@ import $ivy.`io.github.afsalthaj::safe-string:1.2.9`
 import $ivy.$
 ```
 
@@ -83,9 +83,11 @@ scala> safeStr"Doesn't work if there is a non-case class ${nonCaseClass.toString
 
 To understand more on the concepts and usages, please go through:
 
-1)  [A Simple Example](https://afsalthaj.github.io/safe-string-interpolation/examples.html)
-2) [Typesafe Pretty prints](https://afsalthaj.github.io/safe-string-interpolation/pretty_print.html) and 
-3) [Logging Secrets / Passwords](https://afsalthaj.github.io/safe-string-interpolation/secrets.html) 
+- [A Simple Example](https://afsalthaj.github.io/safe-string-interpolation/examples.html)
+
+- [Typesafe Pretty prints](https://afsalthaj.github.io/safe-string-interpolation/pretty_print.html) and 
+
+- [Logging Secrets / Passwords](https://afsalthaj.github.io/safe-string-interpolation/secrets.html) 
 
 to get started !
 
