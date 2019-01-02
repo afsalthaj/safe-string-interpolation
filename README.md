@@ -9,3 +9,6 @@
 A type driven approach to string interpolation, aiming at consistent, secure,  and only-human-readable logs and console outputs ! 
 
 Checkout the project [website](https://afsalthaj.github.io/safe-string-interpolation/) for all information.
+
+
+The alternate approach to this library is nothing but use `Show` interpolation in scalaz, with scalaz-deriving to automatically derive `Show` instances for case class. The approach is more or less the same, except that `safe-string-interpolation` deliberately avoids automatic conversion of types to `String` !
