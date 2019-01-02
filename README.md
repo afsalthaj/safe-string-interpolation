@@ -11,4 +11,4 @@ A type driven approach to string interpolation, aiming at consistent, secure,  a
 Checkout the project [website](https://afsalthaj.github.io/safe-string-interpolation/) for all information.
 
 
-The alternate approach to this library is nothing but use `Show` interpolation in scalaz, with scalaz-deriving to automatically derive `Show` instances for products / case-class. The approach is more or less the same, except that `safe-string-interpolation` deliberately avoids automatic conversion of types to `String`, nor even doesn't allow you to do `toString` on anything !
+The alternate approach to this library is using `Show` interpolation in scalaz, along with the library - `scalaz-deriving` to automatically derive `Show` instances for products / case-class. The approach is more or less the same, except that `safe-string-interpolation` deliberately avoids automatic conversion of types to `String`, nor even doesn't allow you to do `toString` on anything !
