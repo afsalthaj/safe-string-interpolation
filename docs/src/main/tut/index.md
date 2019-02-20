@@ -27,13 +27,13 @@ Easy ! Use `safeStr"your log $a $b, $c"` instead of `s"your log $a $b, $c"` !
 Add this in your build.sbt
 
 ```scala
-libraryDependencies += "io.github.afsalthaj" %% "safe-string" % "1.2.9" 
+libraryDependencies += "io.github.afsalthaj" %% "safe-string" % "1.3.0" 
 ```
 
 Or, in ammonite;
 
 ```scala
-@ import $ivy.`io.github.afsalthaj::safe-string:1.2.9`
+@ import $ivy.`io.github.afsalthaj::safe-string:1.3.0`
 import $ivy.$
 ```
 
@@ -75,14 +75,7 @@ scala> safeStr"Doesn't work if there is a non-case class ${nonCaseClass.toString
 `safeStr""` is just like `s""` in scala, but it is type safe and _allows only_ types that has a safe instance.
 
 But don't worry. If you have a case class, the macros in `Safe.scala` will automatically derive it's safe instance
-as far as all ofthe individual fields has `Safe` instance which is also defined already in the companion object of `Safe`.
-It works for any deep/nested level of case classes.
-
-To sum up,
-
-* Most of the types already has a Safe instance in companion object, hence `Int`, `Double` etc works straight away.
-* **case classes**  will be converted to json-like string by inspecting all fields, be it deeply nested or not, at compile time.
-* `Secret` types will be hidden too. We will see more on these in the below links.
+as far as all the individual fields has `Safe` instance.
 
 To understand more on the concepts and usages, please go through:
 
