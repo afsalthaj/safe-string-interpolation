@@ -1,7 +1,7 @@
 package test.com.thaj.safe.string.interpolator
 
 import com.thaj.safe.string.interpolator.SafeString._
-import com.thaj.safe.string.interpolator.Secret
+import com.thaj.safe.string.interpolator.{Safe, Secret}
 import org.specs2.{ScalaCheck, Specification}
 import scalaz.{@@, NonEmptyList, Tag}
 import test.com.thaj.safe.string.interpolator.SafeStringSpec.Xxx.{NewTaggedType, StringTT, StringTTT, TaggedType}
@@ -29,20 +29,20 @@ object SafeStringSpec extends Specification with ScalaCheck {
   final case class NestedDummy[A](name: String, secret: Secret, dummy: Dummy)
 
   private def test =
-    prop { (a: String, b: String, c: Int, d: Int) =>
-      val res: String = (c + d).toString
+    prop { (a: String, b: String, c: Int, d: Int, e: Float) =>
+      val res: Int = c + d
       val dummy = Dummy(a, d)
 
-      safeStr"the safe string is, ${a}, ${b}, ${res}, $dummy".string must_===
-        s"the safe string is, $a, ${b.toString}, $res, { age: ${dummy.age.toString}, name: ${dummy.name} }"
+      safeStr"the safe string is, $e, $a, $b, ${res.asStr}, $dummy".string must_===
+        s"the safe string is, $e, $a, ${b.toString}, $res, { name : ${dummy.name}, age : ${dummy.age.toString} }"
     }
 
   private def testSecrets =
     prop { (a: String, b: String) =>
       val dummy = DummyWithSecret(a, Secret(b))
 
-      safeStr"the safe string with password, ${a}, $dummy".string must_===
-        s"the safe string with password, $a, { secret: *****, name: ${a} }"
+      safeStr"the safe string with password, $a, $dummy".string must_===
+        s"the safe string with password, $a, { name : $a, secret : ***** }"
     }
 
   private def tesNestedCaseclass =
@@ -51,7 +51,7 @@ object SafeStringSpec extends Specification with ScalaCheck {
       val nestDummy = NestedDummy(a, Secret(b), dummy)
 
       safeStr"the safe string with password, ${a}, $nestDummy".string must_===
-        s"the safe string with password, $a, { dummy: { name : $a, age : $c }, secret: *****, name: ${dummy.name} }"
+        s"the safe string with password, $a, { name : ${dummy.name}, secret : *****, dummy : { name : $a, age : $c } }"
     }
 
   private def testSafeStrWithNoHardCodedStrings =
@@ -78,21 +78,21 @@ object SafeStringSpec extends Specification with ScalaCheck {
 
   private def testGADT =
     prop { a: String =>
-      safeStr"works for gadt ${TestGadt(NonEmptyList(a, a))}".string must_=== s"works for gadt { list: ${a},${a} }"
+      safeStr"works for gadt ${TestGadt(NonEmptyList(a, a))}".string must_=== s"works for gadt { list : ${a},${a} }"
     }
 
   final case class TestMap(map: Map[String, String])
 
   private def testMap =
     prop { a: String =>
-      safeStr"works for gadt ${TestMap(Map(a -> a))}".string must_=== s"works for gadt { map: ${a} -> ${a} }"
+      safeStr"works for gadt ${TestMap(Map(a -> a))}".string must_=== s"works for gadt { map : ${a} -> ${a} }"
     }
 
   final case class TestMapWithNonEmptyList(mapN: Map[String, NonEmptyList[String]])
 
   private def testMapWithNonEmptyList =
     prop { a: String =>
-      safeStr"works for gadt ${TestMapWithNonEmptyList(Map(a -> NonEmptyList(a, a)))}".string must_=== s"works for gadt { mapN: ${a} -> ${a},${a} }"
+      safeStr"works for gadt ${TestMapWithNonEmptyList(Map(a -> NonEmptyList(a, a)))}".string must_=== s"works for gadt { mapN : ${a} -> ${a},${a} }"
     }
 
   final case class CaseTag(d: StringTTT, f: StringTT)
@@ -108,6 +108,6 @@ object SafeStringSpec extends Specification with ScalaCheck {
 
   private def testMultipleTaggedType =
     prop { a: String =>
-      safeStr"works for taggedtypes ${CaseTag(Tag[String, NewTaggedType](a), Tag[String, TaggedType](a))}".string must_=== s"works for taggedtypes { f: ${a}, d: ${a} }"
+      safeStr"works for taggedtypes ${CaseTag(Tag[String, NewTaggedType](a), Tag[String, TaggedType](a))}".string must_=== s"works for taggedtypes { d : $a, f : $a }"
     }
 }

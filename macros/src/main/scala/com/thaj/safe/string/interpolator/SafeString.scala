@@ -22,21 +22,8 @@ object SafeString {
   }
 
   object Macro {
-    // Not public, just for macros
-    def jsonLike(list: Set[String]) =
-      s"{ ${list.mkString(", ")} }"
-
     def impl(c: blackbox.Context)(args: c.Expr[Any]*): c.Expr[SafeString] = {
       import c.universe.{Name => _, _}
-
-      object CaseClassFieldAndName {
-        def unapply(sym: TermSymbol): Option[(TermName, Type)] = {
-          if (sym.isCaseAccessor && sym.isVal)
-            Some((TermName(sym.name.toString.trim), sym.typeSignature))
-          else
-            None
-        }
-      }
 
       c.prefix.tree match {
 
@@ -44,41 +31,20 @@ object SafeString {
           val parts: Seq[String] = partz map { case Literal(Constant(const: String)) => const }
 
           val res: c.universe.Tree =
-            args.toList.foldLeft(q"""StringContext.apply(..${parts})""")({ (acc, t) => {
-
+            args.toList.foldLeft(q"""StringContext.apply(..$parts)""")({ (acc, t) => {
               val nextElement = t.tree
-
               val tag = c.WeakTypeTag(nextElement.tpe)
-              val symbol = tag.tpe.typeSymbol
 
               if(nextElement.toString().contains(".toString"))
-                c.abort(t.tree.pos, s"Identified `toString` being called on the types. Either remove it or use <yourType>.asStr if it has an instance of Safe.")
+                c.abort(t.tree.pos, s"Identified `toString` being called on the types. Make sure the type has a instance of Safe.")
 
-              if (!(tag.tpe =:= typeOf[String]) && symbol.isClass && symbol.asClass.isCaseClass) {
-                val r: Set[c.universe.Tree] =
-                  nextElement.tpe.members.collect {
-                    case CaseClassFieldAndName(nme, typ) =>
-                      q"""com.thaj.safe.string.interpolator.Field(${nme.toString}, $nextElement.$nme.asStr)"""
-                  }.toSet
-
-                val field = q"""com.thaj.safe.string.interpolator.SafeString.Macro.jsonLike($r.map(_.toString))"""
+              val field = q"""com.thaj.safe.string.interpolator.Safe[${tag.tpe}].value($nextElement)"""
 
                 acc match {
-                  case q"""StringContext.apply(..$raw).s(..$previousElements)""" => q"""StringContext.apply(..$raw).s(($previousElements :+ ..${field}) :_*)"""
-                  case _ => q"""${acc}.s(..$field)"""
+                  case q"""StringContext.apply(..$raw).s(..$previousElements)""" => q"""StringContext.apply(..$raw).s(($previousElements :+ ..$field) :_*)"""
+                  case _ => q"""$acc.s(..$field)"""
                 }
-              }
-
-              else if (tag.tpe =:= typeOf[String]) {
-                acc match {
-                  case q"""StringContext.apply(..$raw).s(..$previousElements)""" => q"""StringContext.apply(..$raw).s(($previousElements :+ $nextElement) :_*)"""
-                  case _ => q"""${acc}.s($nextElement)"""
-                }
-              } else {
-                c.abort(t.tree.pos, "The provided type is neither a string nor a case-class. Consider converting it to strings using <value>.asStr.")
-              }
-            }
-            })
+            }})
 
           res match {
             case q"""StringContext.apply(..$raw).s(..$previousElements)""" => c.Expr(q"""com.thaj.safe.string.interpolator.SafeString($res)""")

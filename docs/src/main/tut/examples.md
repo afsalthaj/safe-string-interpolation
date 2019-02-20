@@ -31,8 +31,7 @@ res2: String = The a, b and c are: ghi, xyz, C@3aaeb14
 
 // safeStr interpolation
 scala> safeStr"The a, b and c are: ${a}, ${b}, ${c}"
-<console>:24: error: The provided type is neither a string nor a case-class. Consider converting it to strings using <value>.asStr.
-       safeStr"The a, b and c are: ${a}, ${b}, ${c}"
+<console>:18: error: unable to find a safe instance for class C. Make sure it is a case class or a type that has safe instance.
                                                                                                     ^
 scala> safeStr"a and b: ${a}, ${b}"
 res2: com.thaj.safe.string.interpolator.SafeString = SafeString(a and b: ghi, xyz)

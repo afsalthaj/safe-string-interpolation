@@ -49,11 +49,11 @@ defined class X
 scala> val caseClassInstance = X("foo")
 caseClassInstance: X = X(foo)
 
-scala> val onlyString: String = "bar"
+scala> val string: String = "bar"
 onlyString: String = bar
 
-scala> safeStr"Works only if its either a string or a case class instance $caseClassInstance or $onlyString"
-res0: com.thaj.safe.string.interpolator.SafeString = SafeString(Works only if its either a string or a case class instance { name: foo } or bar)
+scala> safeStr"Works only if all of them has an instance of safe $caseClassInstance or $string"
+res0: com.thaj.safe.string.interpolator.SafeString = SafeString(Works only if it all of them has an instance of safe { name : foo } or bar)
 
 scala> class C
 defined class C
@@ -62,24 +62,27 @@ scala> val nonCaseClass = new C
 nonCaseClass: C = C@7e3131c8
 
 scala> safeStr"Doesn't work if there is a non-case class $nonCaseClass or $onlyString"
-<console>:17: error: The provided type is neither a string nor a case-class. Consider converting it to strings using <value>.asStr.
-       safeStr"Doesn't work if there is a non-case class $nonCaseClass or $onlyString"
+<console>:17: error: unable to find a safe instance for class C. Make sure it is a case class or a type that has safe instance.
                                                           ^
 // And don't cheat by `toString`
 scala> safeStr"Doesn't work if there is a non-case class ${nonCaseClass.toString} or $onlyString"
-<console>:17: error: Identified `toString` being called on the types. Either remove it or use <yourType>.asStr if it has an instance of Safe.
-       safeStr"Doesn't work if there is a non-case class ${nonCaseClass.toString} or $onlyString"
+<console>:17: error: Identified `toString` being called on the types. Make sure the type has a instance of Safe..
                                                                         ^
-
 ```
 
 # Concept and example usages.
 
-`safeStr""` is just like `s""` in scala, but it is type safe and _allows only_ 
+`safeStr""` is just like `s""` in scala, but it is type safe and _allows only_ types that has a safe instance.
 
-* **strings**.
-* **case classes** which will be converted to json-like string by inspecting all fields, be it deeply nested or not, at compile time.
-* and provides consistent way to **hide secrets**.
+But don't worry. If you have a case class, the macros in `Safe.scala` will automatically derive it's safe instance
+as far as all ofthe individual fields has `Safe` instance which is also defined already in the companion object of `Safe`.
+It works for any deep/nested level of case classes.
+
+To sum up,
+
+* Most of the types already has a Safe instance in companion object, hence `Int`, `Double` etc works straight away.
+* **case classes**  will be converted to json-like string by inspecting all fields, be it deeply nested or not, at compile time.
+* `Secret` types will be hidden too. We will see more on these in the below links.
 
 To understand more on the concepts and usages, please go through:
 
