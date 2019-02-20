@@ -61,12 +61,12 @@ defined class C
 scala> val nonCaseClass = new C
 nonCaseClass: C = C@7e3131c8
 
-scala> safeStr"Doesn't work if there is a non-case class $nonCaseClass or $onlyString"
+scala> safeStr"Doesn't work if there is a non-case class $nonCaseClass or $string"
 <console>:17: error: unable to find a safe instance for class C. Make sure it is a case class or a type that has safe instance.
                                                           ^
 // And don't cheat by `toString`
-scala> safeStr"Doesn't work if there is a non-case class ${nonCaseClass.toString} or $onlyString"
-<console>:17: error: Identified `toString` being called on the types. Make sure the type has a instance of Safe..
+scala> safeStr"Doesn't work if there is a non-case class ${nonCaseClass.toString} or $string"
+<console>:17: error: Identified `toString` being called on the types. Make sure the type has a instance of Safe.
                                                                         ^
 ```
 
@@ -74,8 +74,8 @@ scala> safeStr"Doesn't work if there is a non-case class ${nonCaseClass.toString
 
 `safeStr""` is just like `s""` in scala, but it is type safe and _allows only_ types that has a safe instance.
 
-But don't worry. If you have a case class, the macros in `Safe.scala` will automatically derive it's safe instance
-as far as all the individual fields has `Safe` instance.
+But don't worry. If you have a case class, the macros in `Safe.scala` will automatically derive it's safe instance. 
+More on this later.
 
 To understand more on the concepts and usages, please go through:
 
