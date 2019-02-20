@@ -51,12 +51,12 @@ You know this, we need more type driven logging and string interpolation operati
 <span class="n">scala</span><span class="o">&gt;</span> <span class="k">val</span> <span class="n">nonCaseClass</span> <span class="k">=</span> <span class="k">new</span> <span class="n">C</span>
 <span class="n">nonCaseClass</span><span class="k">:</span> <span class="kt">C</span> <span class="o">=</span> <span class="n">C</span><span class="k">@</span><span class="mi">7</span><span class="n">e3131c8</span>
 
-<span class="n">scala</span><span class="o">&gt;</span> <span class="n">safeStr</span><span class="s">"Doesn't work if there is a non-case class $nonCaseClass or $onlyString"</span>
+<span class="n">scala</span><span class="o">&gt;</span> <span class="n">safeStr</span><span class="s">"Doesn't work if there is a non-case class $nonCaseClass or $string"</span>
 <span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">17</span><span class="k">:</span> <span class="kt">error:</span> <span class="kt">unable</span> <span class="kt">to</span> <span class="kt">find</span> <span class="kt">a</span> <span class="kt">safe</span> <span class="kt">instance</span> <span class="kt">for</span> <span class="kt">class</span> <span class="kt">C.</span> <span class="kt">Make</span> <span class="kt">sure</span> <span class="kt">it</span> <span class="kt">is</span> <span class="kt">a</span> <span class="kt">case</span> <span class="kt">class</span> <span class="kt">or</span> <span class="kt">a</span> <span class="k">type</span> <span class="kt">that</span> <span class="kt">has</span> <span class="kt">safe</span> <span class="kt">instance.</span>
                                                           <span class="kt">^</span>
 <span class="c1">// And don't cheat by `toString`
-</span><span class="n">scala</span><span class="o">&gt;</span> <span class="n">safeStr</span><span class="s">"Doesn't work if there is a non-case class ${nonCaseClass.toString} or $onlyString"</span>
-<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">17</span><span class="k">:</span> <span class="kt">error:</span> <span class="kt">Identified</span> <span class="kt">`toString`</span> <span class="kt">being</span> <span class="kt">called</span> <span class="kt">on</span> <span class="kt">the</span> <span class="k">type</span><span class="kt">s.</span> <span class="kt">Make</span> <span class="kt">sure</span> <span class="kt">the</span> <span class="k">type</span> <span class="kt">has</span> <span class="kt">a</span> <span class="kt">instance</span> <span class="kt">of</span> <span class="kt">Safe..</span>
+</span><span class="n">scala</span><span class="o">&gt;</span> <span class="n">safeStr</span><span class="s">"Doesn't work if there is a non-case class ${nonCaseClass.toString} or $string"</span>
+<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">17</span><span class="k">:</span> <span class="kt">error:</span> <span class="kt">Identified</span> <span class="kt">`toString`</span> <span class="kt">being</span> <span class="kt">called</span> <span class="kt">on</span> <span class="kt">the</span> <span class="k">type</span><span class="kt">s.</span> <span class="kt">Make</span> <span class="kt">sure</span> <span class="kt">the</span> <span class="k">type</span> <span class="kt">has</span> <span class="kt">a</span> <span class="kt">instance</span> <span class="kt">of</span> <span class="kt">Safe.</span>
                                                                         <span class="kt">^</span>
 </code></pre></div></div>
 
@@ -64,8 +64,8 @@ You know this, we need more type driven logging and string interpolation operati
 
 <p><code class="highlighter-rouge">safeStr""</code> is just like <code class="highlighter-rouge">s""</code> in scala, but it is type safe and <em>allows only</em> types that has a safe instance.</p>
 
-<p>But don’t worry. If you have a case class, the macros in <code class="highlighter-rouge">Safe.scala</code> will automatically derive it’s safe instance
-as far as all the individual fields has <code class="highlighter-rouge">Safe</code> instance.</p>
+<p>But don’t worry. If you have a case class, the macros in <code class="highlighter-rouge">Safe.scala</code> will automatically derive it’s safe instance. 
+More on this later.</p>
 
 <p>To understand more on the concepts and usages, please go through:</p>
 
