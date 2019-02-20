@@ -65,16 +65,7 @@ You know this, we need more type driven logging and string interpolation operati
 <p><code class="highlighter-rouge">safeStr""</code> is just like <code class="highlighter-rouge">s""</code> in scala, but it is type safe and <em>allows only</em> types that has a safe instance.</p>
 
 <p>But don’t worry. If you have a case class, the macros in <code class="highlighter-rouge">Safe.scala</code> will automatically derive it’s safe instance
-as far as all ofthe individual fields has <code class="highlighter-rouge">Safe</code> instance which is also defined already in the companion object of <code class="highlighter-rouge">Safe</code>.
-It works for any deep/nested level of case classes.</p>
-
-<p>To sum up,</p>
-
-<ul>
-  <li>Most of the types already has a Safe instance in companion object, hence <code class="highlighter-rouge">Int</code>, <code class="highlighter-rouge">Double</code> etc works straight away.</li>
-  <li><strong>case classes</strong>  will be converted to json-like string by inspecting all fields, be it deeply nested or not, at compile time.</li>
-  <li><code class="highlighter-rouge">Secret</code> types will be hidden too. We will see more on these in the below links.</li>
-</ul>
+as far as all the individual fields has <code class="highlighter-rouge">Safe</code> instance.</p>
 
 <p>To understand more on the concepts and usages, please go through:</p>
 
