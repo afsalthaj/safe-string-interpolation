@@ -1,6 +1,6 @@
 package com.thaj.safe.string.interpolator
 
-import scalaz.{@@, NonEmptyList}
+import scalaz.{@@, IList, NonEmptyList}
 
 import scala.language.experimental.macros
 import scala.reflect.macros.blackbox
@@ -29,10 +29,10 @@ object Safe {
   implicit val safeLong: Safe[Long] =
     _.toString
 
-  implicit val safeFloat: Safe[Float] =
+  implicit val safeDouble: Safe[Double] =
     _.toString
 
-  implicit val safeDouble: Safe[Double] =
+  implicit val safeFloat: Safe[Float] =
     _.toString
 
   implicit val safeChar: Safe[Char] =
@@ -50,6 +50,9 @@ object Safe {
   implicit def safeNonEmptyList[A: Safe]: Safe[NonEmptyList[A]] =
     _.map(t => Safe[A].value(t)).list.toList.mkString(",")
 
+  implicit def safeIList[A : Safe]: Safe[IList[A]] =
+    l => Safe[List[A]].value(l.toList)
+
   implicit def safeTagged[A: Safe, T]: Safe[A @@ T] =
     a => Safe[A].value(scalaz.Tag.unwrap(a))
 
@@ -65,24 +68,41 @@ object Safe {
   def materializeSafe[T: c.WeakTypeTag](c: blackbox.Context): c.Expr[Safe[T]] = {
     import c.universe._
     val tpe = weakTypeOf[T]
-    val fields = tpe.decls.collectFirst {
-      case m: MethodSymbol if m.isPrimaryConstructor ⇒ m
-    }.getOrElse(c.abort(NoPosition, s"Unable to find a safe instance for $tpe. Consider creating one manually."))
-      .paramLists.headOption.getOrElse(c.abort(NoPosition, s"Unable to find a safe instance for $tpe. Consider creating one manually."))
 
-    val str =
-      fields.foldLeft(Set[(TermName, c.universe.Tree)]()) { (str, field) ⇒
-        val tag = c.WeakTypeTag(field.typeSignature)
+    val tag = c.WeakTypeTag(tpe)
+    val symbol = tag.tpe.typeSymbol
 
-        val fieldName = field.name.toTermName
-        str ++ Set((fieldName, q""" com.thaj.safe.string.interpolator.Safe[$tag]"""))
+    if (symbol.isClass && symbol.asClass.isCaseClass) {
+      val fields = tpe.decls.collectFirst {
+        case m: MethodSymbol if m.isPrimaryConstructor ⇒ m
       }
-    
-    val res =
-      q"""new com.thaj.safe.string.interpolator.Safe[$tpe] {
-         override def value(a: $tpe): String = "{ " + ${str.map{case(x, y) => q""" ${x.toString} + " : " + $y.value(a.$x) """ }}.mkString(", ") + " }"
+        .getOrElse(
+          c.abort(NoPosition, s"Unable to find a safe instance for ${tpe.typeSymbol}. Consider creating one manually.")
+        )
+        .paramLists.headOption
+        .getOrElse(c.abort(NoPosition, s"Unable to find a safe instance for $tpe. Consider creating one manually."))
+
+      val str =
+        fields.foldLeft(Set[(TermName, c.universe.Tree)]()) { (str, field) ⇒
+          val tag = c.WeakTypeTag(field.typeSignature)
+
+          val fieldName = field.name.toTermName
+          str ++ Set((fieldName, q""" com.thaj.safe.string.interpolator.Safe[$tag]"""))
+        }
+
+      val res =
+        q"""new com.thaj.safe.string.interpolator.Safe[$tpe] {
+         override def value(a: $tpe): String = "{ " + ${
+          str
+            .map { case (x, y) => q""" ${x.toString} + " : " + $y.value(a.$x) """ }
+        }.mkString(", ") + " }"
       }"""
 
-    c.Expr[Safe[T]] { res }
+      c.Expr[Safe[T]] {
+        res
+      }
+    } else {
+      c.abort(NoPosition, s"unable to find a safe instance for ${tpe.typeSymbol}. Make sure it is a case class or a type that has safe instance.")
+    }
   }
 }

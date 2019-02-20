@@ -28,7 +28,7 @@ object DocSupport {
     micrositeHighlightTheme := "atom-one-light",
     micrositeGithubRepo := "safe-string-interpolation",
     micrositeHomepage := "https://afsalthaj.github.io/safe-string-interpolation",
-    micrositeBaseUrl := "/safe-string-interpolation",
+    micrositeBaseUrl := "iagcl/safe-string-interpolation",
     micrositeGithubOwner := "afsalthaj",
     micrositeGithubRepo := "safe-string-interpolation",
     micrositeGitterChannelUrl := "safe-string-interpolation/community",
