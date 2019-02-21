@@ -82,26 +82,56 @@ object Safe {
         .paramLists.headOption
         .getOrElse(c.abort(NoPosition, s"Unable to find a safe instance for $tpe. Consider creating one manually."))
 
-      val str =
-        fields.foldLeft(Set[(TermName, c.universe.Tree)]()) { (str, field) ⇒
-          val tag = c.WeakTypeTag(field.typeSignature)
-
-          val fieldName = field.name.toTermName
-          str ++ Set((fieldName, q""" com.thaj.safe.string.interpolator.Safe[$tag]"""))
+      if (fields.isEmpty)  {
+        val res =
+          q"""new com.thaj.safe.string.interpolator.Safe[$tpe] {
+         override def value(a: $tpe): String = ${tpe.typeSymbol.name.toString}
+      }"""
+        c.Expr[Safe[T]] {
+          res
         }
+      } else {
+        val str =
+          fields.foldLeft(Set[(TermName, c.universe.Tree)]()) { (str, field) ⇒
+            val tag = c.WeakTypeTag(field.typeSignature)
+
+            val fieldName = field.name.toTermName
+            str ++ Set((fieldName, q""" com.thaj.safe.string.interpolator.Safe[$tag]"""))
+          }
+
+        val res =
+          q"""new com.thaj.safe.string.interpolator.Safe[$tpe] {
+         override def value(a: $tpe): String = "{ " + ${
+            str
+              .map { case (x, y) => q""" ${x.toString} + " : " + $y.value(a.$x) """ }
+          }.mkString(", ") + " }"
+      }"""
+
+        c.Expr[Safe[T]] {
+          res
+        }
+      }
+    } else if (symbol.isClass && symbol.asClass.isSealed) {
+      val knownSubClasses = symbol.asClass.knownDirectSubclasses
+
+      val cases = knownSubClasses.toList.foldLeft(Nil: List[Tree])(
+        (acc, b) => {
+          cq"x : ${b.asType} => com.thaj.safe.string.interpolator.Safe[$b].value(x)" :: acc
+        }
+      )
 
       val res =
         q"""new com.thaj.safe.string.interpolator.Safe[$tpe] {
-         override def value(a: $tpe): String = "{ " + ${
-          str
-            .map { case (x, y) => q""" ${x.toString} + " : " + $y.value(a.$x) """ }
-        }.mkString(", ") + " }"
+         override def value(a: $tpe): String = a match {
+           case ..$cases
+         }
       }"""
 
       c.Expr[Safe[T]] {
         res
       }
-    } else {
+    }
+    else {
       c.abort(NoPosition, s"unable to find a safe instance for ${tpe.typeSymbol}. Make sure it is a case class or a type that has safe instance.")
     }
   }

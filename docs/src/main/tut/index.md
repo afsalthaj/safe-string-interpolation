@@ -81,7 +81,7 @@ To understand more on the concepts and usages, please go through:
 
 - [A Simple Example](https://afsalthaj.github.io/safe-string-interpolation/examples.html)
 
-- [Typesafe Pretty prints](https://afsalthaj.github.io/safe-string-interpolation/pretty_print.html) and 
+- [Case class & Sealed traits (Products & Coproducts)](https://afsalthaj.github.io/safe-string-interpolation/pretty_print.html) and 
 
 - [Logging Secrets / Passwords](https://afsalthaj.github.io/safe-string-interpolation/secrets.html) 
 

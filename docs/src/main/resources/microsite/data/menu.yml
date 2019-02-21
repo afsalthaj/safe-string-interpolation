@@ -4,7 +4,7 @@ options:
   url: examples.html
   menu_type: main_menu
 
-- title: Type Safe Pretty Print
+- title: Products and Coproducts
   url: pretty_print.html
   menu_type: main_menu
 
