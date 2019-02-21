@@ -1,7 +1,7 @@
 package test.com.thaj.safe.string.interpolator
 
 import com.thaj.safe.string.interpolator.SafeString._
-import com.thaj.safe.string.interpolator.{Safe, Secret}
+import com.thaj.safe.string.interpolator.{Secret}
 import org.specs2.{ScalaCheck, Specification}
 import scalaz.{@@, NonEmptyList, Tag}
 import test.com.thaj.safe.string.interpolator.SafeStringSpec.Xxx.{NewTaggedType, StringTT, StringTTT, TaggedType}
@@ -20,6 +20,7 @@ object SafeStringSpec extends Specification with ScalaCheck {
        SafeString works for maps in case class $testMap
        SafeString works for case class with map and nonemptylist $testMapWithNonEmptyList
        SafeString works for case class with tagged type in it $testMultipleTaggedType
+       SafeString instance works for coproducts $testCoproducts
       """
 
   final case class Dummy(name: String, age: Int)
@@ -110,4 +111,19 @@ object SafeStringSpec extends Specification with ScalaCheck {
     prop { a: String =>
       safeStr"works for taggedtypes ${CaseTag(Tag[String, NewTaggedType](a), Tag[String, TaggedType](a))}".string must_=== s"works for taggedtypes { d : $a, f : $a }"
     }
+
+  private def testCoproducts = {
+    sealed trait Wave
+    case class Bi() extends Wave
+    case class Hello() extends Wave
+    case class GoodBye(a: String, b: Int) extends Wave
+    case object R extends Wave
+
+    val a: Wave = Bi()
+    val b = R
+    val c: Wave = Hello()
+    val d: Wave = GoodBye("john", 1)
+
+    safeStr"$a, $c, $d, $b".string must_=== "Bi, Hello, { a : john, b : 1 }, R"
+  }
 }
