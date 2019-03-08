@@ -10,4 +10,4 @@ A type driven approach to string interpolation, aiming at consistent, secure,  a
 
 Checkout the project [website](https://afsalthaj.github.io/safe-string-interpolation/) for all information.
 
-In near future, there will be integration with scalaz.Show / cats.Show. If you are in scalaz world, there is an alternative where you can `z` interpolator that works with `Show` typeclass. You can get the same sort of functionality this library provides by depending on scalaz-deriving-magnolia to get automatic show instances. If you need a zero dependency with light weight macros, then `safe-string` (this library) is preferable.
+In near future, there will be integration with scalaz.Show / cats.Show. If you are in scalaz world, there is an alternative where you can use `z` interpolator that works with `Show` typeclass. You can get the same sort of functionality (that this library provides) by depending on scalaz-deriving-magnolia to get automatic show instances. If you need a zero dependency with light weight macros, then `safe-string` (this library) is preferable.
