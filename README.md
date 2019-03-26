@@ -6,7 +6,7 @@
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.afsalthaj/safe-string_2.12.svg)](http://search.maven.org/#search|gav|1|g%3A%22io.github.afsalthaj%22%20AND%20a%3A%22safe-string_2.12%22)
 
 
-An insanely simple type driven approach to string interpolation, aiming at consistent, secure,  and only-human-readable logs and console outputs ! 
+An insanely simple type driven approach to string interpolation, aiming at consistent, secure,  and only-human-readable logs and console outputs, and for safe string operations ! 
 
 Checkout the project [website](https://afsalthaj.github.io/safe-string-interpolation/) for all information.
 
