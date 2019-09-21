@@ -9,7 +9,3 @@
 An insanely simple type driven approach to string interpolation, aiming at consistent, secure,  and only-human-readable logs and console outputs, and for safe string operations ! 
 
 Checkout the project [website](https://afsalthaj.github.io/safe-string-interpolation/) for all information.
-
-Trust me! It's insanely simple to set up and we enjoy the robustness of type safety.
-
-In near future, there will be integration with scalaz.Show / cats.Show. If you are in scalaz world, there is an alternative where you can use `z` interpolator that works with `Show` typeclass. You can get the same sort of functionality (that this library provides) by depending on scalaz-deriving-magnolia to get automatic show instances. If you need a zero dependency project that handles only one use-case, which is safe string interpolation, this library is for you.
