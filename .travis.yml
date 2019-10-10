@@ -1,20 +1,35 @@
-sudo: false
 language: scala
-scala:
-- 2.12.8
-script:
-- sbt ++$TRAVIS_SCALA_VERSION test/test
 jdk:
-- openjdk8
-after_success:
-- if [ $TRAVIS_PULL_REQUEST = 'false' ]; then sbt ++$TRAVIS_SCALA_VERSION root/publishSigned;
-  sbt ++$TRAVIS_SCALA_VERSION macros/publishSigned; fi
+  - oraclejdk11
+
+stages:
+  - name: test
+  - name: release
+    if: (branch = master AND type = push) OR (tag IS present)
+
+jobs:
+  include:
+    - stage: test
+      script: sbt +compile +test:compile +test
+
+    # run ci-release only if previous stages passed
+    - stage: release
+      script: sbt ci-release
+
+cache:
+  directories:
+    - $HOME/.sbt/1.0/dependency
+    - $HOME/.sbt/boot/scala*
+    - $HOME/.sbt/launchers
+    - $HOME/.ivy2/cache
+    - $HOME/.coursier
+
+before_cache:
+  - du -h -d 1 $HOME/.ivy2/cache
+  - du -h -d 2 $HOME/.sbt/
+  - find $HOME/.sbt -name "*.lock" -type f -delete
+  - find $HOME/.ivy2/cache -name "ivydata-*.properties" -type f -delete
+  - rm -rf $HOME/.ivy2/local
+
 before_install:
-- if [ $TRAVIS_PULL_REQUEST = 'false' ]; then openssl aes-256-cbc -K $encrypted_61d510ae3885_key
-  -iv $encrypted_61d510ae3885_iv -in travis/secrets.tar.enc -out travis/secrets.tar
-  -d; tar xv -C travis -f travis/secrets.tar; fi
-env:
-  global:
-  - secure: gmK9UJlN1+jHspVN46ZikeNc051AzINfdZZ/zZfviuxI0K1pXKq21IM6iSHuT/3c/F9ad+paUmlG679PTmPrFulX5cRIAYmElrNlE/u62nBYTjaWpf+uFm0DQrN8Oo2HsPN/NRleTqqEDVRCfAjt0aPNZBHmne5JzROGTFyuRBjk7hSa53VCGgSUiEJXH7GaEFzdVpSkd3ecTNqB48olz0nuiGRC2gKu6jDExgFGK2bz1X4w1N2pogR6l/Fcyhh1kf/Pt3RMsB1b7F421bHMj0DuYCFshA+hpJwtN0mH2E2SFwVfkz2zlCYX/fByuLA1UPt+zqlaMzrAMXfn0rivuAhgx4YDUJM+xGVrx8w05xDUo0Gw8gnsDGAdrVBrKRoBMY8uFWKj5XIOqIfVzD6bNxNjmAZYNRYiVPkbsGsE5PBGW6HEBgSAS4VSY82uMrhJggH83vBBmeQYcW4aZfamqcyMrJfVkwpJwEqmUJWj6EDQyXNvoZwjEi6CnWjUyNYsu2LIgEyTyBdKA3Ev5JlN+Q8q+bsu//jly4WcqZcLP7sZLhYo5cV3POa3p2TLXuya5j2e1HBl9/fHmlaJS+YyvhePIJN8S0v10EtIOmCnRKK5VgVSegoQHHUqfLkjHISbJbDjJjHbCg+qGFfG6kcFQbGm6RirYO6Sld9euMEG2uU=
-  - secure: bfuycoD6PwQ4FdkwlKnfZ3Iy7r5+YU5Rp7MXJCGG0NEyAur+KvD8BiFpcPiDg5FYwTuCXgD84TIttyAsGUzODoxxmfIQl0OuvzZrLrXNWjZbPD5GQfiSqQqoeIgWijkhsb7rp25xnEEr7HE1W3u+DEIlT6SJEeLzW2lqo7dA6/s6H0DvCufvupfLUmIuW7NKsoX9fKG51sKDUsfhyqCy0oQsmwvYoHkJJyQTseYXXTDpSWlLH9Zaj4SrrLjvydYVnSbtSfszb89Wlw5mNfSMlaiDpg8Hcru960hcGZrY+i/L7jyw8gMKG0NDf3XFv08742fHZ2u8Dy3i/XhZ9NRSk6RUYd95nKwq8NAh1NaK3aOBHq2q+DtPQgFRPSbBB3xlRn0yEA7jtdUAqUo8ivcUOgbEH29EcIqTUwz1D1kVHKQnwDFaXkyQTvIYsCxcG1JnEk4ioYPsHVdmM7O6qEGNOODy/tf/GEYTDONDzz7gdUR/nci2sSKCeUgnS4joOWsFPRQ0d+kot/7ajX3ybcs81Ubu7i1Det3XCRegTERi2CfEhQaqSmhfBi+f8b0PixY7MwvUIOJXayT+bLbk7EdF+vydmbCWaSzQvRpC2Kpb0EQ94c6pFu+55V+NqwmPk9wyQqhzt46Cg29rDmpOdLr0qVJD1f9myWuur/ugJaLZKOQ=
-  - secure: QRkCN5fBAwJ1r+zlpnmYQ0qXVoNWkQeRp3xP/m9VxGNpAx8vSzNuDAxVPIEjKtkoOagFV0C7bidgIgJraG5VAYA0evzM2OS2g/oxB29SyjYkmKn4i/rDdCsP/bZuyux/Fh5Ea8dHyApGZjfXQxroieoYmUFdbj1p+EDrtc7rlsXbwpBbpuvUmfEQT3q/kBEeR9HGgXN+y+1vWhw6l8jvesTaI0xjowuB8B4g4o5F1x7lwhMRlfrU/a4tyaDjZ9/8bhrBrScKydtY0pqFt6ssGIFL9qySdwO20E+0X5H1YQnm1ZSd6R7hX3u5r1lNilfjPTeI1wKLPMXZUDmJuppgum6PY0Tohf29IQK7mzDDfv/xofxtIqus5RohUQo7ugBrXQa7zuZ7h+xihFQwzQcEqjMcej0TkH6wtZHm6+UpNOJp/esayWAV/E9Rv2Oy6r9d1hVUVUjhlBB6eyyOjGYpCAqTzAuP/NUxGkY9ap9rS1i+iFrkJmVyu1ng+/qJDZmpluQuRgyYYjMVmpmTZbBVHUhKVjQKAtVsFoQsnE/mYlfHCNy7kPn3riucMnmmaitS8ijyhjcuONWHPWfwZuzI4Zan0xBMtUApx/+qdJ6Q6f1E7TqmnXW9sZqZC2S3MeS/AYuMpP/90HaOlrW3lzZVo/P7oIaIOkVfR0zy2MO4XnY=
+  - git fetch --tags
