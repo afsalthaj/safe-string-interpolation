@@ -4,7 +4,6 @@ lazy val root = (project in file("."))
   .dependsOn(macros)
   .settings(
     name := "safe-string",
-    rootBuildSettings,
     publishTo := {
       val nexus = "https://oss.sonatype.org/"
       if (isSnapshot.value) Some("snapshots" at nexus + "content/repositories/snapshots")
@@ -47,7 +46,7 @@ lazy val macros = (project in file("macros"))
       "org.scala-lang" % "scala-reflect" % "2.12.6",
       "org.specs2" %% "specs2-scalaz" % "4.2.0"
     ),
-    rootBuildSettings,
+    
     publishTo := {
       val nexus = "https://oss.sonatype.org/"
       if (isSnapshot.value) Some("snapshots" at nexus + "content/repositories/snapshots")
@@ -62,7 +61,7 @@ lazy val test = (project in file("test"))
       "org.specs2" %% "specs2-scalacheck" % "4.2.0" % "test",
       "org.specs2" %% "specs2-scalaz" % "4.2.0" % "test"
     ),
-    rootBuildSettings,
+    
     publishTo := {
       val nexus = "https://oss.sonatype.org/"
       if (isSnapshot.value) Some("snapshots" at nexus + "content/repositories/snapshots")
@@ -72,38 +71,17 @@ lazy val test = (project in file("test"))
 
 enablePlugins(MicrositesPlugin)
 
-lazy val rootBuildSettings = Seq(
-  pgpSecretRing := file("./travis/local.secring.asc"),
-  pgpPublicRing := file("./travis/local.pubring.asc"),
-  pgpPassphrase := sys.env.get("PGP_PASS").map(_.toArray),
-  credentials += Credentials(
-    "Sonatype Nexus Repository Manager",
-    "oss.sonatype.org",
-    sys.env.getOrElse("SONATYPE_USER", ""),
-    sys.env.getOrElse("SONATYPE_PASS", "")
-  ),
+inThisBuild(List(
   organization := "io.github.afsalthaj",
-  organizationName := "safe-string-interpolation",
-  organizationHomepage := Some(url("https://afsalthaj.github.io/safe-string-interpolation/")),
-  scmInfo := Some(
-    ScmInfo(
-      url("https://github.com/afsalthaj/safe-string-interpolation"),
-      "scm:git@github.com:afsalthaj/safe-string-interpolation.git"
-    )),
+  homepage := Some(url("https://afsalthaj.github.io/safe-string-interpolation/")),
+  licenses := List("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
   developers := List(
     Developer(
-      id = "afsalthaj",
-      name = "Afsal Thaj",
-      email = "afsal.taj06@gmail.com",
-      url = url("https://medium.com/@afsal.taj06")
+      "afsalthaj",
+      "Afsal Thaj",
+      "afsal.taj06@gmail.com",
+      url("https://medium.com/@afsal.taj06")
     )
-  ),
+  )
+))
 
-  description := "Typesafe string interpolation and typedriven secret logging",
-  licenses := List("Apache 2" -> new URL("https://raw.githubusercontent.com/afsalthaj/safe-string-interpolation/master/LICENSE")),
-  homepage := Some(url("https://github.com/afsalthaj/safe-string-interpolation")),
-
-  // Remove all additional repository other than Maven Central from POM
-  pomIncludeRepository := { _ => false },
-  publishMavenStyle := true
-)
