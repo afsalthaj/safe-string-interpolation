@@ -3,7 +3,7 @@ import microsites.CdnDirectives
 lazy val root = (project in file("."))
   .dependsOn(macros)
   .settings(
-    name := "safe-string"
+    name := "safe-string-interpolation"
   )
 
 lazy val docs = project
