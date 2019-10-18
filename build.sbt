@@ -3,13 +3,8 @@ import microsites.CdnDirectives
 lazy val root = (project in file("."))
   .dependsOn(macros)
   .settings(
-    name := "safe-string",
-    publishTo := {
-      val nexus = "https://oss.sonatype.org/"
-      if (isSnapshot.value) Some("snapshots" at nexus + "content/repositories/snapshots")
-      else Some("releases" at nexus + "service/local/staging/deploy/maven2")
-    }
-)
+    name := "safe-string"
+  )
 
 lazy val docs = project
   .enablePlugins(MicrositesPlugin)
@@ -45,13 +40,7 @@ lazy val macros = (project in file("macros"))
     libraryDependencies ++= Seq(
       "org.scala-lang" % "scala-reflect" % "2.12.6",
       "org.specs2" %% "specs2-scalaz" % "4.2.0"
-    ),
-    
-    publishTo := {
-      val nexus = "https://oss.sonatype.org/"
-      if (isSnapshot.value) Some("snapshots" at nexus + "content/repositories/snapshots")
-      else Some("releases" at nexus + "service/local/staging/deploy/maven2")
-    }
+    ),  
   )
 
 lazy val test = (project in file("test"))
@@ -61,12 +50,6 @@ lazy val test = (project in file("test"))
       "org.specs2" %% "specs2-scalacheck" % "4.2.0" % "test",
       "org.specs2" %% "specs2-scalaz" % "4.2.0" % "test"
     ),
-    
-    publishTo := {
-      val nexus = "https://oss.sonatype.org/"
-      if (isSnapshot.value) Some("snapshots" at nexus + "content/repositories/snapshots")
-      else Some("releases" at nexus + "service/local/staging/deploy/maven2")
-    }
   ).dependsOn(macros)
 
 enablePlugins(MicrositesPlugin)
