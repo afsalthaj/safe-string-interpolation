@@ -42,7 +42,7 @@ object SafeStringSpec extends Specification with ScalaCheck {
     prop { (a: String, b: String) =>
       val dummy = DummyWithSecret(a, Secret(b))
 
-      safeStr"the safe string with password, $a, $dummy".string must_===
+      ss"the safe string with password, $a, $dummy".string must_===
         s"the safe string with password, $a, { name : $a, secret : ***** }"
     }
 

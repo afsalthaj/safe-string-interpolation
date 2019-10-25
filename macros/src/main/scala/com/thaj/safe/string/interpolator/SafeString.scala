@@ -15,6 +15,7 @@ object SafeString {
 
   implicit class SafeStringContext(val sc: StringContext) {
     def safeStr(args: Any*): SafeString = macro Macro.impl
+    def ss(args: Any*): SafeString = macro Macro.impl
   }
 
   implicit class AsString[T: Safe](s: => T) {
