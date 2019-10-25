@@ -4,7 +4,7 @@ lazy val root = (project in file("."))
   .dependsOn(macros)
   .settings(
     name := "safe-string-interpolation"
-  )
+  ).aggregate(macros, test)
 
 lazy val docs = project
   .enablePlugins(MicrositesPlugin)
