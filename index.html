@@ -15,16 +15,16 @@ You know this, we need more type driven logging and string interpolation operati
 
 <h1 id="solution">Solution</h1>
 
-<p>Easy ! Use <code class="highlighter-rouge">safeStr"your log $a $b, $c"</code> instead of <code class="highlighter-rouge">s"your log $a $b, $c"</code> !</p>
+<p>Easy ! Use <code class="highlighter-rouge">ss"your log $a $b, $c"</code> instead of <code class="highlighter-rouge">s"your log $a $b, $c"</code> !</p>
 
 <p>Add this in your build.sbt</p>
 
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"io.github.afsalthaj"</span> <span class="o">%%</span> <span class="s">"safe-string"</span> <span class="o">%</span> <span class="s">"1.4.1"</span> 
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"io.github.afsalthaj"</span> <span class="o">%%</span> <span class="s">"safe-string-interpolation"</span> <span class="o">%</span> <span class="s">"2.0.5"</span> 
 </code></pre></div></div>
 
 <p>Or, in ammonite;</p>
 
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">@</span> <span class="k">import</span> <span class="nn">$ivy.</span><span class="n">`io.github.afsalthaj::safe-string:1.4.1`</span>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">@</span> <span class="k">import</span> <span class="nn">$ivy.</span><span class="n">`io.github.afsalthaj::safe-string-interpolation:2.0.5`</span>
 <span class="k">import</span> <span class="nn">$ivy.$</span>
 </code></pre></div></div>
 
