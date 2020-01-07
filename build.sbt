@@ -39,7 +39,7 @@ lazy val macros = (project in file("macros"))
     name := "safe-string-macros",
     libraryDependencies ++= Seq(
       "org.scala-lang" % "scala-reflect" % "2.12.6",
-      "org.specs2" %% "specs2-scalaz" % "4.8.1"
+      "org.specs2" %% "specs2-scalaz" % "4.8.2"
     ),  
   )
 
@@ -47,8 +47,8 @@ lazy val test = (project in file("test"))
   .settings(
     name := "test",
     libraryDependencies ++= Seq(
-      "org.specs2" %% "specs2-scalacheck" % "4.8.1" % "test",
-      "org.specs2" %% "specs2-scalaz" % "4.8.1" % "test"
+      "org.specs2" %% "specs2-scalacheck" % "4.8.2" % "test",
+      "org.specs2" %% "specs2-scalaz" % "4.8.2" % "test"
     ),
   ).dependsOn(macros)
 
