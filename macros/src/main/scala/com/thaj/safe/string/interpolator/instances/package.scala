@@ -110,7 +110,7 @@ package object instances {
     } else
       c.abort(
         NoPosition,
-        s"unable to find a safe instance for ${tpe.typeSymbol}. Make sure the type has safe instance. Either define Safe instance manually, or `import com.thaj.safe.string.interpolator._` to get instances for products, coproducts and other non primitive types"
+        s"unable to find a safe instance for ${tpe.typeSymbol}. Make sure the type has safe instance. Either define Safe instance manually, or `import com.thaj.safe.string.interpolator.instances._` to get instances for products, coproducts and other non primitive types"
       )
   }
 }
