@@ -1,7 +1,7 @@
 package test.com.thaj.safe.string.interpolator
 
-import com.thaj.safe.string.interpolator.{Safe, Secret}
-import org.specs2.{ScalaCheck, Specification}
+import org.specs2.{ ScalaCheck, Specification }
+import com.thaj.safe.string.interpolator._, instances._
 
 object SafeSpec extends Specification with ScalaCheck {
   def is =
@@ -20,48 +20,47 @@ object SafeSpec extends Specification with ScalaCheck {
 
   final case class Dummy(name: String, age: Hello, age2: Hello, age3: Hello)
 
-  private def testClasses = {
-    prop { (name: String, x1: String, x2: String, x3: String) =>
-      val r = implicitly[Safe[Dummy]]
+  private def testClasses =
+    prop {
+      (name: String, x1: String, x2: String, x3: String) =>
+        val r = implicitly[Safe[Dummy]]
 
-      r.value(Dummy(name, Hello(Another(x1)), Hello(Another(x2)), Hello(Another(x3)))) must_===
-        s"{ name : ${name}, age : { hellov : { another : $x1 } }, age2 : { hellov : { another : $x2 } }, age3 : { hellov : { another : $x3 } } }"
+        r.value(Dummy(name, Hello(Another(x1)), Hello(Another(x2)), Hello(Another(x3)))) must_===
+          s"{ name : ${name}, age : { hellov : { another : $x1 } }, age2 : { hellov : { another : $x2 } }, age3 : { hellov : { another : $x3 } } }"
 
     }
-  }
 
-  private def testInteger = {
-    prop { value: Int =>
-      Safe[Int].value(value) must_=== value.toString
+  private def testInteger =
+    prop {
+      value: Int =>
+        Safe[Int].value(value) must_=== value.toString
     }
-  }
 
-  private def testLong = {
-    prop { value: Long =>
-      Safe[Long].value(value) must_=== value.toString
+  private def testLong =
+    prop {
+      value: Long =>
+        Safe[Long].value(value) must_=== value.toString
     }
-  }
 
-  private def testSeq = {
-    prop { value: List[Long] => {
-      Safe[List[Long]].value(value) must_=== value.mkString(",")
-    }}
-  }
+  private def testSeq =
+    prop {
+      value: List[Long] =>
+        Safe[List[Long]].value(value) must_=== value.mkString(",")
+    }
 
   final case class Inductive(name: Secret)
 
-  private def testInductive = {
-    prop { a: String =>
-      Safe[Inductive].value(Inductive(Secret(a))) must_=== "{ name : ***** }"
+  private def testInductive =
+    prop {
+      a: String =>
+        Safe[Inductive].value(Inductive(Secret(a))) must_=== "{ name : ***** }"
     }
-  }
 
   sealed trait ADTT
   case object Adt extends ADTT
 
   implicit val safe: Safe[ADTT] = _ => "adt"
 
-  private def testManualSafeInstance = {
+  private def testManualSafeInstance =
     Safe[ADTT].value(Adt) must_=== "adt"
-  }
 }

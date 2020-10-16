@@ -22,7 +22,9 @@ You know this, we need more type driven logging and string interpolation operati
  
 # Solution
 
-Easy ! Use `safeStr"your log $a $b, $c"` instead of `s"your log $a $b, $c"` !
+Easy ! Use `ss"your log $a $b, $c"` instead of `s"your log $a $b, $c"` !
+
+You can also use safeStr""
 
 Add this in your build.sbt
 
@@ -40,8 +42,8 @@ import $ivy.$
 ```scala
 
 
-scala> import com.thaj.safe.string.interpolator.SafeString._
-import com.thaj.safe.string.interpolator.SafeString._
+scala> import com.thaj.safe.string.interpolator._, instances._
+import com.thaj.safe.string.interpolator._, instances._
 
 scala> case class X(name: String)
 defined class X
@@ -52,7 +54,8 @@ caseClassInstance: X = X(foo)
 scala> val string: String = "bar"
 onlyString: String = bar
 
-scala> safeStr"Works only if all of them has an instance of safe $caseClassInstance or $string"
+// Note that case classes and other complex types only because we imported `instances._`. Otherwise library allows you to use only primitive types with ss.
+scala> ss"Works only if all of them has an instance of safe $caseClassInstance or $string"
 res0: com.thaj.safe.string.interpolator.SafeString = SafeString(Works only if it all of them has an instance of safe { name : foo } or bar)
 
 scala> class C
@@ -61,8 +64,8 @@ defined class C
 scala> val nonCaseClass = new C
 nonCaseClass: C = C@7e3131c8
 
-scala> safeStr"Doesn't work if there is a non-case class $nonCaseClass or $string"
-<console>:17: error: unable to find a safe instance for class C. Make sure it is a case class or a type that has safe instance.
+scala> ss"Doesn't work if there is a non-case class $nonCaseClass or $string"
+<console>:17: error: unable to find a safe instance for class C. MMake sure the type has safe instance. Either define Safe instance manually, or `import com.thaj.safe.string.interpolator._` to get instances for products, coproducts and other non primitive types.
                                                           ^
 // And don't cheat by `toString`
 scala> safeStr"Doesn't work if there is a non-case class ${nonCaseClass.toString} or $string"
@@ -72,9 +75,11 @@ scala> safeStr"Doesn't work if there is a non-case class ${nonCaseClass.toString
 
 # Concept and example usages.
 
-`safeStr""` is just like `s""` in scala, but it is type safe and _allows only_ types that has a safe instance.
+`ss""` is just like `s""` in scala, but it is type safe and _allows only_ types that has a safe instance. By default it allows only
+to include primitive instances. If you want to make it work for case classes, or sealed traits and other non primitive types such as list,
+option, maybe, tagged type etc, you have to explicitly import `instances._`
 
-But don't worry. If you have a case class, the macros in `Safe.scala` will automatically derive it's safe instance. 
+If you have a case class or sealed traits, the macros in `Safe.scala` will automatically derive it's safe instance. 
 More on this later.
 
 To understand more on the concepts and usages, please go through:
@@ -98,6 +103,7 @@ trait Loggers[F[_], E] {
   def info: SafeString => F[Unit]
   def error: SafeString => F[Unit]
   def debug: SafeString => F[Unit]
+}
 
 ```
 

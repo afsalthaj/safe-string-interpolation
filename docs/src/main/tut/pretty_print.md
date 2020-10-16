@@ -20,7 +20,7 @@ scala> s"The value of xyz is $s"
 res5: String = The value of xyz is Xyz(Abc(a,b,c),x)
 
 // type safe string interpolation
-scala> safeStr"The value of xyz is $s"
+scala> ss"The value of xyz is $s"
 res6: com.thaj.safe.string.interpolator.SafeString = SafeString(The value of xyz is { abc : { a : a, b : b, c : c }, name : x })
 
 scala> res1.string
@@ -50,6 +50,6 @@ Also, if any part of case classes has `Secret`s in it, the value will be hidden.
 
     val c: Wave = GoodBye("john", 1)
 
-    safeStr"$a, $b, $c, $r".string must_=== "Bi, Hello, { a : john, b : 1 }, R"
+    ss"$a, $b, $c, $r".string must_=== "Bi, Hello, { a : john, b : 1 }, R"
 
 ```

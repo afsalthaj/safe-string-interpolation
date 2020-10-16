@@ -12,8 +12,8 @@ As mentioned before, just wrap the secret with Secret.apply.
 
 ```scala
 
-scala> import com.thaj.safe.string.interpolator.SafeString._
-import com.thaj.safe.string.interpolator.SafeString._
+scala> import com.thaj.safe.string.interpolator._, instances._
+import com.thaj.safe.string.interpolator._, instances._
 
 scala> import com.thaj.safe.string.interpolator.Secret
 import com.thaj.safe.string.interpolator.Secret
