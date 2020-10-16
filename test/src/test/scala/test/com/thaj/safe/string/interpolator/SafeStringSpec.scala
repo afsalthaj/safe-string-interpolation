@@ -38,7 +38,7 @@ object SafeStringSpec extends Specification with ScalaCheck {
         val res: Int = c + d
         val dummy = Dummy(a, d)
 
-        safeStr"the safe string is, $e, $a, $b, ${res.asStr}, $dummy".string must_===
+        ss"the safe string is, $e, $a, $b, ${res.asStr}, $dummy".string must_===
           s"the safe string is, $e, $a, ${b.toString}, $res, { name : ${dummy.name}, age : ${dummy.age.toString} }"
     }
 
@@ -57,18 +57,18 @@ object SafeStringSpec extends Specification with ScalaCheck {
         val dummy = Dummy(a, c)
         val nestDummy = NestedDummy(a, Secret(b), dummy)
 
-        safeStr"the safe string with password, ${a}, $nestDummy".string must_===
+        ss"the safe string with password, ${a}, $nestDummy".string must_===
           s"the safe string with password, $a, { name : ${dummy.name}, secret : *****, dummy : { name : $a, age : $c } }"
     }
 
   private def testSafeStrWithNoHardCodedStrings =
     prop {
       a: String =>
-        safeStr"$a".string must_=== a
+        ss"$a".string must_=== a
     }
 
   private def testWithOnlyHardCodedString =
-    (safeStr"somevalue".string must_=== "somevalue") and (safeStr"".string must_=== "")
+    (ss"somevalue".string must_=== "somevalue") and (ss"".string must_=== "")
 
   private def testSafeStringAppend = {
     val result =

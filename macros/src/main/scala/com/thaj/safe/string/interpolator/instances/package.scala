@@ -8,11 +8,11 @@ import scala.language.experimental.macros
 package object instances {
   implicit def materializeSafee[T]: Safe[T] = macro materializeSafe[T]
 
-  implicit def optionSafe[A : Safe]: Safe[Option[A]] = new Safe[Option[A]] {
-    override def value(a: Option[A]): String = {
-      a.map(a => Safe[A].value(a)).getOrElse("")
+  implicit def optionSafe[A: Safe]: Safe[Option[A]] =
+    new Safe[Option[A]] {
+      override def value(a: Option[A]): String =
+        a.map(a => Safe[A].value(a)).getOrElse("")
     }
-  }
 
   implicit def safeNonEmptyList[A: Safe]: Safe[NonEmptyList[A]] =
     _.map(t => Safe[A].value(t)).list.toList.mkString(",")
@@ -110,7 +110,7 @@ package object instances {
     } else
       c.abort(
         NoPosition,
-        s"unable to find a safe instance for ${tpe.typeSymbol}. Make sure it is a case class or a type that has safe instance."
+        s"unable to find a safe instance for ${tpe.typeSymbol}. Make sure the type has safe instance. Either define Safe instance manually, or `import com.thaj.safe.string.interpolator._` to get instances for products, coproducts and other non primitive types"
       )
   }
 }

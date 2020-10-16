@@ -1,7 +1,6 @@
 package com.thaj.safe.string.interpolator
 
-
-final case class Field[T : Safe](name: String, value: T) {
+final case class Field[T: Safe](name: String, value: T) {
   override def toString: String = s"""$name: ${Safe[T].value(value)}"""
 }
 

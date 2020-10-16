@@ -65,7 +65,7 @@ scala> val nonCaseClass = new C
 nonCaseClass: C = C@7e3131c8
 
 scala> ss"Doesn't work if there is a non-case class $nonCaseClass or $string"
-<console>:17: error: unable to find a safe instance for class C. Make sure it is a case class or a type that has safe instance.
+<console>:17: error: unable to find a safe instance for class C. MMake sure the type has safe instance. Either define Safe instance manually, or `import com.thaj.safe.string.interpolator._` to get instances for products, coproducts and other non primitive types.
                                                           ^
 // And don't cheat by `toString`
 scala> safeStr"Doesn't work if there is a non-case class ${nonCaseClass.toString} or $string"
