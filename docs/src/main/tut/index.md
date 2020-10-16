@@ -79,7 +79,7 @@ scala> safeStr"Doesn't work if there is a non-case class ${nonCaseClass.toString
 to include primitive instances. If you want to make it work for case classes, or sealed traits and other non primitive types such as list,
 option, maybe, tagged type etc, you have to explicitly import `instances._`
 
-But don't worry. If you have a case class, the macros in `Safe.scala` will automatically derive it's safe instance. 
+If you have a case class or sealed traits, the macros in `Safe.scala` will automatically derive it's safe instance. 
 More on this later.
 
 To understand more on the concepts and usages, please go through:
