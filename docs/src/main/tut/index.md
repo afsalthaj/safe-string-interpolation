@@ -43,7 +43,7 @@ import $ivy.$
 
 
 scala> import com.thaj.safe.string.interpolator._, instances._
-import com.thaj.safe.string.interpolator.interpolator._, instances._
+import com.thaj.safe.string.interpolator._, instances._
 
 scala> case class X(name: String)
 defined class X
