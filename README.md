@@ -8,4 +8,35 @@
 
 An insanely simple type driven approach to string interpolation, aiming at consistent, secure,  and only-human-readable logs and console outputs, and for safe string operations ! 
 
-Checkout the project [website](https://afsalthaj.github.io/safe-string-interpolation/) for all information.
+```scala
+@ import $ivy.`io.github.afsalthaj::safe-string-interpolation:2.1.1`
+import $ivy.$
+
+@ import com.thaj.safe.string.interpolator._
+import com.thaj.safe.string.interpolator._
+
+@ case class Port(int: Int) extends AnyVal
+defined class Port
+
+@ val port = Port(1)
+port: Port = Port(1)
+
+@ ss"Db details: Port is ${port}"
+cmd7.sc:1: could not find implicit value for parameter ev: com.thaj.safe.string.interpolator.Safe[ammonite.$sess.cmd5.Port]
+val res7 = ss"Db details: Port is ${port}"
+           ^
+Compilation Failed
+
+@ ss"Db details: Port is ${port.int}"
+res7: SafeString = SafeString("Db details: Port is 1")
+
+@ import instances._
+import instances._
+
+@ ss"Db details: Port is ${port}"
+res9: SafeString = SafeString("Db details: Port is { int : 1 }")
+
+@
+
+```
+Checkout the project [website](https://afsalthaj.github.io/safe-string-interpolation/) for more features and possibilities.
