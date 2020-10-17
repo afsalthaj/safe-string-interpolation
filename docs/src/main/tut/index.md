@@ -29,13 +29,13 @@ You can also use safeStr""
 Add this in your build.sbt
 
 ```scala
-libraryDependencies += "io.github.afsalthaj" %% "safe-string-interpolation" % "2.0.5" 
+libraryDependencies += "io.github.afsalthaj" %% "safe-string-interpolation" % "2.1.1" 
 ```
 
 Or, in ammonite;
 
 ```scala
-@ import $ivy.`io.github.afsalthaj::safe-string-interpolation:2.0.5`
+@ import $ivy.`io.github.afsalthaj::safe-string-interpolation:2.1.1`
 import $ivy.$
 ```
 
