@@ -8,7 +8,7 @@
 An insanely simple type driven approach to string interpolation, aiming at consistent, secure,  and only-human-readable logs and console outputs, and for safe string operations ! 
 
 ```scala
-@ import $ivy.`io.github.afsalthaj::safe-string-interpolation:2.1.1`
+@ import $ivy.`io.github.afsalthaj::safe-string-interpolation:2.1.3`
 import $ivy.$
 
 @ import com.thaj.safe.string.interpolator._
