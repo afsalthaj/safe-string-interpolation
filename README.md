@@ -29,13 +29,39 @@ Compilation Failed
 @ ss"Db details: Port is ${port.int}"
 res7: SafeString = SafeString("Db details: Port is 1")
 
+// Another example
+@ case class Prefix(value: String) 
+defined class Prefix
+
+@ case class BucketName(value: String) 
+defined class BucketName
+
+@ val prefix = Prefix("foo") 
+prefix: Prefix = Prefix("foo")
+
+@ val bucketName = BucketName("6666-bucket") 
+bucketName: BucketName = BucketName("6666-bucket")
+
+@ val path = s"${bucketName}/${prefix}" 
+path: String = "BucketName(6666-bucket)/Prefix(foo)"
+
+@  import com.thaj.safe.string.interpolator._ 
+import com.thaj.safe.string.interpolator._
+
+@ val path = ss"${bucketName}/${prefix}" 
+cmd7.sc:1: could not find implicit value for parameter ev: com.thaj.safe.string.interpolator.Safe[ammonite.$sess.cmd2.BucketName]
+val path = ss"${bucketName}/${prefix}"
+           ^
+Compilation Failed
+
+
+// Autoderivation module
 @ import instances._
 import instances._
 
 @ ss"Db details: Port is ${port}"
 res9: SafeString = SafeString("Db details: Port is { int : 1 }")
 
-@
 
 ```
 Checkout the project [website](https://afsalthaj.github.io/safe-string-interpolation/) for more features and possibilities.
