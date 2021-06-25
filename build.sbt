@@ -15,12 +15,10 @@ lazy val docs = project
   .settings(DocSupport.settings)
   .settings(
     Seq(
-      fork in tut := true,
       git.remoteRepo := "https://github.com/afsalthaj/safe-string-interpolation.git",
       includeFilter in makeSite := "*.html" | "*.css" | "*.png" | "*.jpg" | "*.gif" | "*.js" | "*.swf" | "*.yml" | "*.md"
     )
   )
-  .settings(scalacOptions in Tut ~= (_.filterNot(Set("-Ywarn-unused-import", "-Ywarn-dead-code"))))
   .enablePlugins(GhpagesPlugin)
 
 micrositeCDNDirectives := CdnDirectives(
