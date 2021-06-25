@@ -45,9 +45,6 @@ bucketName: BucketName = BucketName("6666-bucket")
 @ val path = s"${bucketName}/${prefix}" 
 path: String = "BucketName(6666-bucket)/Prefix(foo)"
 
-@  import com.thaj.safe.string.interpolator._ 
-import com.thaj.safe.string.interpolator._
-
 @ val path = ss"${bucketName}/${prefix}" 
 cmd7.sc:1: could not find implicit value for parameter ev: com.thaj.safe.string.interpolator.Safe[ammonite.$sess.cmd2.BucketName]
 val path = ss"${bucketName}/${prefix}"
