@@ -3,22 +3,25 @@ import microsites.CdnDirectives
 lazy val root = (project in file("."))
   .dependsOn(macros)
   .settings(
-    name := "safe-string-interpolation"
-  ).aggregate(macros, test)
+    name := "safe-string-interpolation",
+    crossScalaVersions := Seq("2.12.10", "2.13.5")
+  )
+  .aggregate(macros, test)
 
 lazy val docs = project
   .enablePlugins(MicrositesPlugin)
   .settings(name := "afsalthaj")
   .settings(moduleName := "safe-string-interpolation-docs")
   .settings(DocSupport.settings)
-  .settings(Seq(
-    fork in tut := true,
-    git.remoteRepo := "https://github.com/afsalthaj/safe-string-interpolation.git",
-    includeFilter in makeSite := "*.html" | "*.css" | "*.png" | "*.jpg" | "*.gif" | "*.js" | "*.swf" | "*.yml" | "*.md"
-  ))
+  .settings(
+    Seq(
+      fork in tut := true,
+      git.remoteRepo := "https://github.com/afsalthaj/safe-string-interpolation.git",
+      includeFilter in makeSite := "*.html" | "*.css" | "*.png" | "*.jpg" | "*.gif" | "*.js" | "*.swf" | "*.yml" | "*.md"
+    )
+  )
   .settings(scalacOptions in Tut ~= (_.filterNot(Set("-Ywarn-unused-import", "-Ywarn-dead-code"))))
   .enablePlugins(GhpagesPlugin)
-
 
 micrositeCDNDirectives := CdnDirectives(
   jsList = List(
@@ -37,34 +40,38 @@ micrositeGithubOwner := "afsalthaj"
 lazy val macros = (project in file("macros"))
   .settings(
     name := "safe-string-macros",
+    crossScalaVersions := Seq("2.11.11", "2.12.10", "2.13.5"),
     libraryDependencies ++= Seq(
       "org.scala-lang" % "scala-reflect" % "2.12.10",
       "org.specs2" %% "specs2-scalaz" % "4.8.2"
-    ),  
+    )
   )
 
 lazy val test = (project in file("test"))
   .settings(
     name := "test",
+    crossScalaVersions := Seq("2.12.10", "2.13.5"),
     libraryDependencies ++= Seq(
       "org.specs2" %% "specs2-scalacheck" % "4.8.2" % "test",
       "org.specs2" %% "specs2-scalaz" % "4.8.2" % "test"
-    ),
-  ).dependsOn(macros)
+    )
+  )
+  .dependsOn(macros)
 
 enablePlugins(MicrositesPlugin)
 
-inThisBuild(List(
-  organization := "io.github.afsalthaj",
-  homepage := Some(url("https://afsalthaj.github.io/safe-string-interpolation/")),
-  licenses := List("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
-  developers := List(
-    Developer(
-      "afsalthaj",
-      "Afsal Thaj",
-      "afsal.taj06@gmail.com",
-      url("https://medium.com/@afsal.taj06")
+inThisBuild(
+  List(
+    organization := "io.github.afsalthaj",
+    homepage := Some(url("https://afsalthaj.github.io/safe-string-interpolation/")),
+    licenses := List("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
+    developers := List(
+      Developer(
+        "afsalthaj",
+        "Afsal Thaj",
+        "afsal.taj06@gmail.com",
+        url("https://medium.com/@afsal.taj06")
+      )
     )
   )
-))
-
+)
