@@ -1,5 +1,6 @@
 ## Typesafe Interpolation
 
+[![Build Status](https://travis-ci.com/afsalthaj/safe-string-interpolation.svg?branch=master)](https://travis-ci.com/afsalthaj/safe-string-interpolation)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/safe-string-interpolation/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.afsalthaj/safe-string-interpolation_2.12.svg)](https://search.maven.org/artifact/io.github.afsalthaj/safe-string-interpolation_2.13/2.1.3/jar)
 
