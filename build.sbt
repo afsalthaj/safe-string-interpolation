@@ -4,7 +4,7 @@ lazy val root = (project in file("."))
   .dependsOn(macros)
   .settings(
     name := "safe-string-interpolation",
-    crossScalaVersions := Seq("2.12.10", "2.13.6")
+    crossScalaVersions := Seq("2.12.10", "2.13.7")
   )
   .aggregate(macros, test)
 
@@ -38,7 +38,7 @@ micrositeGithubOwner := "afsalthaj"
 lazy val macros = (project in file("macros"))
   .settings(
     name := "safe-string-macros",
-    crossScalaVersions := Seq("2.12.10", "2.13.6"),
+    crossScalaVersions := Seq("2.12.10", "2.13.7"),
     libraryDependencies ++= Seq(
       "org.scala-lang" % "scala-reflect" % "2.12.10",
       "org.specs2" %% "specs2-scalaz" % "4.8.2"
@@ -48,7 +48,7 @@ lazy val macros = (project in file("macros"))
 lazy val test = (project in file("test"))
   .settings(
     name := "test",
-    crossScalaVersions := Seq("2.12.10", "2.13.6"),
+    crossScalaVersions := Seq("2.12.10", "2.13.7"),
     libraryDependencies ++= Seq(
       "org.specs2" %% "specs2-scalacheck" % "4.8.2" % "test",
       "org.specs2" %% "specs2-scalaz" % "4.8.2" % "test"
