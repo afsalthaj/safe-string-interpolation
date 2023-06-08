@@ -40,7 +40,7 @@ lazy val macros = (project in file("macros"))
     name := "safe-string-macros",
     crossScalaVersions := Seq("2.12.10", "2.13.6"),
     libraryDependencies ++= Seq(
-      "org.scala-lang" % "scala-reflect" % "2.12.10",
+      "org.scala-lang" % "scala-reflect" % "2.12.18",
       "org.specs2" %% "specs2-scalaz" % "4.8.2"
     )
   )
